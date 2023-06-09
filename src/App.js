@@ -1,10 +1,13 @@
 import logo from './logo.svg';
 import './App.css';
+import LoginForm from './components/loginform';
 
 function App() {
+  
   return (
-    <div className="App">
-      <header className="App-header">
+    <div id="app">
+      <div className="page">
+      {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
@@ -17,8 +20,12 @@ function App() {
         >
           Learn React
         </a>
-      </header>
+      </header> */}
+
+      <LoginForm />
     </div>
+    </div>
+    
   );
 }
 
