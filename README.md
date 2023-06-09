@@ -68,3 +68,15 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+
+### Setups
+
+This project needs the following libaries to be installed:
+* React
+* electron 
+* cnpm (Optional: For installing electron in China, you must have cnpm installed so that the electron will be downloaded and installed through Chinese mirror sites)
+* react-router
+* usb
+* drivelist

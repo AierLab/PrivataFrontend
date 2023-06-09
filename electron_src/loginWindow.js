@@ -19,8 +19,8 @@ function createLoginWindow () {
   
     // and load the index.html of the app.
     console.log(__dirname)
-    mainWindow.loadFile('./build/index.html')
-    // mainWindow.loadURL("http://localhost:3000")
+    // mainWindow.loadFile('./build/index.html')
+    mainWindow.loadURL("http://localhost:3000")
     // mainWindow.loadFile("index1.html")
     // keep waiting and listeninf to the request of opening links in an external browser
     global.share.ipcMain.handle('open-external', async (event, url) => {
