@@ -1,4 +1,4 @@
-const { contextBridge, shell,ipcRenderer } = require('electron')
+const { contextBridge, ipcRenderer } = require('electron')
 
 contextBridge.exposeInMainWorld('api', {
     // node: () => process.versions.node,

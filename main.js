@@ -2,6 +2,7 @@
 const { app, shell, BrowserWindow, Menu, ipcMain } = require('electron')
 const path = require('path')
 const {createLoginWindow} = require("./electron_src/loginWindow")
+const {createUsbKeyWindow} = require("./electron_src/usbWindow")
 global.share = {ipcMain}
 
 
@@ -9,8 +10,12 @@ global.share = {ipcMain}
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  
-  createLoginWindow();
+  global.share.ipcMain.handle("login-success", async () => {
+    loginWindow.close();
+
+    createUsbKeyWindow();
+  } )
+  loginWindow = createLoginWindow();
 
 
   app.on('activate', function () {

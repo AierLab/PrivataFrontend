@@ -1,20 +1,33 @@
 import React, {useState} from "react";
-import "./loginform.css"
+import loginStyles from "./loginform.module.css"
 import { getLoginResponse } from "../utils/request";
 
 
 const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [popupStyle, showPopup] = useState("hide");
+    const [popupStyle, showPopup] = useState(loginStyles.hide);
 
     const handleLoginClick = (event) => {
         event.preventDefault();
         if (getLoginResponse(username, password)){
-            window.api.loginSuccess()
+            const appContainer = document.getElementById(loginStyles.app);
+            appContainer.classList.add(loginStyles.close);
+            setTimeout(() => {
+                window.api.loginSuccess()
+            }, 200)
+            
         }else{
-            showPopup("login-popup")
-            setTimeout(() =>showPopup("hide"),3000)
+            showPopup(loginStyles.loginPopup)
+            setTimeout(() =>{
+                
+                setTimeout(() =>{
+                    showPopup(loginStyles.hide);
+                },300)
+                showPopup(loginStyles.hide2);
+            },4000)
+            
+
         }
     }
     
@@ -27,17 +40,18 @@ const LoginForm = () => {
     }; //Check whether the url is clicked. If so, open an external browser (system's default browser) to enter the website 
 
     const handleMinimizeClick = () =>{
-        const appContainer = document.getElementById('app');
-        appContainer.classList.add('minimized');
+        const appContainer = document.getElementById(loginStyles.app);
+        appContainer.classList.add(loginStyles.minimized);
+        // console.log(appContainer.classList)
         setTimeout(() =>{
-            appContainer.classList.remove('minimized');
+            appContainer.classList.remove(loginStyles.minimized);
             window.api.minimizeWindow();
-        },200)
+        },500)
         
     }
     const handleCloseClick = () =>{
-        const appContainer = document.getElementById('app');
-        appContainer.classList.add('closed');
+        const appContainer = document.getElementById(loginStyles.app);
+        appContainer.classList.add(loginStyles.close);
         setTimeout(() => {
             window.api.closeWindow();
           }, 200); 
@@ -46,12 +60,12 @@ const LoginForm = () => {
 
 
     return(
-            <div className="cover">     
-                <div className ="buttons">
-                    <div id="minimize" onClick={handleMinimizeClick}>
+            <div className={loginStyles.cover}>     
+                <div className ={loginStyles.buttons}>
+                    <div id={loginStyles.minimize} onClick={handleMinimizeClick}>
                         <span>-</span>
                     </div>
-                    <div id="close" onClick={handleCloseClick}>
+                    <div id={loginStyles.close} onClick={handleCloseClick}>
                         <span>&times;</span>
                     </div>
                 </div>       
@@ -59,18 +73,18 @@ const LoginForm = () => {
                 <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)}/>
                 <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
 
-                <div className="login-btn" onClick={handleLoginClick}>Login</div>
-                <p className="signup-text"> Not a user yet?  <a className="signup-url" href="https://google.com" onClick={handleLinkClick}> Sign up</a> for now!</p>
-                <p className="text">Or login using</p>
+                <div className={loginStyles.loginBtn} onClick={handleLoginClick}>Login</div>
+                <p className={loginStyles.signupText}> Not a user yet?  <a className={loginStyles.signupUrl} href="https://google.com" onClick={handleLinkClick}> Sign up</a> for now!</p>
+                <p className={loginStyles.text}>Or login using</p>
 
-                <div className="alt-login">
-                    <div className="facebook"></div>
-                    <div className="google"></div>
+                <div className={loginStyles.altLogin}>
+                    <div className={loginStyles.facebook}></div>
+                    <div className={loginStyles.google}></div>
                 </div>
 
                 <div className={popupStyle}>
-                    <h3 className="failed-text1">Login Failed</h3>
-                    <p className="failed-text2">Username or password incorrect</p>
+                    <h3 className={loginStyles.failedText1}>Login Failed</h3>
+                    <p className={loginStyles.failedText2}>Username or password incorrect</p>
                 </div>
         </div>
         

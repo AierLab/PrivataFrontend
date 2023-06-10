@@ -12,22 +12,16 @@ import reportWebVitals from './reportWebVitals';
 //     <App />
 //   </React.StrictMode>
 // );
+/**
+ * React Router used here for creating multiple HTML pages
+ */
 createRoot(document.getElementById('root')).render(
   <Router>
     <Routes>
       <Route path="/" element={<App />} />
       <Route path="/usbKey.html" element={<UsbVerification />} />
     </Routes>
-  </Router>,);
-// ReactDOM.render(
-//   <Router>
-//     <Routes>
-//       <Route path="/" exact component={App} />
-//       <Route path="/usbKey.html" component={UsbVerification} />
-//     </Routes>
-//   </Router>,
-//   document.getElementById('root')
-// );
+  </Router>);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

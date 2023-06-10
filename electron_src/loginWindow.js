@@ -42,13 +42,15 @@ function createLoginWindow () {
       
     })
 
-    global.share.ipcMain.handle("login-success", async () => {
-      mainWindow.close();
-      await createUsbKeyWindow();
-    } )
+    // global.share.ipcMain.handle("login-success", async () => {
+    //   mainWindow.close();
+    //   await createUsbKeyWindow();
+    // } )
   
     // Open the DevTools.
     // mainWindow.webContents.openDevTools();
+
+    return mainWindow;
 }
 
 module.exports = {createLoginWindow}

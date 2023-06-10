@@ -1,12 +1,13 @@
 // import logo from './logo.svg';
 import './App.css';
+import styles from './components/loginform.module.css'
 import LoginForm from './components/loginform';
 
 function App() {
   
   return (
-    <div id="app">
-      <div className="page">
+    <div id={styles.app}>
+      <div className={styles.page}>
       {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>

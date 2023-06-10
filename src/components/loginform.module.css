@@ -45,7 +45,7 @@
     font-weight: bold;
     width: 30%;
     color: #39c5bb;
-    transition: 0.7s;
+    transition: 0.3s;
     cursor: pointer;
     -webkit-app-region: no-drag;
     
@@ -75,7 +75,7 @@
 
 
 
-.alt-login {
+.altLogin {
     width: 80%;
     height: 3em;
     display: flex;
@@ -83,7 +83,7 @@
     -webkit-app-region: no-drag;
 }
 
-.alt-login div{
+.altLogin div{
     width: 45%;
     height: 80%;
     border-radius: 0.25em;
@@ -95,7 +95,7 @@
     cursor: pointer;
     -webkit-app-region: no-drag;
 }
-.alt-login div:hover{
+.altLogin div:hover{
     transform: scale(1.1);
 }
 
@@ -123,7 +123,7 @@ input:focus {
     outline-color: #39c5bb;
 }
 
-.login-btn {
+.loginBtn {
     width: 40%;
     height: 2.5em;
     background-color: #39c5bb;
@@ -136,16 +136,16 @@ input:focus {
     -webkit-app-region: no-drag;
 }
 
-.login-btn:hover {
+.loginBtn:hover {
     transform: scale(1.1);
 }
 
-.signup-text {
+.signupText {
     font-size: .8em;
     -webkit-app-region: no-drag;
 }
 
-.signup-url{
+.signupUrl{
     color: black;
     text-underline-position: under;
 }
@@ -159,7 +159,7 @@ input:focus {
     height: 0.5em;
     transform: scale(0);
 }
-.login-popup {
+.loginPopup {
     position: relative;
     height: 0.5em;
     display: flex;
@@ -174,10 +174,24 @@ input:focus {
     transition: 0.3s;
 }
 
-.failed-text1{
+.hide2{
+    position: relative;
+    height: 0.5em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0;
+    opacity: 0;
+    transition: 0.3s;
+}
+
+
+
+.failedText1{
     font-size: 0.75em;
 }
-.failed-text2{
+.failedText2{
     font-size: 0.75em;
 }
 
@@ -215,6 +229,6 @@ input:focus {
 }
 
 /* Define the transition for the close animation */
-#app.closed {
+#app.close {
     animation: fadeOut 0.2s ease forwards;
 }
