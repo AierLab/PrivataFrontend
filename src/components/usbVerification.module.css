@@ -74,9 +74,6 @@
 }
 
 .usbPopup1{
-    height: 5em;
-    width: 50em;
-    position: absolute;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -86,9 +83,6 @@
 }
 
 .usbPopup2{
-    height: 5em;
-    width: 50em;
-    position: absolute;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -98,9 +92,6 @@
 }
 
 .usbPopup3{
-    height: 5em;
-    width: 50em;
-    position: absolute;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -113,6 +104,7 @@
     height:5em;
     position:relative;
     transform: scale(0);
+    display: none;
     animation: fadeOut 1s ease forwards;
 }
 .text1{
@@ -197,3 +189,27 @@
 #app.closed {
     animation: fadeOut 0.2s ease forwards;
 }
+
+.content-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.content-wrap > * + * {
+    margin-top: 1rem;
+}
+
+.key-icon-wrap {
+    display: flex;
+    padding: 2rem;
+    background: #000;
+    border-radius: 999px;
+    color: #fff;
+}
+
+.key-icon {
+    height: 2rem;
+    width: 2rem;
+}
+
