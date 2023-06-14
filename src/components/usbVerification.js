@@ -2,6 +2,8 @@ import React, {useState} from "react";
 // import { IpcRenderer } from "electron";
 import usbStyles from "./usbVerification.module.css"
 
+import { KeyIcon } from "@heroicons/react/24/solid"
+
 const UsbVerification = () => {    
     const [popupStyle1, showPopup1] = useState(usbStyles.usbPopup1)
     const [popupStyle2, showPopup2] = useState(usbStyles.hide);
@@ -125,16 +127,21 @@ const UsbVerification = () => {
                         <span>&times;</span>
                     </div>
                     
-                </div>  
-                <div className={popupStyle1}><h1 className={usbStyles.text1}>Insert your Security USB Key</h1></div> 
+                </div>
+                <div className={usbStyles['content-wrap']}>
+                    <div className={usbStyles['key-icon-wrap']}>
+                        <KeyIcon className={usbStyles['key-icon']}/>
+                    </div>
+                    <div className={popupStyle1}><h1 className={usbStyles.text1}>Insert your Security USB Key</h1></div>
 
-                <div className={popupStyle2}><h1 className={usbStyles.text2}>USB Key Found. Verifying Your Identity...</h1></div>  
-                <div className={popupSuccess}><h1 className={usbStyles.text3}>Identity Verified, Enjoy Your Journey with our AI </h1></div>  
-                <div className={popupFailure}><h1 className={usbStyles.text4}>Wrong Credentials, Please Ensure You have Inserted the correct key </h1></div>  
-                
-                
+                    <div className={popupStyle2}><h1 className={usbStyles.text2}>USB Key Found. Verifying Your Identity...</h1></div>
+                    <div className={popupSuccess}><h1 className={usbStyles.text3}>Identity Verified, Enjoy Your Journey with our AI </h1></div>
+                    <div className={popupFailure}><h1 className={usbStyles.text4}>Wrong Credentials, Please Ensure You have Inserted the correct key </h1></div>
+                </div>
+
+
             </div>
-            
+
         </div>
     )
 }
