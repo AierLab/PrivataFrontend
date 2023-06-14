@@ -1,0 +1,218 @@
+.container {
+    display: flex;   
+    width: 100vw;
+    height: 100vh;
+}
+
+.window-interactions {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.window-interactions > * {
+    transition: 300ms;
+    height: fit-content;
+}
+
+.window-interactions > .minimize:hover {
+    background-color: #eee;
+}
+
+.window-interactions > .close:hover {
+    background-color: #dc2626;
+    color: #fff;
+}
+
+.window-interact-icon {
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+.feature-list-aside {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    height: 100%;
+    min-width: 20rem;
+    padding: 1rem;
+    border-right: solid 1px #eee;
+}
+
+.application-title {
+    margin: 1rem 0;
+    text-align: left;
+    font-weight: bold;
+}
+
+.feature-list {
+    padding: 0;
+}
+
+.feature-list, .feature-list > li, .feature-list > li > button {
+    list-style: none;
+}
+
+.feature-list > li > button {
+    border: none;
+    border-radius: 0.5rem;
+    background: transparent;
+    transition: 250ms;
+}
+
+.feature-list > li > button:hover {
+    background: #eee;
+}
+
+.feature-list > li > button.selected {
+    background: #2563eb;
+    color: #fff;
+}
+
+.feature-list > * + * {
+    margin-top: 0.125rem;
+}
+
+.feature-list > li > button {
+    display: flex;
+    flex-dircection: row;
+    align-items: center;
+
+    padding: 0.75rem;
+    width: 100%;
+}
+
+.feature-icon {
+    margin-right: 0.5rem;
+    display: flex;
+}
+
+.feature-icon > svg {
+    height: 1rem;
+    width: 1rem;
+}
+
+.feature-name {
+    font-size: 0.75rem;
+}
+
+.user-info {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    margin-bottom: 0.5rem;
+
+    border-radius: 0.5rem;
+}
+
+.user-info:hover {
+    background: #eee;
+}
+
+.user-info > img {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+}
+
+.user-desc {
+    display: flex;
+    flex-direction: column;
+    padding: 0.25rem 1rem;
+}
+
+.user-desc * {
+    font-family: sans-serif;
+}
+
+.user-desc-name {
+    font-weight: bold;
+    color: #444;
+}
+
+.user-desc-email {
+    font-size: 0.75rem;
+    color: #777; 
+}
+
+.section-page {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.section-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 1rem 2rem;
+    padding-right: 4rem;
+    border-bottom: solid 1px #eee;
+}
+
+.personal-dropdown, .personal-dropdown:hover {
+    display: flex;
+    padding: 0;
+    align-items: center;
+    border-radius: 999px;
+    border: solid 1px #eee;
+    background: transparent;
+}
+
+.personal-dropdown > img {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+}
+
+.personal-info {
+    opacity: 0;
+    position: absolute;
+    right: 3rem;
+
+    z-index: 10;
+    background: #fff;
+    padding: 1rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+
+    border: solid 1px #eee;
+
+    max-width: 20rem;
+}
+
+.personal-info * {
+    font-family: sans-serif;
+}
+
+.personal-dropdown:hover + .personal-info {
+    display: block;
+    opacity: 1;
+}
+
+.personal-info > .personal-name {
+    font-weight: bold;
+}
+
+.personal-info > .personal-hint {
+    font-size: 0.75rem;
+}
+
+.personal-info > .personal-description {
+    margin-top: 1rem;
+}
+
+.section-page-content {
+    height: 100%;
+    display: flex;
+    padding: 2rem;
+}
+

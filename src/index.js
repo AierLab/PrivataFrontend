@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import UsbVerification from './components/usbVerification';
+import Home from './components/home'
 import reportWebVitals from './reportWebVitals';
 
 // const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -20,6 +21,7 @@ createRoot(document.getElementById('root')).render(
     <Routes>
       <Route path="/" element={<App />} />
       <Route path="/usbKey.html" element={<UsbVerification />} />
+      <Route path="/home" element={<Home />} />
     </Routes>
   </Router>);
 
