@@ -3,6 +3,8 @@ const fs = require("fs")
 const path = require('path')
 const {usb} = require("usb");
 const drivelist = require("drivelist")
+const {createHomeWindow} = require("./homeWindow.js")
+const maximizable = true
 
 
 function createUsbKeyWindow(){
@@ -17,12 +19,14 @@ function createUsbKeyWindow(){
             preload: path.join(__dirname, 'preloadUsb.js') 
         }
     })
+
     // mainWindow.loadFile('./build/usbKey.html')
     mainWindow.loadURL("http://localhost:3000/usbKey.html")
     mainWindow.on('ready-to-show', () => {
         // 页面加载完成后显示内容
         mainWindow.show();
         var verificaitionResult = findUsbKey(mainWindow)
+        
         if (verificaitionResult==="verified"){
             // Go to Homepage
         }else{
@@ -52,6 +56,15 @@ function createUsbKeyWindow(){
         }
         
     });
+
+    global.share.ipcMain.on('get-maximizable-state', (event) => {
+        event.returnValue = maximizable;
+      });
+
+    global.share.ipcMain.handle("successfully-verified", ()=>{
+        mainWindow.close();
+        createHomeWindow();
+    })
 
     global.share.ipcMain.handle("minimize-USBwindow", async () => {
         mainWindow.minimize();
@@ -152,7 +165,7 @@ async function retrieveValue(promiseobj){
 
 function verifyKey(keyPath){
     // To do the Verification
-    return false;
+    return true;
 }
 
 

@@ -11,8 +11,8 @@ const LoginForm = () => {
     const handleLoginClick = (event) => {
         event.preventDefault();
         if (getLoginResponse(username, password)){
-            const appContainer = document.getElementById(loginStyles.app);
-            appContainer.classList.add(loginStyles.close);
+            const appContainer = document.getElementById("app");
+            appContainer.classList.add("closed");
             setTimeout(() => {
                 window.api.loginSuccess()
             }, 200)
@@ -39,36 +39,11 @@ const LoginForm = () => {
         
     }; //Check whether the url is clicked. If so, open an external browser (system's default browser) to enter the website 
 
-    const handleMinimizeClick = () =>{
-        const appContainer = document.getElementById(loginStyles.app);
-        appContainer.classList.add(loginStyles.minimized);
-        // console.log(appContainer.classList)
-        setTimeout(() =>{
-            appContainer.classList.remove(loginStyles.minimized);
-            window.api.minimizeWindow();
-        },500)
-        
-    }
-    const handleCloseClick = () =>{
-        const appContainer = document.getElementById(loginStyles.app);
-        appContainer.classList.add(loginStyles.close);
-        setTimeout(() => {
-            window.api.closeWindow();
-          }, 200); 
-        
-    }
+    
 
 
     return(
-            <div className={loginStyles.cover}>     
-                <div className ={loginStyles.buttons}>
-                    <div id={loginStyles.minimize} onClick={handleMinimizeClick}>
-                        <span>-</span>
-                    </div>
-                    <div id={loginStyles.close} onClick={handleCloseClick}>
-                        <span>&times;</span>
-                    </div>
-                </div>       
+            <div className={loginStyles.content}>
                 <h1>Login</h1>
                 <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)}/>
                 <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}/>

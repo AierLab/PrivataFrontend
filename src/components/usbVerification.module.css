@@ -1,11 +1,11 @@
 .container{
-    height: 100vh;
+    height: 93%;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: transparent;
-    -webkit-app-region: no-drag;
+    -webkit-app-region: drag;
 }
 
 .buttons{
@@ -44,6 +44,7 @@
     transform: scale(1.3);
     color:#46ece1
 }
+
 .buttons #close:hover{
     transform: scale(1.3);
     color: #FF0000;

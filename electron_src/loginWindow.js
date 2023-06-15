@@ -1,13 +1,13 @@
 const { app, shell, BrowserWindow, Menu} = require('electron')
 const path = require('path')
 const {createUsbKeyWindow} = require("./usbWindow.js")
-
+const maximizable = true
 function createLoginWindow () {
     // Create the browser window.
     Menu.setApplicationMenu(null)
     const mainWindow = new BrowserWindow({
       width: 540,
-      height: 620,
+      height: 680,
       maximizable:false,
       resizable: false,
       frame: false,
@@ -26,6 +26,10 @@ function createLoginWindow () {
     global.share.ipcMain.handle('open-external', async (event, url) => {
       await shell.openExternal(url);
     })
+
+    global.share.ipcMain.on('get-maximizable-state', (event) => {
+      event.returnValue = maximizable;
+    });
   
     global.share.ipcMain.handle("minimize-window", async () => {
       // mainWindow.minimize();
