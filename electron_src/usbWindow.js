@@ -77,6 +77,16 @@ function createUsbKeyWindow(){
         app.quit()
     
     })
+
+    global.share.ipcMain.handle("maximize-USBwindow", async () => {
+        if (!mainWindow.isMaximized()){
+          mainWindow.maximize()  
+        }else{
+          mainWindow.unmaximize()
+        }
+            
+        
+      })
     hasUsbDrive = false
 
     /**

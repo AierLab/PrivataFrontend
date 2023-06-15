@@ -213,30 +213,56 @@
     padding: 2rem;
 }
 
+@keyframes blur {
+    0%{
+        backdrop-filter: blur(0px)
+    }      
+    
+    100% {
+        backdrop-filter: blur(18px)
+    }
+  }
+
+  @keyframes noblur {
+    0%{
+        backdrop-filter: blur(18px);
+        opacity:1;
+        
+    }      
+    
+    100% {
+        backdrop-filter: blur(0px);
+        opacity: 0;
+    }
+  }
+
 .persona-selection-container {
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    backdrop-filter: blur(18px);
-
+    border-radius: 1em;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
     display: none;
-    opacity: 0;
-    transition: all 500ms ease;
+    
 }
 
 .persona-selection-container > .persona-selection-title {
     margin-bottom: 2rem;
 }
 
+
+
 .persona-selection-container.persona-selection-show {
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     opacity: 1;
+    animation: blur 500ms ease forwards;
 }
 
 .persona-list {
