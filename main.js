@@ -15,6 +15,8 @@ app.whenReady().then(() => {
 
     createUsbKeyWindow();
   } )
+
+  
   loginWindow = createLoginWindow();
 
 

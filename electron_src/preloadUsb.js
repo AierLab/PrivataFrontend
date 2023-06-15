@@ -8,11 +8,20 @@ contextBridge.exposeInMainWorld('api', {
     // openExternal: (url) => ipcRenderer.invoke("open-external", url), //provide an api which let the renderer process communicate with the main process
     minimizeWindow: () => ipcRenderer.invoke("minimize-USBwindow"),
     closeWindow: () =>ipcRenderer.invoke("close-USBwindow"),
+    success: () => ipcRenderer.invoke("successfully-verified"),
+    getMaximizableState : () => {
+        return ipcRenderer.sendSync('get-maximizable-state');
+      }
     // onDetectUsb: (process) => ipcRenderer.on("usbDiskDetected", process)
     
     // loginSuccess: () => ipcRenderer.invoke("login-success")
     // we can also expose variables, not just functions
   })
+
+ipcRenderer.on('maximizable', (event, info) => {
+    const eventPayload = {type: 'maximizable', info};
+    window.dispatchEvent(new CustomEvent('electronEvent', {detail:eventPayload}))
+})
 
 ipcRenderer.on('usbDiskDetected', (event, diskInfo) => {
     const eventPayload = {type: 'usbDiskDetected', diskInfo};
@@ -43,3 +52,4 @@ ipcRenderer.on('usbDetached', (event, info) => {
     const eventPayload = {type: 'usbDetached', info};
     window.dispatchEvent(new CustomEvent('electronEvent', {detail:eventPayload}))
 })
+

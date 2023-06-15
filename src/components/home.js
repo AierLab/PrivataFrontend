@@ -5,23 +5,7 @@ import styles from "./home.module.css"
 import { XMarkIcon, MinusIcon, ChatBubbleLeftRightIcon, MusicalNoteIcon, PaintBrushIcon, EllipsisVerticalIcon } from "@heroicons/react/20/solid"
 
 const Home = () => {    
-    const handleMinimizeClick = () =>{
-        const appContainer = document.getElementById(styles.app);
-        appContainer.classList.add(styles.minimized);
-        setTimeout(() =>{
-            appContainer.classList.remove(styles.minimized);
-            window.api.minimizeWindow();
-        },200)
-        
-    }
-    const handleCloseClick = () =>{
-        const appContainer = document.getElementById(styles.app);
-        appContainer.classList.add(styles.closed);
-        setTimeout(() => {
-            window.api.closeWindow();
-          }, 200); 
-        
-    }
+    
 
     const features = [
         { id: 'chat', name: "Chat", icon: <ChatBubbleLeftRightIcon /> },
@@ -49,14 +33,6 @@ const Home = () => {
     
     return(
         <>    
-            <div className={styles['window-interactions']}>
-                <div className={styles['minimize']} onClick={handleMinimizeClick}>
-                    <MinusIcon className={styles['window-interact-icon']}/>
-                </div>
-                <div className={styles['close']} onClick={handleCloseClick}>
-                    <XMarkIcon className={styles['window-interact-icon']}/>
-                </div>
-            </div>
            <main className={styles['container']}>
                 <aside className={styles['feature-list-aside']}>
                     <div>
