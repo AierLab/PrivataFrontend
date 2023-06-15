@@ -46,9 +46,10 @@ const UsbVerification = () => {
             case "start":
                 if (type === "usbDiskDetected"){
                     setTimeout(() => {
-                        showPopup2(usbStyles.usbPopup2)
-                    })
-                    showPopup1(usbStyles.hide)
+                        showPopup1(usbStyles.hide)
+                        showPopup2(usbStyles.usbPopup1)
+                    },1000)
+                    showPopup1(usbStyles.usbFadeout)
                 state = "usbDiskDetected";
                 }
                 break;
@@ -66,12 +67,14 @@ const UsbVerification = () => {
                         // showPopup1(usbStyles.hide)
                         setTimeout(() => {
                             // showPopup1(usbStyles.hide)
+                            showPopup2(usbStyles.hide)
                             showSuccess(usbStyles.usbPopup1)
         
                         },1000)
-                        showPopup2(usbStyles.hide)
+                        showPopup2(usbStyles.usbFadeout)
+                        
     
-                    },3000)
+                    })
                      
                     state = "identityVerified"
                 }else if (type === "identityIncorrect"){
@@ -79,10 +82,12 @@ const UsbVerification = () => {
                         // showPopup1(usbStyles.hide)
                         setTimeout(() => {
                             // showPopup1(usbStyles.hide)
+                            showPopup2(usbStyles.hide)
                             showFailure(usbStyles.usbPopup1)
         
                         },1000)
-                        showPopup2(usbStyles.hide)
+                        showPopup2(usbStyles.usbFadeout)
+                        
     
                     },3000)
 
@@ -92,10 +97,11 @@ const UsbVerification = () => {
             case "usbDetached":
                 if (type === "usbDiskDetected"){
                     setTimeout(() => {
-                        showPopup2(usbStyles.usbPopup2)
+                        showPopup1(usbStyles.hide)
+                        showPopup2(usbStyles.usbPopup1)
                     })
                     showPopup1(usbStyles.hide)
-                state = "usbDiskDetected";
+                state = "start";
                 }
                 break;
             default:

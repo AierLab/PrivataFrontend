@@ -7,13 +7,14 @@ const drivelist = require("drivelist")
 
 function createUsbKeyWindow(){
     const mainWindow = new BrowserWindow({
-        width:1000,
-        height:800,
+        width:1200,
+        height:1000,
         show:false,
         frame: false,
         transparent: true,
         webPreferences: {
-            preload: path.join(__dirname, 'preloadUsb.js')
+            devTools: true,
+            preload: path.join(__dirname, 'preloadUsb.js') 
         }
     })
     // mainWindow.loadFile('./build/usbKey.html')
