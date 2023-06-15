@@ -178,7 +178,7 @@
     border-bottom: solid 1px #eee;
 }
 
-.personnel-dropdown, .personnel-dropdown:hover {
+.persona-dropdown, .persona-dropdown:hover {
     display: flex;
     padding: 0;
     align-items: center;
@@ -189,13 +189,13 @@
     cursor: pointer;
 }
 
-.personnel-dropdown > img {
+.persona-dropdown > img {
     width: 2rem;
     height: 2rem;
     border-radius: 999px;
 }
 
-.personnel-info {
+.persona-info {
     opacity: 0;
     position: absolute;
     right: 3rem;
@@ -210,24 +210,24 @@
     max-width: 20rem;
 }
 
-.personnel-info * {
+.persona-info * {
     font-family: sans-serif;
 }
 
-.personnel-dropdown:hover + .personnel-info {
+.persona-dropdown:hover + .persona-info {
     display: block;
     opacity: 1;
 }
 
-.personnel-info > .personnel-name {
+.persona-info > .persona-name {
     font-weight: bold;
 }
 
-.personnel-info > .personnel-hint {
+.persona-info > .persona-hint {
     font-size: 0.75rem;
 }
 
-.personnel-info > .personnel-description {
+.persona-info > .persona-description {
     margin-top: 1rem;
 }
 
@@ -237,7 +237,7 @@
     padding: 2rem;
 }
 
-.personnel-selection-container {
+.persona-selection-container {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -254,16 +254,16 @@
     transition: all 500ms ease;
 }
 
-.personnel-selection-container > .personnel-selection-title {
+.persona-selection-container > .persona-selection-title {
     margin-bottom: 2rem;
 }
 
-.personnel-selection-container.personnel-selection-show {
+.persona-selection-container.persona-selection-show {
     display: flex;
     opacity: 1;
 }
 
-.personnel-list {
+.persona-list {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -273,16 +273,16 @@
     min-width: 32rem;
 }
 
-.personnel-list > * + * {
+.persona-list > * + * {
     margin-left: 0.5rem;
 }
 
-.personnel-list > .personnel-item {
+.persona-list > .persona-item {
     cursor: pointer;
     padding: 0.5rem;
 }
 
-.personnel-list > .personnel-item > .personnel-item-avatar {
+.persona-list > .persona-item > .persona-item-avatar {
     height: 6rem;
     width: 6rem;
     border: solid 1px #bbb;
@@ -291,20 +291,20 @@
     transition: 250ms ease;
 }
 
-.personnel-list > .personnel-item > .personnel-item-name {
+.persona-list > .persona-item > .persona-item-name {
     font-size: 0.75rem;
     text-align: center;
 }
 
-.personnel-list > .personnel-item:hover > .personnel-item-avatar {
+.persona-list > .persona-item:hover > .persona-item-avatar {
     box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
     transform: translateY(-0.25rem);
 }
 
-.personnel-list > .personnel-item-selected > .personnel-item-avatar {
+.persona-list > .persona-item-selected > .persona-item-avatar {
     border: solid 2px #2563eb;
 }
 
-.personnel-list > .personnel-item-selected > .personnel-item-name {
+.persona-list > .persona-item-selected > .persona-item-name {
     font-weight: bold;
 }
