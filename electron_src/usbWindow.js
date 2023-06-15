@@ -10,7 +10,7 @@ const maximizable = true
 function createUsbKeyWindow(){
     const mainWindow = new BrowserWindow({
         width:1200,
-        height:1000,
+        height:800,
         show:false,
         frame: false,
         transparent: true,

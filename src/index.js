@@ -41,30 +41,31 @@ var newWidth;
 var newHeight;
 const handleMaximizeClick = () =>{
   const appContainer = document.getElementById("app");
-  if (!appContainer.classList.contains("maximized")){
-    // appContainer.remove("unmaximized")
-    appContainer.classList.add("maximized");
-    setTimeout(() => {
-      window.api.maximizeWindow();
-      // appContainer.classList.remove("maximized");
-    },150); 
-    newWidth = window.innerWidth.toString() + 'px';
-    newHeight = window.innerHeight.toString() + 'px';
-  }else{
-    appContainer.classList.remove("maximized")
-    appContainer.classList.add("unmaximized")
-    updateDynamicHeight(newHeight)
-    updateDynamicWidth(newWidth)
-    setTimeout(() => {
-      window.api.maximizeWindow();
+  const id = document.getElementsByClassName("loginCover")
+  if (id.length==0){
+    if (!appContainer.classList.contains("maximized")){
       // appContainer.remove("unmaximized")
-      appContainer.classList.remove("unmaximized");
-    },70); 
+      appContainer.classList.add("maximized");
+      setTimeout(() => {
+        window.api.maximizeWindow();
+        // appContainer.classList.remove("maximized");
+      },150); 
+      newWidth = window.innerWidth.toString() + 'px';
+      newHeight = window.innerHeight.toString() + 'px';
+    }else{
+      appContainer.classList.remove("maximized")
+      appContainer.classList.add("unmaximized")
+      updateDynamicHeight(newHeight)
+      updateDynamicWidth(newWidth)
+      setTimeout(() => {
+        window.api.maximizeWindow();
+        // appContainer.remove("unmaximized")
+        appContainer.classList.remove("unmaximized");
+      },70); 
+    }
   }
   
-  
 }
-
 
 
 
@@ -82,6 +83,7 @@ createRoot(document.getElementById('root')).render(
               <div id="maximize" onClick={handleMaximizeClick}>
               <span>{String.fromCharCode(9634)}</span>
                 </div>
+              
               
               <div id="close" onClick={handleCloseClick}>
                   <span>&times;</span>
