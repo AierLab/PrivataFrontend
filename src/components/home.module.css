@@ -11,6 +11,8 @@
     position: absolute;
     top: 0;
     right: 0;
+
+    z-index: 999;
 }
 
 .window-interactions > * {
@@ -106,6 +108,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
 
     margin-bottom: 0.5rem;
 
@@ -116,7 +119,23 @@
     background: #eee;
 }
 
-.user-info > img {
+.menu-icon {
+    height: 1rem;
+    width: 1rem;
+    color: #444;
+    display: none;
+}
+
+.user-info:hover .menu-icon {
+    display: block;
+}
+
+.user-info > .left {
+    display: flex;
+    align-items: center;
+}
+
+.user-info img {
     width: 2rem;
     height: 2rem;
     border-radius: 999px;
@@ -166,6 +185,8 @@
     border-radius: 999px;
     border: solid 1px #eee;
     background: transparent;
+
+    cursor: pointer;
 }
 
 .personal-dropdown > img {
@@ -216,3 +237,74 @@
     padding: 2rem;
 }
 
+.personal-selection-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    backdrop-filter: blur(18px);
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    display: none;
+    opacity: 0;
+    transition: all 500ms ease;
+}
+
+.personal-selection-container > .personal-selection-title {
+    margin-bottom: 2rem;
+}
+
+.personal-selection-container.personal-selection-show {
+    display: flex;
+    opacity: 1;
+}
+
+.personal-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    width: 50%;
+    min-width: 32rem;
+}
+
+.personal-list > * + * {
+    margin-left: 0.5rem;
+}
+
+.personal-list > .personal-item {
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.personal-list > .personal-item > .personal-item-avatar {
+    height: 6rem;
+    width: 6rem;
+    border: solid 1px #bbb;
+    border-radius: 999px;
+
+    transition: 250ms ease;
+}
+
+.personal-list > .personal-item > .personal-item-name {
+    font-size: 0.75rem;
+    text-align: center;
+}
+
+.personal-list > .personal-item:hover > .personal-item-avatar {
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    transform: translateY(-0.25rem);
+}
+
+.personal-list > .personal-item-selected > .personal-item-avatar {
+    border: solid 2px #2563eb;
+}
+
+.personal-list > .personal-item-selected > .personal-item-name {
+    font-weight: bold;
+}

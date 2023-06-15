@@ -2,7 +2,7 @@ import React, {useState} from "react";
 // import { IpcRenderer } from "electron";
 import styles from "./home.module.css"
 
-import { XMarkIcon, MinusIcon, ChatBubbleLeftRightIcon, MusicalNoteIcon, PaintBrushIcon } from "@heroicons/react/20/solid"
+import { XMarkIcon, MinusIcon, ChatBubbleLeftRightIcon, MusicalNoteIcon, PaintBrushIcon, EllipsisVerticalIcon } from "@heroicons/react/20/solid"
 
 const Home = () => {    
     const handleMinimizeClick = () =>{
@@ -30,7 +30,22 @@ const Home = () => {
         { id: 'content-creation', name: "Content Creation", icon: <PaintBrushIcon /> },
     ]
 
-    const [selectedFeature, setSelectedFeature] = useState(null)
+    const personals = [
+        { id: 'bochhi', name: 'Bocchi', desc: 'Hitori Gotou is a guitar player playing for the Kessoku Band.', avatar: 'https://ih1.redbubble.net/image.4489882707.9846/st,small,507x507-pad,600x600,f8f8f8.jpg' },
+        { id: 'kita', name: 'Kita', desc: 'Kita Ikuyo is a singer working for Kessoku Band.', avatar: 'https://avatarfiles.alphacoders.com/343/343115.png' },
+        { id: 'nijika', name: 'Nijika', desc: 'Nijika Ijichi is a drummer at Kessoku Band.', avatar: 'https://i.pinimg.com/originals/d7/f3/19/d7f319490dd5b677a85389e5b59cee09.jpg' },
+        { id: 'ryo', name: 'Ryo', desc: 'Ryo Yamada is in her second year at Shimokitazawa High School and is the bassist of the band, Kessoku Band.', avatar: 'https://i.pinimg.com/736x/1b/88/92/1b8892d1ee65e258a2ce7804f52c5f9a.jpg' },
+    ]
+
+    const [selectedFeature,  setSelectedFeature]  = useState(null)
+    const [selectedPersonal, setSelectedPersonal] = useState(personals[0])
+
+    const [personalSelectionShow, setPersonalSelectionShow] = useState(false)
+
+    const handleSelectPersonal = (p) => {
+        setPersonalSelectionShow(false)
+        setSelectedPersonal(p)
+    }
     
     return(
         <>    
@@ -61,25 +76,28 @@ const Home = () => {
                         </ul>
                     </div>
                     <div className={styles['user-info']}>
-                        <img src="/default-avatar.png" />
-                        <div className={styles['user-desc']}>
-                            <span className={styles['user-desc-name']}> 十九 </span>
-                            <span className={styles['user-desc-email']}> cat@example.com </span>
+                        <div className={styles['left']}>
+                            <img src="/default-avatar.png" />
+                            <div className={styles['user-desc']}>
+                                <span className={styles['user-desc-name']}> 十九 </span>
+                                <span className={styles['user-desc-email']}> cat@example.com </span>
+                            </div>
                         </div>
+                        <EllipsisVerticalIcon className={styles['menu-icon']} />
                     </div>
                 </aside>
                 <div className={styles['section-page']}>
                     <div className={styles['section-page-header']}>
                         <span> { selectedFeature && selectedFeature.name } </span>
                         <div>
-                            <button className={styles['personal-dropdown']}>
-                                <img src='https://i.pinimg.com/originals/d2/2a/9a/d22a9a0c9427b807a3333ae9098d0717.jpg'/>
+                            <button className={styles['personal-dropdown']} onClick={() => setPersonalSelectionShow(true)}>
+                                <img src={selectedPersonal.avatar} />
                             </button>
                             <div className={styles['personal-info']}>
-                                <div className={styles['personal-name']}> Bocchi </div>
+                                <div className={styles['personal-name']}> { selectedPersonal.name } </div>
                                 <div className={styles['personal-hint']}> Personal </div>
                                 <p className={styles['personal-description']}>
-                                    Hitori Gotou is a guitar player playing for the Kessoku Band.
+                                    { selectedPersonal.desc }
                                 </p>
                             </div>
                         </div>
@@ -89,6 +107,26 @@ const Home = () => {
                     </div>
                 </div>
             </main>
+
+            { /* ---- personal selection overlay ---- */ }
+            <div
+                className={`${styles['personal-selection-container']} ${personalSelectionShow ? styles['personal-selection-show'] : ''}`}
+                onClick={() => setPersonalSelectionShow(false)}
+            >
+                <h2 className={styles['personal-selection-title']}> Select personal </h2>
+                <div className={styles['personal-list']}>
+                    { personals.map(p => (
+                        <div key={p.id}
+                            className={`${styles['personal-item']} ${p.id == selectedPersonal.id ? styles['personal-item-selected'] : ""}`}
+                            onClick={() => handleSelectPersonal(p)}
+                        >
+                            <img src={p.avatar} className={styles['personal-item-avatar']} />
+                            <p className={styles['personal-item-name']}>{ p.name }</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            { /* ---- end ---- */ }
         </>
     )
 }
