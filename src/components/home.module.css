@@ -178,7 +178,7 @@
     border-bottom: solid 1px #eee;
 }
 
-.personal-dropdown, .personal-dropdown:hover {
+.personnel-dropdown, .personnel-dropdown:hover {
     display: flex;
     padding: 0;
     align-items: center;
@@ -189,13 +189,13 @@
     cursor: pointer;
 }
 
-.personal-dropdown > img {
+.personnel-dropdown > img {
     width: 2rem;
     height: 2rem;
     border-radius: 999px;
 }
 
-.personal-info {
+.personnel-info {
     opacity: 0;
     position: absolute;
     right: 3rem;
@@ -210,24 +210,24 @@
     max-width: 20rem;
 }
 
-.personal-info * {
+.personnel-info * {
     font-family: sans-serif;
 }
 
-.personal-dropdown:hover + .personal-info {
+.personnel-dropdown:hover + .personnel-info {
     display: block;
     opacity: 1;
 }
 
-.personal-info > .personal-name {
+.personnel-info > .personnel-name {
     font-weight: bold;
 }
 
-.personal-info > .personal-hint {
+.personnel-info > .personnel-hint {
     font-size: 0.75rem;
 }
 
-.personal-info > .personal-description {
+.personnel-info > .personnel-description {
     margin-top: 1rem;
 }
 
@@ -237,7 +237,7 @@
     padding: 2rem;
 }
 
-.personal-selection-container {
+.personnel-selection-container {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -254,16 +254,16 @@
     transition: all 500ms ease;
 }
 
-.personal-selection-container > .personal-selection-title {
+.personnel-selection-container > .personnel-selection-title {
     margin-bottom: 2rem;
 }
 
-.personal-selection-container.personal-selection-show {
+.personnel-selection-container.personnel-selection-show {
     display: flex;
     opacity: 1;
 }
 
-.personal-list {
+.personnel-list {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -273,16 +273,16 @@
     min-width: 32rem;
 }
 
-.personal-list > * + * {
+.personnel-list > * + * {
     margin-left: 0.5rem;
 }
 
-.personal-list > .personal-item {
+.personnel-list > .personnel-item {
     cursor: pointer;
     padding: 0.5rem;
 }
 
-.personal-list > .personal-item > .personal-item-avatar {
+.personnel-list > .personnel-item > .personnel-item-avatar {
     height: 6rem;
     width: 6rem;
     border: solid 1px #bbb;
@@ -291,20 +291,20 @@
     transition: 250ms ease;
 }
 
-.personal-list > .personal-item > .personal-item-name {
+.personnel-list > .personnel-item > .personnel-item-name {
     font-size: 0.75rem;
     text-align: center;
 }
 
-.personal-list > .personal-item:hover > .personal-item-avatar {
+.personnel-list > .personnel-item:hover > .personnel-item-avatar {
     box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
     transform: translateY(-0.25rem);
 }
 
-.personal-list > .personal-item-selected > .personal-item-avatar {
+.personnel-list > .personnel-item-selected > .personnel-item-avatar {
     border: solid 2px #2563eb;
 }
 
-.personal-list > .personal-item-selected > .personal-item-name {
+.personnel-list > .personnel-item-selected > .personnel-item-name {
     font-weight: bold;
 }

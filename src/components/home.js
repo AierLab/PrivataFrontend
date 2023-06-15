@@ -30,7 +30,7 @@ const Home = () => {
         { id: 'content-creation', name: "Content Creation", icon: <PaintBrushIcon /> },
     ]
 
-    const personals = [
+    const personnels = [
         { id: 'bochhi', name: 'Bocchi', desc: 'Hitori Gotou is a guitar player playing for the Kessoku Band.', avatar: 'https://ih1.redbubble.net/image.4489882707.9846/st,small,507x507-pad,600x600,f8f8f8.jpg' },
         { id: 'kita', name: 'Kita', desc: 'Kita Ikuyo is a singer working for Kessoku Band.', avatar: 'https://avatarfiles.alphacoders.com/343/343115.png' },
         { id: 'nijika', name: 'Nijika', desc: 'Nijika Ijichi is a drummer at Kessoku Band.', avatar: 'https://i.pinimg.com/originals/d7/f3/19/d7f319490dd5b677a85389e5b59cee09.jpg' },
@@ -38,13 +38,13 @@ const Home = () => {
     ]
 
     const [selectedFeature,  setSelectedFeature]  = useState(null)
-    const [selectedPersonal, setSelectedPersonal] = useState(personals[0])
+    const [selectedpersonnel, setSelectedpersonnel] = useState(personnels[0])
 
-    const [personalSelectionShow, setPersonalSelectionShow] = useState(false)
+    const [personnelSelectionShow, setpersonnelSelectionShow] = useState(false)
 
-    const handleSelectPersonal = (p) => {
-        setPersonalSelectionShow(false)
-        setSelectedPersonal(p)
+    const handleSelectpersonnel = (p) => {
+        setpersonnelSelectionShow(false)
+        setSelectedpersonnel(p)
     }
     
     return(
@@ -90,14 +90,14 @@ const Home = () => {
                     <div className={styles['section-page-header']}>
                         <span> { selectedFeature && selectedFeature.name } </span>
                         <div>
-                            <button className={styles['personal-dropdown']} onClick={() => setPersonalSelectionShow(true)}>
-                                <img src={selectedPersonal.avatar} />
+                            <button className={styles['personnel-dropdown']} onClick={() => setpersonnelSelectionShow(true)}>
+                                <img src={selectedpersonnel.avatar} />
                             </button>
-                            <div className={styles['personal-info']}>
-                                <div className={styles['personal-name']}> { selectedPersonal.name } </div>
-                                <div className={styles['personal-hint']}> Personal </div>
-                                <p className={styles['personal-description']}>
-                                    { selectedPersonal.desc }
+                            <div className={styles['personnel-info']}>
+                                <div className={styles['personnel-name']}> { selectedpersonnel.name } </div>
+                                <div className={styles['personnel-hint']}> Personnel </div>
+                                <p className={styles['personnel-description']}>
+                                    { selectedpersonnel.desc }
                                 </p>
                             </div>
                         </div>
@@ -108,20 +108,20 @@ const Home = () => {
                 </div>
             </main>
 
-            { /* ---- personal selection overlay ---- */ }
+            { /* ---- personnel selection overlay ---- */ }
             <div
-                className={`${styles['personal-selection-container']} ${personalSelectionShow ? styles['personal-selection-show'] : ''}`}
-                onClick={() => setPersonalSelectionShow(false)}
+                className={`${styles['personnel-selection-container']} ${personnelSelectionShow ? styles['personnel-selection-show'] : ''}`}
+                onClick={() => setpersonnelSelectionShow(false)}
             >
-                <h2 className={styles['personal-selection-title']}> Select personal </h2>
-                <div className={styles['personal-list']}>
-                    { personals.map(p => (
+                <h2 className={styles['personnel-selection-title']}> Select Personnel </h2>
+                <div className={styles['personnel-list']}>
+                    { personnels.map(p => (
                         <div key={p.id}
-                            className={`${styles['personal-item']} ${p.id == selectedPersonal.id ? styles['personal-item-selected'] : ""}`}
-                            onClick={() => handleSelectPersonal(p)}
+                            className={`${styles['personnel-item']} ${p.id == selectedpersonnel.id ? styles['personnel-item-selected'] : ""}`}
+                            onClick={() => handleSelectpersonnel(p)}
                         >
-                            <img src={p.avatar} className={styles['personal-item-avatar']} />
-                            <p className={styles['personal-item-name']}>{ p.name }</p>
+                            <img src={p.avatar} className={styles['personnel-item-avatar']} />
+                            <p className={styles['personnel-item-name']}>{ p.name }</p>
                         </div>
                     ))}
                 </div>
