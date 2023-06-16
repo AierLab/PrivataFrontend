@@ -2,7 +2,7 @@
     position: relative;
     display: flex;   
     width: 100%;
-    height: 93%;
+    height: 100%;
     -webkit-app-region: no-drag;
 }
 
@@ -77,16 +77,12 @@
 }
 
 .user-info {
-    position:relative;
     width: 100%;
     padding: 0.75rem 1rem;
-    bottom: -3em;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-
-    margin-bottom: 0.5rem;
 
     border-radius: 0.5rem;
 }
@@ -149,8 +145,7 @@
     justify-content: space-between;
     align-items: center;
 
-    padding: 1rem 2rem;
-    padding-right: 4rem;
+    padding: var(--titlebar-height) 1rem 0.5rem 2rem;
     border-bottom: solid 1px #eee;
 }
 
