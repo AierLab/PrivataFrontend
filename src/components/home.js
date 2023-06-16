@@ -5,8 +5,6 @@ import styles from "./home.module.css"
 import { XMarkIcon, MinusIcon, ChatBubbleLeftRightIcon, MusicalNoteIcon, PaintBrushIcon, EllipsisVerticalIcon } from "@heroicons/react/20/solid"
 
 const Home = () => {    
-    
-
     const features = [
         { id: 'chat', name: "Chat", icon: <ChatBubbleLeftRightIcon /> },
         { id: 'sing', name: "Sing", icon: <MusicalNoteIcon/> },

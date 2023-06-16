@@ -77,19 +77,18 @@ const handleMaximizeClick = () =>{
 createRoot(document.getElementById('root')).render(
     <div className="container" id="app">    
         <div className={window.innerWidth < 600 ? "loginCover" : "cover"}>
-            <div className ="buttons">
-                <div id="minimize" onClick={handleMinimizeClick}>
-                    <MinusIcon />
+            <div className="titlebar">
+                <div className ="buttons">
+                    <div id="minimize" onClick={handleMinimizeClick}>
+                        <MinusIcon />
+                    </div>
+                    <div id="maximize" onClick={handleMaximizeClick}>
+                        <StopIcon />
+                    </div>
+                    <div id="close" onClick={handleCloseClick}>
+                        <XMarkIcon />
+                    </div>
                 </div>
-                <div id="maximize" onClick={handleMaximizeClick}>
-                    <StopIcon />
-                </div>
-
-
-                <div id="close" onClick={handleCloseClick}>
-                    <XMarkIcon />
-                </div>
-
             </div>
 
 

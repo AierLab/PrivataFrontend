@@ -23,9 +23,19 @@ body {
   -webkit-app-region: no-drag;
 }
 
-.buttons{
-  position: absolute;
+.titlebar {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  -webkit-app-region: drag; 
   
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.buttons{
   top: 0;
   right: 0.125rem;
   display: flex;
@@ -34,6 +44,7 @@ body {
 
   background-color: transparent;
   z-index: 9000;
+
   -webkit-app-region: no-drag;
 }
 
