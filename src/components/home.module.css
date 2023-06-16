@@ -227,7 +227,6 @@
     0%{
         backdrop-filter: blur(18px);
         opacity:1;
-        
     }      
     
     100% {
@@ -247,14 +246,11 @@
     justify-content: center;
     align-items: center;
     display: none;
-    
 }
 
 .persona-selection-container > .persona-selection-title {
     margin-bottom: 2rem;
 }
-
-
 
 .persona-selection-container.persona-selection-show {
     display: flex;
