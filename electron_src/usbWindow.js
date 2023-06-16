@@ -10,7 +10,7 @@ const maximizable = true
 function createUsbKeyWindow(){
     const mainWindow = new BrowserWindow({
         width:1200,
-        height:1000,
+        height:800,
         show:false,
         frame: false,
         transparent: true,
@@ -77,6 +77,16 @@ function createUsbKeyWindow(){
         app.quit()
     
     })
+
+    global.share.ipcMain.handle("maximize-USBwindow", async () => {
+        if (!mainWindow.isMaximized()){
+          mainWindow.maximize()  
+        }else{
+          mainWindow.unmaximize()
+        }
+            
+        
+      })
     hasUsbDrive = false
 
     /**

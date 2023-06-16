@@ -9,19 +9,13 @@ contextBridge.exposeInMainWorld('api', {
     minimizeWindow: () => ipcRenderer.invoke("minimize-USBwindow"),
     closeWindow: () =>ipcRenderer.invoke("close-USBwindow"),
     success: () => ipcRenderer.invoke("successfully-verified"),
-    getMaximizableState : () => {
-        return ipcRenderer.sendSync('get-maximizable-state');
-      }
+    maximizeWindow: () => ipcRenderer.invoke("maximize-USBwindow"),
     // onDetectUsb: (process) => ipcRenderer.on("usbDiskDetected", process)
     
     // loginSuccess: () => ipcRenderer.invoke("login-success")
     // we can also expose variables, not just functions
   })
 
-ipcRenderer.on('maximizable', (event, info) => {
-    const eventPayload = {type: 'maximizable', info};
-    window.dispatchEvent(new CustomEvent('electronEvent', {detail:eventPayload}))
-})
 
 ipcRenderer.on('usbDiskDetected', (event, diskInfo) => {
     const eventPayload = {type: 'usbDiskDetected', diskInfo};

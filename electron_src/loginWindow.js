@@ -26,23 +26,19 @@ function createLoginWindow () {
     global.share.ipcMain.handle('open-external', async (event, url) => {
       await shell.openExternal(url);
     })
-
-    global.share.ipcMain.on('get-maximizable-state', (event) => {
-      event.returnValue = maximizable;
-    });
   
     global.share.ipcMain.handle("minimize-window", async () => {
-      // mainWindow.minimize();
-      
-      // mainWindow.setOpacity(0)
         mainWindow.minimize();
-        // mainWindow.setOpacity(1); // Restore window opacity after minimize
-      // Wait for the animation to complete (200ms)
     })
   
     global.share.ipcMain.handle("close-window", async () => {
       mainWindow.close()      
       app.quit()
+      
+    })
+
+    global.share.ipcMain.handle("maximize-window", async () => {
+          
       
     })
 
@@ -52,8 +48,7 @@ function createLoginWindow () {
     // } )
   
     // Open the DevTools.
-    // mainWindow.webContents.openDevTools();
-
+    mainWindow.webContents.openDevTools({'mode':'detach'})
     return mainWindow;
 }
 
