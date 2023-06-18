@@ -106,38 +106,32 @@ function checkIfExistSecureUSB(windows) {
 async function findUsbKey(window){
     try {
         const drives = await drivelist.list();
-
         const usbDrives = drives.filter((drive) => drive.isUSB);
 
-        if (usbDrives.length === 1) {
-            console.log('Detected USB drives:');
-            var usbDrive = usbDrives[0]
-            keyPath = scanUsbDrive(usbDrive.mountpoints[0].path)
-            // keyPath.then((value) => {
-            //     console.log(value)
-            // })
-            console.log(keyPath)
-            if (keyPath!=null && keyPath.endsWith(".prakey")){
-
-                window.webContents.send("usbDiskDetected", "detected")
-                if (verifyKey(keyPath)){
-                    console.log("Verified!!")
-                    window.webContents.send("identityVerified", "verified")
-                    return "verified"
+        if (usbDrives.length > 0) {
+          // 此处改为都扫一遍, secure-usb大概率只有一个, 若有外接硬盘做选择有些多余 (后面可以再改为选择/多选)
+          // 遍历所有usb-storage device
+          for (let index = 0; index < usbDrives.length; index++) {
+            // 遍历单个设备的所有盘符
+            usbDrives[index].mountpoints.forEach((element) => {
+              let keyPath = scanUsbDrive(element.path);
+              if (keyPath != null) {
+                console.log("Find the key at: " + keyPath);
+                window.webContents.send("usbDiskDetected", "detected");
+                if (verifyKey(keyPath)) {
+                  console.log("Verified!!");
+                  window.webContents.send("identityVerified", "verified");
+                  return "verified";
                 }
-                window.webContents.send("identityIncorrect", "unverified")
-                return "unverified"
-            }
-            window.webContents.send("noKey", "nokey")
-            return "noKey"
-        }
-
-        if (usbDrives.length > 1) {
-            window.webContents.send("chooseUsbDisk", "choose");
-            return "noKey"
+                window.webContents.send("identityIncorrect", "unverified");
+                return "unverified";
+              }
+            });
+          }
         } else {
-            console.log('No USB drives detected.');
-            return "noKey"
+          console.log("No USB drives detected.");
+          window.webContents.send("noKey", "nokey");
+          return "noKey";
         }
     } catch (error) {
         console.error(error);
@@ -152,10 +146,7 @@ function scanUsbDrive(drivePath){
 
     const filepaths = files.filter((file) => file.endsWith(fileFormat)).map((file) => path.join(drivePath, file));
 
-
-
     return filepaths[0] || null;
-
 }
 
 async function retrieveValue(promiseobj){
