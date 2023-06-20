@@ -10,8 +10,6 @@ const UsbVerification = () => {
     const [popupSuccess, showSuccess] = useState(usbStyles.hide);
     const [popupFailure, showFailure] = useState(usbStyles.hide);
 
-    
-    
     var state = "start"
     window.addEventListener('electronEvent', (event) => {
         const {type, diskInfo} = event.detail;

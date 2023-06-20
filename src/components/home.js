@@ -3,6 +3,7 @@ import React, {useState} from "react";
 import styles from "./home.module.css"
 
 import { XMarkIcon, MinusIcon, ChatBubbleLeftRightIcon, MusicalNoteIcon, PaintBrushIcon, EllipsisVerticalIcon } from "@heroicons/react/20/solid"
+import { PersonaContext } from "../contexts/persona";
 
 const Home = () => {    
     const features = [
@@ -28,79 +29,81 @@ const Home = () => {
         setpersonaSelectionShow(false)
         setSelectedPersona(p)
     }
-    
-    return(
-        <>    
-           <main className={styles['container']}>
-                <aside className={styles['feature-list-aside']}>
-                    <div>
-                        <h3 className={styles['application-title']}> Privata </h3>
-                        <ul className={styles['feature-list']}>
-                            { features.map(f => (
-                                <li key={f.id}>
-                                    <button
-                                        onClick={() => setSelectedFeature(f)}
-                                        className={ selectedFeature && selectedFeature.id == f.id ? styles['selected'] : '' }
-                                    >
-                                        <span className={styles['feature-icon']}> { f.icon } </span>
-                                        <span className={styles['feature-name']}> { f.name } </span>
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                    <div className={styles['user-info']}>
-                        <div className={styles['left']}>
-                            <img src="/default-avatar.png" />
-                            <div className={styles['user-desc']}>
-                                <span className={styles['user-desc-name']}> 十九 </span>
-                                <span className={styles['user-desc-email']}> cat@example.com </span>
-                            </div>
-                        </div>
-                        <EllipsisVerticalIcon className={styles['menu-icon']} />
-                    </div>
-                </aside>
-                <div className={styles['section-page']}>
-                    <div className={styles['section-page-header']}>
-                        <span> { selectedFeature && selectedFeature.name } </span>
-                        <div>
-                            <button className={styles['persona-dropdown']} onClick={() => setpersonaSelectionShow(true)}>
-                                <img src={selectedPersona.avatar} />
-                            </button>
-                            <div className={styles['persona-info']}>
-                                <div className={styles['persona-name']}> { selectedPersona.name } </div>
-                                <div className={styles['persona-hint']}> persona </div>
-                                <p className={styles['persona-description']}>
-                                    { selectedPersona.desc }
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className={styles['section-page-content']}>
-                        TODO
-                    </div>
-                </div>
-            </main>
 
-            { /* ---- persona selection overlay ---- */ }
-            <div
-                className={`${styles['persona-selection-container']} ${personaSelectionShow ? styles['persona-selection-show'] : ''}`}
-                onClick={() => setpersonaSelectionShow(false)}
-            >
-                <h2 className={styles['persona-selection-title']}> Select Persona </h2>
-                <div className={styles['persona-list']}>
-                    { personas.map(p => (
-                        <div key={p.id}
-                            className={`${styles['persona-item']} ${p.id == selectedPersona.id ? styles['persona-item-selected'] : ""}`}
-                            onClick={() => handleSelectpersona(p)}
-                        >
-                            <img src={p.avatar} className={styles['persona-item-avatar']} />
-                            <p className={styles['persona-item-name']}>{ p.name }</p>
+    return(
+        <>
+            <PersonaContext.Provider value={{ persona: selectedPersona }}>
+                <main className={styles['container']}>
+                    <aside className={styles['feature-list-aside']}>
+                        <div>
+                            <h3 className={styles['application-title']}> Privata </h3>
+                            <ul className={styles['feature-list']}>
+                                { features.map(f => (
+                                    <li key={f.id}>
+                                        <button
+                                            onClick={() => setSelectedFeature(f)}
+                                            className={ selectedFeature && selectedFeature.id == f.id ? styles['selected'] : '' }
+                                        >
+                                            <span className={styles['feature-icon']}> { f.icon } </span>
+                                            <span className={styles['feature-name']}> { f.name } </span>
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
-                    ))}
+                        <div className={styles['user-info']}>
+                            <div className={styles['left']}>
+                                <img src="/default-avatar.png" />
+                                <div className={styles['user-desc']}>
+                                    <span className={styles['user-desc-name']}> 十九 </span>
+                                    <span className={styles['user-desc-email']}> cat@example.com </span>
+                                </div>
+                            </div>
+                            <EllipsisVerticalIcon className={styles['menu-icon']} />
+                        </div>
+                    </aside>
+                    <div className={styles['section-page']}>
+                        <div className={styles['section-page-header']}>
+                            <span> { selectedFeature && selectedFeature.name } </span>
+                            <div>
+                                <button className={styles['persona-dropdown']} onClick={() => setpersonaSelectionShow(true)}>
+                                    <img src={selectedPersona.avatar} />
+                                </button>
+                                <div className={styles['persona-info']}>
+                                    <div className={styles['persona-name']}> { selectedPersona.name } </div>
+                                    <div className={styles['persona-hint']}> persona </div>
+                                    <p className={styles['persona-description']}>
+                                        { selectedPersona.desc }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={styles['section-page-content']}>
+                            TODO
+                        </div>
+                    </div>
+                </main>
+
+                { /* ---- persona selection overlay ---- */ }
+                <div
+                    className={`${styles['persona-selection-container']} ${personaSelectionShow ? styles['persona-selection-show'] : ''}`}
+                    onClick={() => setpersonaSelectionShow(false)}
+                >
+                    <h2 className={styles['persona-selection-title']}> Select Persona </h2>
+                    <div className={styles['persona-list']}>
+                        { personas.map(p => (
+                            <div key={p.id}
+                                className={`${styles['persona-item']} ${p.id == selectedPersona.id ? styles['persona-item-selected'] : ""}`}
+                                onClick={() => handleSelectpersona(p)}
+                            >
+                                <img src={p.avatar} className={styles['persona-item-avatar']} />
+                                <p className={styles['persona-item-name']}>{ p.name }</p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
-            </div>
-            { /* ---- end ---- */ }
+                { /* ---- end ---- */ }
+            </PersonaContext.Provider>
         </>
     )
 }
