@@ -2,12 +2,13 @@ import React, {useState} from "react";
 // import { IpcRenderer } from "electron";
 import styles from "./home.module.css"
 
-import { XMarkIcon, MinusIcon, ChatBubbleLeftRightIcon, MusicalNoteIcon, PaintBrushIcon, EllipsisVerticalIcon } from "@heroicons/react/20/solid"
+import { ChatBubbleLeftRightIcon, MusicalNoteIcon, PaintBrushIcon, EllipsisVerticalIcon } from "@heroicons/react/20/solid"
 import { PersonaContext } from "../contexts/persona";
+import Chat from "./features/chat";
 
 const Home = () => {    
     const features = [
-        { id: 'chat', name: "Chat", icon: <ChatBubbleLeftRightIcon /> },
+        { id: 'chat', name: "Chat", icon: <ChatBubbleLeftRightIcon />, element: <Chat /> },
         { id: 'sing', name: "Sing", icon: <MusicalNoteIcon/> },
         { id: 'dance', name: "Dance", icon: <MusicalNoteIcon/> },
         { id: 'content-creation', name: "Content Creation", icon: <PaintBrushIcon /> },
@@ -42,7 +43,7 @@ const Home = () => {
                                     <li key={f.id}>
                                         <button
                                             onClick={() => setSelectedFeature(f)}
-                                            className={ selectedFeature && selectedFeature.id == f.id ? styles['selected'] : '' }
+                                            className={ selectedFeature && selectedFeature.id === f.id ? styles['selected'] : '' }
                                         >
                                             <span className={styles['feature-icon']}> { f.icon } </span>
                                             <span className={styles['feature-name']}> { f.name } </span>
@@ -53,7 +54,7 @@ const Home = () => {
                         </div>
                         <div className={styles['user-info']}>
                             <div className={styles['left']}>
-                                <img src="/default-avatar.png" />
+                                <img alt="User avatar" src="/default-avatar.png" />
                                 <div className={styles['user-desc']}>
                                     <span className={styles['user-desc-name']}> 十九 </span>
                                     <span className={styles['user-desc-email']}> cat@example.com </span>
@@ -67,7 +68,7 @@ const Home = () => {
                             <span> { selectedFeature && selectedFeature.name } </span>
                             <div>
                                 <button className={styles['persona-dropdown']} onClick={() => setpersonaSelectionShow(true)}>
-                                    <img src={selectedPersona.avatar} />
+                                    <img alt="Persona avatar" src={selectedPersona.avatar} />
                                 </button>
                                 <div className={styles['persona-info']}>
                                     <div className={styles['persona-name']}> { selectedPersona.name } </div>
@@ -79,7 +80,7 @@ const Home = () => {
                             </div>
                         </div>
                         <div className={styles['section-page-content']}>
-                            TODO
+                            { selectedFeature && selectedFeature.element ? selectedFeature.element : "TODO" }
                         </div>
                     </div>
                 </main>
@@ -93,10 +94,10 @@ const Home = () => {
                     <div className={styles['persona-list']}>
                         { personas.map(p => (
                             <div key={p.id}
-                                className={`${styles['persona-item']} ${p.id == selectedPersona.id ? styles['persona-item-selected'] : ""}`}
+                                className={`${styles['persona-item']} ${p.id === selectedPersona.id ? styles['persona-item-selected'] : ""}`}
                                 onClick={() => handleSelectpersona(p)}
                             >
-                                <img src={p.avatar} className={styles['persona-item-avatar']} />
+                                <img alt="Persona avatar" src={p.avatar} className={styles['persona-item-avatar']} />
                                 <p className={styles['persona-item-name']}>{ p.name }</p>
                             </div>
                         ))}

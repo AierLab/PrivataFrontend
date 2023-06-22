@@ -1,0 +1,79 @@
+.chat-message {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.chat-message-list {
+    height: 100%;
+    overflow-y: scroll;
+    padding-bottom: 6rem;
+}
+
+.chat-message-list * {
+    font-family: sans-serif;
+}
+
+.chat-message-list > * + * {
+    border-top: solid 1px #0001;
+}
+
+.chat-message-hint {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: bold;
+}
+
+.chat-message-send-area {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    
+    padding: 1rem 2rem;
+
+    backdrop-filter: blur(8px);
+}
+
+.chat-message-send-area > textarea.send-message {
+    padding: 0.5rem 0.75rem;
+    background: white;
+    border-radius: 0.25rem;
+    border: solid 1px #eee;
+    text-align: left;
+
+    width: 100%;
+
+    resize: none;
+}
+
+.chat-message-send-area > textarea.send-message:focus {
+    outline: solid 1px #2563eb;
+    box-shadow: 0 0 0 5px #3b82f630;
+}
+
+.chat-message-send-area > button.send-button {
+    padding: 0.25rem;
+    border: none;
+    width: 1.75rem;
+    height: 1.75rem;
+    display: flex;
+    border-radius: 0.25rem;
+    background: transparent;
+
+    position: absolute;
+    right: 2.5rem;
+    bottom: 1.75rem;
+
+    transition: 200ms;
+}
+
+.chat-message-send-area > button.send-button:hover {
+    background: #0001;
+}
+
+.chat-message-send-area > button.send-button:focus {
+    box-shadow: 0 0 0 3px #2563eb;
+}

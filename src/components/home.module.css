@@ -213,9 +213,8 @@
 }
 
 .section-page-content {
-    height: 100%;
-    display: flex;
-    padding: 2rem;
+    height: 0;
+    flex: 1;
 }
 
 @keyframes blur {

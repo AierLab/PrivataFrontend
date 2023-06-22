@@ -1,0 +1,45 @@
+.chat-message {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 0 2rem;
+}
+
+.chat-message-avatar-wrap {
+    padding-top: 1rem;
+}
+
+.chat-message-avatar {
+    height: 2rem;
+    width: 2rem;
+    border-radius: 0.5rem;
+    border: solid 1px #0001;
+}
+
+.message-content-text {
+    width: 100%;
+    padding: 1rem;
+}
+
+.message-content-text > .message-timestamp {
+    text-align: right;
+    color: #0004;
+}
+
+.message-content-text > p {
+    line-height: 1.5rem;
+}
+
+.message-content-text > p.continuous::after {
+    display: inline-block;
+    content: '';
+    width: 0.625rem;
+    height: 1.125rem;
+    background: #aaa;
+
+    position: relative;
+    top: 2px;
+
+    margin-left: 0.125rem;
+}
+
