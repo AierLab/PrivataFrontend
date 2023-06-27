@@ -52,6 +52,11 @@ function createHomeWindow(){
         
       })
 
+
+      global.share.ipcMain.handle("open-user-info", () => {
+        mainWindow.loadURL("http://localhost:3000/userInfo")
+      })
+
       mainWindow.webContents.openDevTools({'mode':'detach'})
 
     };

@@ -22,12 +22,49 @@ const Home = () => {
     const [selectedFeature,  setSelectedFeature]  = useState(null)
     const [selectedPersona, setSelectedPersona] = useState(personas[0])
 
+    const [isContextMenuOpen, setContextMenuOpen] = useState(false);
+    const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
+
     const [personaSelectionShow, setpersonaSelectionShow] = useState(false)
+    const [userInfoShow, setUserInfoShow] = useState(true)
 
     const handleSelectpersona = (p) => {
         setpersonaSelectionShow(false)
         setSelectedPersona(p)
     }
+
+
+    const handleContextMenu = (event) => {
+        if (isContextMenuOpen===false){
+            setContextMenuOpen(true);
+            setContextMenuPosition({ x: event.clientX, y: event.clientY });
+        }else{
+            setContextMenuOpen(false)
+        }
+      };
+    
+    const handleMenuOptionClick1 = () => {
+        setContextMenuOpen(false);
+        window.api.openUserInfo();
+        console.log(userInfoShow)
+    // Handle the selected option logic here
+    };
+    const handleMenuOptionClick2 = () => {
+        setContextMenuOpen(false);
+        // Handle the selected option logic here
+        };
+
+    const handleButtonClick = (event) => {
+        if (isContextMenuOpen===false){
+            setContextMenuOpen(true);
+            setContextMenuPosition({ x: event.clientX, y: event.clientY });
+        }else{
+            setContextMenuOpen(false)
+        }
+        
+    // Handle the button click logic here
+    };
+
     
     return(
         <>    
@@ -57,9 +94,13 @@ const Home = () => {
                                 <span className={styles['user-desc-email']}> cat@example.com </span>
                             </div>
                         </div>
-                        <EllipsisVerticalIcon className={styles['menu-icon']} />
+                        <EllipsisVerticalIcon className={styles['menu-icon']} onClick={handleButtonClick} onContextMenu={handleContextMenu}/>
+                        
                     </div>
+                    
                 </aside>
+
+                
                 <div className={styles['section-page']}>
                     <div className={styles['section-page-header']}>
                         <span> { selectedFeature && selectedFeature.name } </span>
@@ -82,6 +123,17 @@ const Home = () => {
                 </div>
             </main>
 
+            
+            {isContextMenuOpen && (
+                <ul
+                className={styles["context-menu"]}
+                style={{ left: contextMenuPosition.x-30, top: contextMenuPosition.y-75, zIndex: 8000}}
+                >
+                <li onClick={()=>handleMenuOptionClick1()}>View Information</li>
+                <li onClick={handleMenuOptionClick2}>Settings</li>
+                </ul>
+            )}
+
             { /* ---- persona selection overlay ---- */ }
             <div
                 className={`${styles['persona-selection-container']} ${personaSelectionShow ? styles['persona-selection-show'] : ''}`}
@@ -101,6 +153,8 @@ const Home = () => {
                 </div>
             </div>
             { /* ---- end ---- */ }
+
+            
         </>
     )
 }

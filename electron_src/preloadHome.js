@@ -8,6 +8,7 @@ contextBridge.exposeInMainWorld('api', {
     minimizeWindow: () => ipcRenderer.invoke("minimize-home-window"),
     closeWindow: () =>ipcRenderer.invoke("close-home-window"),
     maximizeWindow: () => ipcRenderer.invoke("maximize-home-window"),
+    openUserInfo: () => ipcRenderer.invoke("open-user-info")
     // we can also expose variables, not just functions
   })
 

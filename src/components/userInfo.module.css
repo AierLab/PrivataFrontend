@@ -1,0 +1,130 @@
+.user-info-container {
+    position: relative;
+    height: 100%;
+  width: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 1em;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    -webkit-app-region: no-drag;
+    
+}
+
+
+.back-container{
+    position:absolute;
+    
+    left:50px;
+    top:50px;
+    z-index: 9999;
+    cursor: pointer;
+    -webkit-app-region: no-drag;
+}
+
+.back-container .back{
+    position: relative;
+    width: 4rem;
+    height: 4rem;
+    box-shadow: 0 0.0188em 1.350em rgb(156, 156, 156);
+    border-radius: 3rem;
+    /* cursor: pointer; */
+    /* -webkit-app-region: no-drag; */
+}
+
+.user-info-container{
+    display: flex;
+    flex-direction: column;
+    width: 35em;
+    height: 100%;
+    justify-content: center;
+    background-color: azure;
+    
+}
+
+.user-info-container .profile-photo-wrap{
+    display: flex;
+    flex-direction: column;
+    /* background-color: red; */
+    align-items: center;
+    justify-content: space-around;
+    height: 30%;
+    width: 100%;
+}
+.profile-photo-wrap img {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 999px;
+    box-shadow: 0 0.188em 1.350em rgb(119, 172, 202);
+    cursor: pointer;
+}
+
+.user-info-container .text-info-wrap{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 40%;
+    font-size: 20px;
+    align-items: center;
+    justify-content: space-around;
+    /* background-color: blue; */
+}
+
+
+.info {
+    /* background-color: aqua; */
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    height: 50%;
+    justify-content: space-around;
+    text-align: right;
+    /* text-align-last: justify; */
+}
+
+.details {
+    /* background-color: aquamarine; */
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    height: 50%;
+    justify-content: space-around;
+    text-align: justify;
+}
+
+.input-details {
+    /* background-color: aquamarine; */
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    height: 50%;
+    justify-content: space-around;
+    text-align: justify;
+}
+
+.button{
+    position: absolute;
+    display: flex;
+    background-color: #39c5bb;
+    /* text-align: center; */
+    justify-content: center;
+    align-items: center;
+    height: 2em;
+    width: 8em;
+    border-radius: 0.4em;
+    bottom: 5%;
+    right: 5%;
+    cursor: pointer;
+    -webkit-app-region: no-drag;
+
+
+}
+
+.no-display{
+    display: none;
+}
+

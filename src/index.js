@@ -7,6 +7,7 @@ import './index.css';
 import App from './App';
 import UsbVerification from './components/usbVerification';
 import Home from './components/home'
+import UserInfo from './components/userInfo';
 import reportWebVitals from './reportWebVitals';
 import { MinusIcon, StopIcon, XMarkIcon } from '@heroicons/react/24/outline';
 // const { ipcRenderer } = window.require('electron');
@@ -96,6 +97,7 @@ createRoot(document.getElementById('root')).render(
                 <Routes>
                     <Route path="/" element={<App />} />
                     <Route path="/usbKey.html" element={<UsbVerification />} />
+                    <Route path="/userInfo" element={<UserInfo />} />
                     <Route path="/home" element={<Home />} />
                 </Routes>
             </Router>
