@@ -1,0 +1,91 @@
+html {
+  --titlebar-padding: 0.5rem;
+  --titlebar-icon-size: 1rem;
+  --titlebar-height: calc(2 * var(--titlebar-padding) + var(--titlebar-icon-size));
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.container{
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  -webkit-app-region: no-drag;
+}
+.cover{
+  background-color: white;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 1em;
+  /* box-shadow: 0 0.0188em 1.350em rgb(156, 156, 156); */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  -webkit-app-region: drag;
+}
+
+.loginCover{
+  background-color: white;
+  width: 30em;
+  height: 35em;
+  position: relative;
+  border-radius: 1em;
+  box-shadow: 0 0.0188em 1.350em rgb(156, 156, 156);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  -webkit-app-region: drag;
+}
+
+@keyframes fadeIn {
+from {
+  opacity: 0;
+}
+to {
+  opacity: 1;
+}
+}
+
+/* Define the fade-out animation */
+@keyframes fadeOut {
+from {
+  opacity: 1;
+}
+to {
+  opacity: 0;
+}
+}
+
+/* Define the minimize animation */
+@keyframes minimize {
+from {
+  transform: scale(1);
+}
+to {
+  transform: scale(0);
+}
+}
+
+#app{
+  align-items: center;
+  justify-content: center;
+  display: flex
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
