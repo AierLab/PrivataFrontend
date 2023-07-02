@@ -10,6 +10,8 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
+const debug = !app.isPackaged
+
 const createWindow = (): void => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -23,17 +25,15 @@ const createWindow = (): void => {
     }
   });
 
-  if (app.isPackaged) {
+  if (!debug) {
     // mainWindow.loadFile(MAIN_WINDOW_WEBPACK_ENTRY);
     mainWindow.loadFile('index.html');
   } else {
     mainWindow.loadURL('http://localhost:3001/');
+    mainWindow.webContents.openDevTools({ mode: 'detach' });
   }
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools({ mode: 'detach' });
-
-  ipcMain.handle('dev:getDebugMode',       async () => app.isPackaged)
+  ipcMain.handle('dev:is-debug-mode',      async () => debug)
   ipcMain.handle('dev:toggle-dev-tools',   async () => { mainWindow.webContents.openDevTools({ mode: 'detach' }) })
   ipcMain.handle('global:open-external',   async (event, url) => { await shell.openExternal(url) })
   ipcMain.handle("window:minimize",        async () => { mainWindow.minimize() })

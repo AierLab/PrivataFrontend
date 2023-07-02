@@ -14,7 +14,7 @@ contextBridge.exposeInMainWorld('api', {
     toggleMaximize: () => ipcRenderer.invoke("window:toggle-maximize"),
     userLogin:      () => ipcRenderer.invoke("user:login"),
 
-    isDebug:        () => ipcRenderer.invoke("dev:getDebugMode"),
+    isDebug:        () => ipcRenderer.invoke("dev:is-debug-mode"),
     toggleDevTools: () => ipcRenderer.invoke("dev:toggle-dev-tools"),
     // we can also expose variables, not just functions
   })
