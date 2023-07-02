@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import styles from "./home.module.css"
 
 import { XMarkIcon, MinusIcon, ChatBubbleLeftRightIcon, MusicalNoteIcon, PaintBrushIcon, EllipsisVerticalIcon } from "@heroicons/react/20/solid"
-
+import { getUserInfoResponse } from "../utils/request";
 const Home = () => {    
     const features = [
         { id: 'chat', name: "Chat", icon: <ChatBubbleLeftRightIcon /> },
@@ -18,7 +18,7 @@ const Home = () => {
         { id: 'nijika', name: 'Nijika', desc: 'Nijika Ijichi is a drummer at Kessoku Band.', avatar: 'https://i.pinimg.com/originals/d7/f3/19/d7f319490dd5b677a85389e5b59cee09.jpg' },
         { id: 'ryo', name: 'Ryo', desc: 'Ryo Yamada is in her second year at Shimokitazawa High School and is the bassist of the band, Kessoku Band.', avatar: 'https://i.pinimg.com/736x/1b/88/92/1b8892d1ee65e258a2ce7804f52c5f9a.jpg' },
     ]
-
+    const data = getUserInfoResponse('username')
     const [selectedFeature,  setSelectedFeature]  = useState(null)
     const [selectedPersona, setSelectedPersona] = useState(personas[0])
 
@@ -90,8 +90,8 @@ const Home = () => {
                         <div className={styles['left']}>
                             <img src="/default-avatar.png" />
                             <div className={styles['user-desc']}>
-                                <span className={styles['user-desc-name']}> 十九 </span>
-                                <span className={styles['user-desc-email']}> cat@example.com </span>
+                                <span className={styles['user-desc-name']}> {data.username} </span>
+                                <span className={styles['user-desc-email']}>{data.email} </span>
                             </div>
                         </div>
                         <EllipsisVerticalIcon className={styles['menu-icon']} onClick={handleButtonClick} onContextMenu={handleContextMenu}/>
