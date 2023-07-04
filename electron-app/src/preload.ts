@@ -8,14 +8,15 @@ contextBridge.exposeInMainWorld('api', {
     // electron: () => process.versions.electron,
     // ping: () => ipcRenderer.invoke('ping'),
 
-    openExternal:   (url: string) => ipcRenderer.invoke("global:open-external", url), //provide an api which let the renderer process communicate with the main process
-    minimizeWindow: () => ipcRenderer.invoke("window:minimize"),
-    closeWindow:    () => ipcRenderer.invoke("window:close"),
-    toggleMaximize: () => ipcRenderer.invoke("window:toggle-maximize"),
-    userLogin:      () => ipcRenderer.invoke("user:login"),
+    openExternal:     (url: string) => ipcRenderer.invoke("global:open-external", url), //provide an api which let the renderer process communicate with the main process
+    minimizeWindow:   () => ipcRenderer.invoke("window:minimize"),
+    closeWindow:      () => ipcRenderer.invoke("window:close"),
+    toggleMaximize:   () => ipcRenderer.invoke("window:toggle-maximize"),
+    userLogin:        () => ipcRenderer.invoke("user:login"),
 
-    isDebug:        () => ipcRenderer.invoke("dev:is-debug-mode"),
-    toggleDevTools: () => ipcRenderer.invoke("dev:toggle-dev-tools"),
+    isDebug:          () => ipcRenderer.invoke("dev:is-debug-mode"),
+    toggleDevTools:   () => ipcRenderer.invoke("dev:toggle-dev-tools"),
+    loadDevExtension: (path: string) => ipcRenderer.invoke("dev:load-extension", path),
     // we can also expose variables, not just functions
   })
 
