@@ -18,18 +18,18 @@ This is Privata Client using electron, typescript & react, and bundled by Electr
 
 ### Run in development
 
-1. Navigate to `react-app` and `electron-app`, do both `npm install`.
-2. Navigate to `react-app`, run following command, and leave it running.
+1. Navigate to `react-app` and `electron-app`, in both folder, run `npm install`.
+2. Navigate to `react-app`, run following command to start react development server, and leave it running.
    ```console
    $ npm run start
    ```
-3. Navigate to `electron-app`, run
+3. Navigate to `electron-app`, run following command to open electron window
    ```console
    $ npm run start
    ```
 
 ## Build
 
-1. Run `npm run build` at `react-app` folder.
-2. Run `npm run make` at `electorn` folder.
+1. Run `npm run build` at `react-app` folder to build react pages.
+2. Run `npm run make` at `electorn` folder to bundle react app & electron into one package.
 
