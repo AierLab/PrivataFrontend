@@ -37,7 +37,7 @@ const Titlebar = ({ colorScheme }: TitleBarProps) => {
           { devMenuOpen ?
             <div className="dev-menu" onClick={ () => setDevMenuOpen(false) }>
               <div className="dev-menu-content" onClick={ e => e.stopPropagation() }>
-                <h1> Dev Menu </h1>
+                <h1> Debug Menu </h1>
                 <button onClick={ window.api.toggleDevTools }> Open Dev Tools </button>
                 <div>
                   <input className="extension-path" ref={devExtPathRef} placeholder="path"/>
@@ -53,7 +53,7 @@ const Titlebar = ({ colorScheme }: TitleBarProps) => {
                       window.api.openExternal("https://github.com/facebook/react/issues/25843")
                     }
                     style={{ color: "blue", cursor: "pointer" }}
-                  > &nbsp; &nbsp; react dev #25843 </span>
+                  > &nbsp; react dev #25843 </span>
                 </div>
               </div>
             </div>

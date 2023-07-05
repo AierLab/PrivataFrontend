@@ -4,6 +4,8 @@ import ChatMessage from './chat_messages'
 import { PaperAirplaneIcon } from '@heroicons/react/24/solid'
 import { PersonaContext } from '../../contexts/persona'
 
+import { FetchChatResponse } from '../../api/chat'
+
 const Chat = (props) => {
   const [chats, setChats] = useState([])
   const messageRef = useRef(null)
@@ -15,22 +17,14 @@ const Chat = (props) => {
     if(!content) return;
     messageRef.current.value = ""
 
-    // cb: callback
-    // cb := function(text: string, finished: boolean)
-    const genshinContentGenerator = (cb) => {
-      const fullContent = '你说的对，但是《原神》是由米哈游自主研发的一款全新开放世界冒险游戏。游戏发生在一个被称作「提瓦特」的幻想世界，在这里，被神选中的人将被授予「神之眼」，导引元素之力。你将扮演一位名为「旅行者」的神秘角色在自由的旅行中邂逅性格各异、能力独特的同伴们，和他们一起击败强敌，找回失散的亲人——同时，逐步发掘「原神」的真相。'
-      let idx = 0
-
-      const elapsed = () => {
-        const next = idx + Math.ceil(20 * Math.random() + 5)
-        const finised = next >= fullContent.length
-        cb(fullContent.substring(0, next), finised)
-        idx = next
-
-        if(!finised) setTimeout(elapsed, Math.random() * 900 + 300)
+    const privataContentGenerator = (payload) => {
+      // cb: callback
+      // cb := function(text: string, finished: boolean)
+      return (cb) => {
+        FetchChatResponse(payload).then(r => {
+          cb(r.data.result, true)
+        })
       }
-      
-      setTimeout(elapsed, Math.random() * 900 + 900)
     }
 
     setChats(chats => [...chats,
@@ -42,7 +36,7 @@ const Chat = (props) => {
       },
       {
         id: `${new Date().toISOString()}-reply`,
-        content_provider: genshinContentGenerator,
+        content_provider: privataContentGenerator({ text: content }),
         time: new Date(),
         avatar: persona.avatar,
         continuous: true,

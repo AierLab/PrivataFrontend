@@ -18,8 +18,8 @@
     color: white;
 
     display: flex;
-    flex-direction: row;
-    align-items: stretch;
+    align-items: center;
+    justify-content: center;
 
     padding: 2rem;
 
@@ -28,7 +28,13 @@
     overflow: hidden;
 }
 
-.login-page-container > #logo {
+.login-page-container .content-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+}
+
+.login-page-container .content-wrapper > #logo {
     position: absolute;
     left: 2rem;
     top: 2rem;
@@ -40,7 +46,7 @@
 
     width: fit-content;
 }
-.login-page-container > #logo * + * {
+.login-page-container .content-wrapper > #logo * + * {
     margin-left: 0.25rem;
 }
 
@@ -93,7 +99,7 @@
 .login-page-container .login-section input + label {
     position: absolute;
     left: 2rem;
-    transition: top 80ms ease 0s, font-size 100ms ease 0s;
+    transition: top 80ms ease-out 0s, font-size 100ms ease-out 10ms;
     top: 0.5rem;
     pointer-events: none;
 

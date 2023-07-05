@@ -13,6 +13,12 @@
     z-index: 9000;
 
     -webkit-app-region: no-drag;
+
+    color: #000;
+}
+
+.titlebar * {
+    font-family: sans-serif;
 }
 
 .titlebar > button {
@@ -87,7 +93,6 @@
 
 .titlebar > .dev-menu > .dev-menu-content input {
     padding: 0;
-    border: initial;
     height: initial;
     width: initial;
 }
