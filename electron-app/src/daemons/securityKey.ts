@@ -6,7 +6,6 @@ import { EventEmitter } from 'events'
 import { DeviceModels, ManifestVersions, SecurityKeyManifest, SecurityKeyManifestV1 } from '../types/securityKey'
 
 const FILE_EXT = '.prakey'
-
 interface SecurtyKeyVerificationResuslt {
   status: 'verified' | 'unverified' | 'noKey' | 'error',
   path?: string,
@@ -37,19 +36,36 @@ class SecurityKeyDaemon extends EventEmitter {
       this.refresh()
     })
 
-    usb.on("detach", async function (device) {
+    usb.on("detach", async (device) => {
       console.debug("a usb device detached")
       this.emit('device_detach', device)
 
       // TODO: refresh
+      this.refresh()
     })
   }
 
-  public refresh = async () => {
-    this.emit('verifying')
-    const verify_result = await this.findSecurityKey()
-    this.last_verify_result = verify_result
-    this.emit('verification_changed', verify_result)
+  public refresh = async () => {    
+    if (this.last_verify_result.status === 'unverified' || this.last_verify_result.status === 'noKey'){
+      this.emit('verifying')
+      const verify_result = await this.findSecurityKey()
+      this.last_verify_result = verify_result
+      this.emit('verification_changed', verify_result)
+      if (verify_result.status==='verified'){
+        this._watchFile(verify_result.path)
+      }
+    }else if (this.last_verify_result.status === 'verified'){
+      const verify_result = this.checkPath(this.last_verify_result.path)
+      if (!(verify_result.status==="verified")){
+        fs.unwatchFile(this.last_verify_result.path)
+        this.last_verify_result = verify_result
+        this.emit('verification_changed', verify_result)
+      }
+      
+    }
+    
+    
+    
   }
 
   private validateStatus = async () => {
@@ -98,8 +114,37 @@ class SecurityKeyDaemon extends EventEmitter {
     }
   }
 
-  private async _watchFile(filepath: string) {
+  private checkPath = (filepath: string): SecurtyKeyVerificationResuslt => {
+    //Check whether the path is still a valid path
+      if (fs.existsSync(filepath)){
+        const {ok, manifest} = this.isKeyValid(filepath)
+        if (ok){
+          return {status: 'verified',
+                  path: filepath,
+                  manifest: manifest,}
+        }else{
+          return {status: 'noKey'}
+        }
+      }
+
+      return {status: 'noKey'}
+      
+    }
+
+  
+
+  private _watchFile = async(filepath: string) => {
     // TODO: continues watch the file changes
+    fs.watchFile(filepath, 
+                {persistent: true, interval:1000}, 
+                (cur, prev)=>{
+                  console.log("The keyFile is edited")
+                  const verify_result = this.checkPath(filepath)
+                  if (! (verify_result.status ===this.last_verify_result.status)){
+                    this.last_verify_result = verify_result
+                    this.emit('verification_changed', verify_result)
+                  }
+                })
   }
 
   private isKeyValid(keyPath: string) {

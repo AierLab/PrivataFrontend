@@ -54,6 +54,7 @@ const createWindow = (): void => {
 
   serurityKeyDaemon.on('verification_changed', result => {
     console.log(result)
+    mainWindow.webContents.send('verification_changed', result)
   })
   serurityKeyDaemon.refresh()
 };
