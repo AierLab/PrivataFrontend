@@ -17,7 +17,13 @@ contextBridge.exposeInMainWorld('api', {
     isDebug:          () => ipcRenderer.invoke("dev:is-debug-mode"),
     toggleDevTools:   () => ipcRenderer.invoke("dev:toggle-dev-tools"),
     loadDevExtension: (path: string) => ipcRenderer.invoke("dev:load-extension", path),
-    // we can also expose variables, not just functions
   })
+
+
+    ipcRenderer.on('verification_changed', (event,result)=>{
+      const eventPayload = {type: 'verification_changed', result};
+      window.dispatchEvent(new CustomEvent('electronEvent', {detail:eventPayload}))
+    })
+    // we can also expose variables, not just functions
 
 console.log("ALL API LOADED!")
