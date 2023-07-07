@@ -4,7 +4,9 @@ import './index.css';
 import App from './App';
 import UsbVerification from './components/usbVerification';
 import Home from './components/home'
+import UserInfo from './components/userInfo';
 import reportWebVitals from './reportWebVitals';
+import Settings from './components/settings';
 
 /**
  * React Router used here for creating multiple HTML pages
@@ -16,6 +18,8 @@ createRoot(document.getElementById('root') as HTMLElement).render(
                 <Route path="/" element={<App />} />
                 <Route path="/usbKey.html" element={<UsbVerification />} />
                 <Route path="/home" element={<Home />} />
+                <Route path="userInfo" element={<UserInfo />} />
+                <Route path="settings" element={<Settings />} />
             </Routes>
         </HashRouter>
     </div>

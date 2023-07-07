@@ -1,0 +1,154 @@
+.container {
+    position: relative;
+    display: flex;   
+    width: 100%;
+    height: 100%;
+    /* background-color: red; */
+    -webkit-app-region: no-drag;
+    animation: fadeIn 300ms ease forwards;
+}
+
+.fade-out{
+    position: relative;
+    height: 100%;
+    width: 100%;
+    border-radius: 1em;
+    display: flex;
+    -webkit-app-region: no-drag;
+    animation: fadeOut 300ms ease forwards;
+}
+
+@keyframes fadeIn {
+    0%{
+        opacity: 0;
+    }      
+    
+    100% {
+        opacity: 1;
+        
+    }
+  }
+
+  @keyframes fadeOut {
+    0%{
+        opacity: 1;
+    }      
+    
+    100% {
+        opacity: 0;
+        
+    }
+  }
+
+
+
+
+
+
+.settings-list-aside {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* background-color: rebeccapurple; */
+    height: 100%;
+    min-width: 20rem;
+    padding-top: 0.2em;
+    padding: 0.5em;
+    border-right: solid 1px #eee;
+
+    -webkit-app-region: drag;
+}
+
+
+.settings-list{
+    -webkit-app-region: no-drag;
+}
+
+.back-container{
+    position:relative;
+    width: 100%;
+    height: 4%;
+    /* background-color: aqua; */
+    z-index: 9999;
+    
+    -webkit-app-region: no-drag;
+}
+
+.back-container .back{
+    position: relative;
+    width: 2em;
+    height: 2em;
+    text-shadow: 0 0.0188em 1.350em rgb(156, 156, 156);
+    cursor: pointer;
+    /* cursor: pointer; */
+    /* -webkit-app-region: no-drag; */
+}
+
+.list-container{
+    position: relative;
+    height: 96%;
+}
+
+.application-title {
+    margin: 1rem 0;
+    text-align: left;
+    font-weight: bold;
+}
+
+.settings-list {
+    padding: 0;
+}
+
+.settings-list, .settings-list > li, .settings-list > li > button {
+    list-style: none;
+}
+
+.settings-list > li > button {
+    border: none;
+    border-radius: 0.5rem;
+    background: transparent;
+    transition: 250ms;
+}
+
+.settings-list > li > button:hover {
+    background: #eee;
+}
+
+.settings-list > li > button.selected {
+    background-color: #39c5bb;
+    /* background: #2563eb; */
+    color: #fff;
+}
+
+.settings-list > * + * {
+    margin-top: 0.125rem;
+}
+
+.settings-list > li > button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    padding: 0.75rem;
+    width: 100%;
+}
+
+.feature-icon {
+    margin-right: 0.5rem;
+    display: flex;
+}
+
+.feature-icon > svg {
+    height: 1rem;
+    width: 1rem;
+}
+
+.feature-name {
+    font-size: 0.75rem;
+}
+
+
+
+
+
+

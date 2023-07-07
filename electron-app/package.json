@@ -29,7 +29,7 @@
     "@typescript-eslint/parser": "^5.0.0",
     "@vercel/webpack-asset-relocator-loader": "1.7.3",
     "css-loader": "^6.0.0",
-    "electron": "25.2.0",
+    "electron": "^25.2.0",
     "eslint": "^8.0.1",
     "eslint-plugin-import": "^2.25.0",
     "fork-ts-checker-webpack-plugin": "^7.2.13",
@@ -43,6 +43,7 @@
     "drivelist": "^11.1.0",
     "electron-squirrel-startup": "^1.0.0",
     "react": "^18.2.0",
-    "usb": "^2.9.0"
+    "usb": "^2.9.0",
+    "yarn": "^1.22.19"
   }
 }

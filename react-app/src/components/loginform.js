@@ -41,6 +41,7 @@ const LoginForm = () => {
     return(
         <>
             <Titlebar />
+            <div className={loginStyles.container}>
             <div className={loginStyles.content}>
                 <h1>Login</h1>
                 <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)}/>
@@ -59,6 +60,7 @@ const LoginForm = () => {
                     <h3 className={loginStyles.failedText1}>Login Failed</h3>
                     <p className={loginStyles.failedText2}>Username or password incorrect</p>
                 </div>
+            </div>
             </div>
         </>
     )

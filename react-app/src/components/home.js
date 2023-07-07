@@ -1,7 +1,7 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 // import { IpcRenderer } from "electron";
 import styles from "./home.module.css"
-
+import { useNavigate } from "react-router-dom";
 import { ChatBubbleLeftRightIcon, MusicalNoteIcon, PaintBrushIcon, EllipsisVerticalIcon } from "@heroicons/react/20/solid"
 import { PersonaContext } from "../contexts/persona";
 import Chat from "./features/chat";
@@ -9,6 +9,7 @@ import Chat from "./features/chat";
 import Titlebar from './Titlebar'
 
 const Home = () => {    
+    const goTo = useNavigate()
     const features = [
         { id: 'chat', name: "Chat", icon: <ChatBubbleLeftRightIcon />, element: <Chat /> },
         { id: 'sing', name: "Sing", icon: <MusicalNoteIcon/> },
@@ -26,6 +27,11 @@ const Home = () => {
     const [selectedFeature,  setSelectedFeature]  = useState(null)
     const [selectedPersona, setSelectedPersona] = useState(personas[0])
 
+    const [isContextMenuOpen, setContextMenuOpen] = useState(false);
+    const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
+
+
+
     const [personaSelectionShow, setpersonaSelectionShow] = useState(false)
 
     const handleSelectpersona = (p) => {
@@ -33,10 +39,59 @@ const Home = () => {
         setSelectedPersona(p)
     }
 
+    const handleContextMenu = (event) => {
+        if (isContextMenuOpen===false){
+            setContextMenuOpen(true);
+            var element = document.getElementById(styles['menu-icon'])
+            
+            setContextMenuPosition({ x: element.getBoundingClientRect().left, y: element.getBoundingClientRect().bottom });
+        }
+      };
+
+    
+    const handleMenuOptionClick1 = () => {
+        setContextMenuOpen(false);
+        goTo('/userInfo');
+    // Handle the selected option logic here
+    };
+    const handleMenuOptionClick2 = () => {
+        setContextMenuOpen(false);
+        goTo('/settings')
+        // Handle the selected option logic here
+        };
+
+    
+    // const handleMouseLeaveMenu = () =>{
+    //     console.log("the button is ",leaveMenuButton)
+    //     console.log("the menu is ", leaveMenu)
+    //     setTimeout(()=>{
+    //         if (!leaveMenu && !leaveMenuButton){
+                
+    //             setContextMenuOpen(false);
+    //         }
+            
+    //     },500)
+        
+    // }
+
+    // useEffect(()=>handleMouseLeaveMenu,[leaveMenu,leaveMenuButton])
+
+    
+
+
+
+    
+        
+    
+
     return(
         <>
+        <Titlebar />
+            
             <PersonaContext.Provider value={{ persona: selectedPersona }}>
+                
                 <main className={styles['container']}>
+                   
                     <aside className={styles['feature-list-aside']}>
                         <div>
                             <h3 className={styles['application-title']}> Privata </h3>
@@ -62,12 +117,12 @@ const Home = () => {
                                     <span className={styles['user-desc-email']}> cat@example.com </span>
                                 </div>
                             </div>
-                            <EllipsisVerticalIcon className={styles['menu-icon']} />
+                            <EllipsisVerticalIcon id={styles['menu-icon']} className={styles['menu-icon']} onMouseOver={() => handleContextMenu()} />
                         </div>
                     </aside>
                     <div className={styles['section-page']}>
                         <div className={styles['section-page-header']}>
-                            <Titlebar />
+                            
                             <span> { selectedFeature && selectedFeature.name } </span>
                             <div>
                                 <button className={styles['persona-dropdown']} onClick={() => setpersonaSelectionShow(true)}>
@@ -87,6 +142,18 @@ const Home = () => {
                         </div>
                     </div>
                 </main>
+
+                {isContextMenuOpen && (
+                    <ul
+                        className={styles["context-menu"]}
+                        style={{ left: contextMenuPosition.x-30, top: contextMenuPosition.y-90, zIndex: 8000}}
+                        onMouseLeave={()=>setContextMenuOpen(false)}
+                        // onMouseOver={()=>handleMouseOverMenu()}
+                    >
+                        <li onClick={()=>handleMenuOptionClick1()}>View Information</li>
+                        <li onClick={handleMenuOptionClick2}>Settings</li>
+                    </ul>
+                )}
 
                 { /* ---- persona selection overlay ---- */ }
                 <div

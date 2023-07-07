@@ -105,6 +105,7 @@
 
 .user-info:hover .menu-icon {
     display: block;
+    cursor: pointer;
 }
 
 .user-info > .left {
@@ -216,13 +217,14 @@
     flex: 1;
 }
 
-@keyframes blur {
+@keyframes fadeIn {
     0%{
-        backdrop-filter: blur(0px)
+        opacity: 0;
     }      
     
     100% {
-        backdrop-filter: blur(18px)
+        opacity: 1;
+        
     }
   }
 
@@ -261,7 +263,8 @@
     justify-content: center;
     align-items: center;
     opacity: 1;
-    animation: blur 500ms ease forwards;
+    backdrop-filter: blur(18px);
+    animation: fadeIn 500ms ease forwards;
 }
 
 .persona-list {
@@ -309,3 +312,30 @@
 .persona-list > .persona-item-selected > .persona-item-name {
     font-weight: bold;
 }
+
+.context-menu {
+    /* display: none; */
+    position: absolute;
+    border-radius: 0.3em;
+    background-color: white;
+    padding: 0;
+    list-style: none;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+    -webkit-app-region: no-drag;
+    animation: fadeIn 300ms ease forwards;
+    
+    /* z-index: 500000; */
+  }
+  
+  .context-menu li {
+    padding: 5px 10px;
+    font-family: 'sans-serif';
+    cursor: pointer;
+    z-index: 9999;
+  }
+  
+  .context-menu li:hover {
+    background-color: #ddd;
+  }
+
