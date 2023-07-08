@@ -24,7 +24,7 @@ const SecurityAlertOverlay = ({ children }: Props) => {
                         className={styles['security-key-overlay']}
                         initial={{ opacity: 1, scale: 1.1 }}
                         animate={{ opacity: 1, scale: 1.0 }}
-                        exit={{ opacity: 0, scale: 0.9 }}
+                        exit={{ opacity: 0, scale: 1.1 }}
                         transition={{ duration: 0.2, type: 'spring' }}
                     >
                         <div className={styles["alert-content"]}>
