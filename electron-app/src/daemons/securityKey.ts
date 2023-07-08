@@ -50,11 +50,15 @@ class SecurityKeyDaemon extends EventEmitter {
     if (this.last_verify_result.status === 'unverified' || this.last_verify_result.status === 'noKey') {
       this.emit('verifying')
       const verify_result = await this.findSecurityKey()
-      this.last_verify_result = verify_result
-      this.emit('verification_changed', verify_result)
-      if (verify_result.status === 'verified') {
-        this._watchFile(verify_result.path)
+      if (!(this.last_verify_result.status === verify_result.status)){
+        this.last_verify_result = verify_result
+        this.emit('verification_changed', verify_result)
+        if (verify_result.status === 'verified') {
+          this._watchFile(verify_result.path)
+        }
       }
+      
+      
     } else if (this.last_verify_result.status === 'verified') {
       const verify_result = this.checkPath(this.last_verify_result.path)
       if (!(verify_result.status === "verified")) {
@@ -83,7 +87,6 @@ class SecurityKeyDaemon extends EventEmitter {
 
       const drvs = await drivelist.list()
       const usbDrvs = drvs.filter(d => d.isUSB)
-      console.log(usbDrvs)
 
       // iter over devices and check every mountpoint
       for (const device of usbDrvs) {
