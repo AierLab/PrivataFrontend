@@ -16,6 +16,7 @@ contextBridge.exposeInMainWorld('api', {
     userLogin:        () => ipcRenderer.invoke("user:login"),
 
     navToLoginPage:   () => ipcRenderer.invoke('nav:to-login-page'),
+    loginPageReady:   () => ipcRenderer.invoke('ready:login-page'),
 
     isDebug:          () => ipcRenderer.invoke("dev:is-debug-mode"),
     toggleDevTools:   () => ipcRenderer.invoke("dev:toggle-dev-tools"),

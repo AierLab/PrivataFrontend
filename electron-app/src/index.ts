@@ -60,11 +60,16 @@ const createWindow = (): void => {
     console.log("Congratulations! You have successfully logged in.")
   })
 
+  ipcMain.handle("ready:login-page",async () => {
+    console.log('content loaded')
+    serurityKeyDaemon.refresh()
+  })
+
   serurityKeyDaemon.on('verification_changed', result => {
     console.log(result)
     mainWindow.webContents.send('verification_changed', result)
   })
-  serurityKeyDaemon.refresh()
+  
 };
 
 // This method will be called when Electron has finished
