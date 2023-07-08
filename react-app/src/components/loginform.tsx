@@ -56,6 +56,8 @@ const LoginForm = () => {
 
     const goto = useNavigate()
 
+    document.addEventListener('DOMContentLoaded',window.api.loginPageReady());
+
     const handleLoginClick = () => {
         const username = usernameInput.current!.value
         const password = passwordInput.current!.value
