@@ -1,6 +1,7 @@
 // See the Electron documentation for details on how to use preload scripts:
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 import { contextBridge, ipcRenderer } from 'electron'
+import { SecurtyKeyVerificationResult } from './daemons/securityKey';
 
 contextBridge.exposeInMainWorld('api', {
     // node: () => process.versions.node,
@@ -14,16 +15,18 @@ contextBridge.exposeInMainWorld('api', {
     toggleMaximize:   () => ipcRenderer.invoke("window:toggle-maximize"),
     userLogin:        () => ipcRenderer.invoke("user:login"),
 
+    navToLoginPage:   () => ipcRenderer.invoke('nav:to-login-page'),
+
     isDebug:          () => ipcRenderer.invoke("dev:is-debug-mode"),
     toggleDevTools:   () => ipcRenderer.invoke("dev:toggle-dev-tools"),
     loadDevExtension: (path: string) => ipcRenderer.invoke("dev:load-extension", path),
   })
 
 
-    ipcRenderer.on('verification_changed', (event,result)=>{
-      const eventPayload = {type: 'verification_changed', result};
-      window.dispatchEvent(new CustomEvent('electronEvent', {detail:eventPayload}))
-    })
-    // we can also expose variables, not just functions
+ipcRenderer.on('verification_changed', (event, result: SecurtyKeyVerificationResult) => {
+  window.dispatchEvent(
+    new CustomEvent<SecurtyKeyVerificationResult>('securityKeyVerificationStatusChanged', { detail: result }))
+})
+// we can also expose variables, not just functions
 
 console.log("ALL API LOADED!")

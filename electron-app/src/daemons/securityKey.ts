@@ -6,8 +6,9 @@ import { EventEmitter } from 'events'
 import { DeviceModels, ManifestVersions, SecurityKeyManifest, SecurityKeyManifestV1 } from '../types/securityKey'
 
 const FILE_EXT = '.prakey'
-interface SecurtyKeyVerificationResuslt {
-  status: 'verified' | 'unverified' | 'noKey' | 'error',
+export type SecurityKeyVerificationStatus = 'verified' | 'unverified' | 'noKey' | 'error'
+export interface SecurtyKeyVerificationResult {
+  status: SecurityKeyVerificationStatus,
   path?: string,
   device?: drivelist.Drive,
   error?: unknown,
@@ -18,12 +19,12 @@ declare interface SecurityKeyDaemon {
   on(event: 'device_attach', listener: (deivce: usb.Device) => void): this
   on(event: 'device_detach', listener: (deivce: usb.Device) => void): this
   on(event: 'verifying', listener: () => void): this
-  on(event: 'verification_changed', listener: (verifyResult: SecurtyKeyVerificationResuslt) => void): this
+  on(event: 'verification_changed', listener: (verifyResult: SecurtyKeyVerificationResult) => void): this
   refresh(): Promise<void>
 }
 
 class SecurityKeyDaemon extends EventEmitter {
-  private last_verify_result: SecurtyKeyVerificationResuslt
+  private last_verify_result: SecurtyKeyVerificationResult
 
   public constructor() {
     super()
@@ -32,7 +33,7 @@ class SecurityKeyDaemon extends EventEmitter {
     usb.on('attach', async (device) => {
       console.debug("a new usb device have attached")
       this.emit('device_attach', device)
-      
+
       this.refresh()
     })
 
@@ -45,27 +46,27 @@ class SecurityKeyDaemon extends EventEmitter {
     })
   }
 
-  public refresh = async () => {    
-    if (this.last_verify_result.status === 'unverified' || this.last_verify_result.status === 'noKey'){
+  public refresh = async () => {
+    if (this.last_verify_result.status === 'unverified' || this.last_verify_result.status === 'noKey') {
       this.emit('verifying')
       const verify_result = await this.findSecurityKey()
       this.last_verify_result = verify_result
       this.emit('verification_changed', verify_result)
-      if (verify_result.status==='verified'){
+      if (verify_result.status === 'verified') {
         this._watchFile(verify_result.path)
       }
-    }else if (this.last_verify_result.status === 'verified'){
+    } else if (this.last_verify_result.status === 'verified') {
       const verify_result = this.checkPath(this.last_verify_result.path)
-      if (!(verify_result.status==="verified")){
+      if (!(verify_result.status === "verified")) {
         fs.unwatchFile(this.last_verify_result.path)
         this.last_verify_result = verify_result
         this.emit('verification_changed', verify_result)
       }
-      
+
     }
-    
-    
-    
+
+
+
   }
 
   private validateStatus = async () => {
@@ -77,21 +78,21 @@ class SecurityKeyDaemon extends EventEmitter {
     return true
   }
 
-  private findSecurityKey = async (): Promise<SecurtyKeyVerificationResuslt> => {
+  private findSecurityKey = async (): Promise<SecurtyKeyVerificationResult> => {
     try {
-      
+
       const drvs = await drivelist.list()
       const usbDrvs = drvs.filter(d => d.isUSB)
       console.log(usbDrvs)
 
       // iter over devices and check every mountpoint
       for (const device of usbDrvs) {
-        for (const mnt of device.mountpoints){
+        for (const mnt of device.mountpoints) {
           console.log(mnt.path)
           const files = fs.readdirSync(mnt.path)
           const keyFiles = files.filter(fn => fn.endsWith(FILE_EXT))
 
-          for (const keyFilename of keyFiles) {        
+          for (const keyFilename of keyFiles) {
             const keyPath = path.join(mnt.path, keyFilename)
             const { ok, manifest } = this.isKeyValid(keyPath)
             if (ok) {
@@ -114,37 +115,39 @@ class SecurityKeyDaemon extends EventEmitter {
     }
   }
 
-  private checkPath = (filepath: string): SecurtyKeyVerificationResuslt => {
+  private checkPath = (filepath: string): SecurtyKeyVerificationResult => {
     //Check whether the path is still a valid path
-      if (fs.existsSync(filepath)){
-        const {ok, manifest} = this.isKeyValid(filepath)
-        if (ok){
-          return {status: 'verified',
-                  path: filepath,
-                  manifest: manifest,}
-        }else{
-          return {status: 'noKey'}
+    if (fs.existsSync(filepath)) {
+      const { ok, manifest } = this.isKeyValid(filepath)
+      if (ok) {
+        return {
+          status: 'verified',
+          path: filepath,
+          manifest: manifest,
         }
+      } else {
+        return { status: 'noKey' }
       }
-
-      return {status: 'noKey'}
-      
     }
 
-  
+    return { status: 'noKey' }
 
-  private _watchFile = async(filepath: string) => {
+  }
+
+
+
+  private _watchFile = async (filepath: string) => {
     // TODO: continues watch the file changes
-    fs.watchFile(filepath, 
-                {persistent: true, interval:1000}, 
-                (cur, prev)=>{
-                  console.log("The keyFile is edited")
-                  const verify_result = this.checkPath(filepath)
-                  if (! (verify_result.status ===this.last_verify_result.status)){
-                    this.last_verify_result = verify_result
-                    this.emit('verification_changed', verify_result)
-                  }
-                })
+    fs.watchFile(filepath,
+      { persistent: true, interval: 1000 },
+      (cur, prev) => {
+        console.log("The keyFile is edited")
+        const verify_result = this.checkPath(filepath)
+        if (!(verify_result.status === this.last_verify_result.status)) {
+          this.last_verify_result = verify_result
+          this.emit('verification_changed', verify_result)
+        }
+      })
   }
 
   private isKeyValid(keyPath: string) {
@@ -165,7 +168,7 @@ class SecurityKeyDaemon extends EventEmitter {
           return { ok: false }
         }
       }
-    } catch(e) {
+    } catch (e) {
       console.error(e)
       return { ok: false }
     }

@@ -1,24 +1,74 @@
-import React, {useState, useRef} from "react";
+import React, { useState, useRef, useContext } from "react";
 import styles from "./loginform.module.css"
 import { getLoginResponse } from "../utils/request";
 import { useNavigate } from "react-router-dom";
 import Titlebar from "./Titlebar";
-import { BeakerIcon } from "@heroicons/react/24/solid";
+import { ArrowPathIcon, BeakerIcon, ExclamationCircleIcon, MagnifyingGlassCircleIcon, NoSymbolIcon, ShieldCheckIcon } from "@heroicons/react/24/solid";
+import { motion, AnimatePresence } from "framer-motion";
+import { SecurityKeyContext } from "../contexts/securityKey";
+
+interface VerificationHint {
+    icon: any,
+    text: string,
+    textColor: string,
+    backgroundColor: string,
+};
+
+const verificationHints: Record<SecurityKeyVerificationStatus, VerificationHint> = {
+    'unverified': {
+        icon: <MagnifyingGlassCircleIcon />,
+        text: 'Unverified',
+        textColor: '#000',
+        backgroundColor: '#fff',
+    },
+    'verifing': {
+        icon: <ArrowPathIcon />,
+        text: 'Verifing',
+        textColor: '#000',
+        backgroundColor: '#eee',
+    },
+    'verified': {
+        icon: <ShieldCheckIcon />,
+        text: 'Verified',
+        textColor: '#fff',
+        backgroundColor: '#15803d',
+    },
+    'noKey': {
+        icon: <NoSymbolIcon />,
+        text: 'No Privata Security Key™ found',
+        textColor: '#000',
+        backgroundColor: '#fff',
+    },
+    'error': {
+        icon: <ExclamationCircleIcon />,
+        text: "Error occurred",
+        textColor: '#fff',
+        backgroundColor: '#b91c1c',
+    }
+};
 
 const LoginForm = () => {
     const usernameInput = useRef<HTMLInputElement>(null)
     const passwordInput = useRef<HTMLInputElement>(null)
+
+    const verificationResult = useContext(SecurityKeyContext)
+    const currentStatus = verificationHints[verificationResult.status]
 
     const goto = useNavigate()
 
     const handleLoginClick = () => {
         const username = usernameInput.current!.value
         const password = passwordInput.current!.value
-        if (getLoginResponse(username, password)){
+        if (verificationResult.status !== 'verified') {
+            alert("please plug in security key")
+            return
+        }
+        if (getLoginResponse(username, password)) {
             window.api.userLogin()
             goto('/home')
-        }else{
-            console.log("ahh, you have to enter usernames and password")
+        } else {
+            alert("please enter username & password")
+            return
         }
     }
 
@@ -29,23 +79,23 @@ const LoginForm = () => {
     //
     // }; //Check whether the url is clicked. If so, open an external browser (system's default browser) to enter the website 
 
-    return(
+    return (
         <>
             <div className={styles["login-page-container"]}>
                 <div className={styles['content-wrapper']}>
-                    <Titlebar colorScheme="light"/>
+                    <Titlebar colorScheme="light" />
                     <div id={styles['logo']}>
-                        <BeakerIcon height="2rem" width="2rem"/>
+                        <BeakerIcon height="2rem" width="2rem" />
                         <span>LOGO</span>
                     </div>
                     <section className={styles['login-section']}>
                         <h2 className={styles['login-title']}>Log in to secure your data</h2>
                         <div>
-                            <input id="username-input" ref={usernameInput} type="text" placeholder=" " required/>
+                            <input id="username-input" ref={usernameInput} type="text" placeholder=" " required />
                             <label htmlFor="username-input">User Name</label>
                         </div>
                         <div>
-                            <input id="password" ref={passwordInput} type="password" placeholder=" " required/>
+                            <input id="password" ref={passwordInput} type="password" placeholder=" " required />
                             <label htmlFor="password-input">Password</label>
                         </div>
                         <p>
@@ -60,34 +110,24 @@ const LoginForm = () => {
                             <circle r="150" cx="400" cy="200" fill="#eeeeee77"></circle>
                             <circle r="150" cx="300" cy="350" fill="#eeeeee77"></circle>
                         </svg>
+                        <AnimatePresence>
+                            <motion.div
+                                key={verificationResult.status}
+                                className={styles['security-key-status']}
+                                style={{ color: currentStatus.textColor, background: currentStatus.backgroundColor }}
+                                initial={{ scale: 0.9 }}
+                                animate={{ scale: 1 }}
+                                transition={{ duration: 0.5, type: 'spring', damping: 15, stiffness: 300 }}
+                            >
+                                <span className={styles['security-key-status-icon']}>{currentStatus.icon}</span>
+                                <span>{currentStatus.text}</span>
+                            </motion.div>
+                        </AnimatePresence>
                     </section>
                 </div>
             </div>
-            { /*
-            <div className={loginStyles.content}>
-                <h1>Login</h1>
-                <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)}/>
-                <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
-
-                <div className={loginStyles.loginBtn} onClick={handleLoginClick}>Login</div>
-                <p className={loginStyles.signupText}> Not a user yet?  <a className={loginStyles.signupUrl} href="https://google.com" onClick={handleLinkClick}> Sign up</a> for now!</p>
-                <p className={loginStyles.text}>Or login using</p>
-
-                <div className={loginStyles.altLogin}>
-                    <div className={loginStyles.facebook}></div>
-                    <div className={loginStyles.google}></div>
-                </div>
-
-                <div className={popupStyle}>
-                    <h3 className={loginStyles.failedText1}>Login Failed</h3>
-                    <p className={loginStyles.failedText2}>Username or password incorrect</p>
-                </div>
-            </div>
-            */ }
         </>
     )
-
-
 }
 
 export default LoginForm

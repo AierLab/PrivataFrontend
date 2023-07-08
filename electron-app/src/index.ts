@@ -28,17 +28,25 @@ const createWindow = (): void => {
     }
   });
 
-  if (!debug) {
-    // mainWindow.loadFile(MAIN_WINDOW_WEBPACK_ENTRY);
-    mainWindow.loadFile('index.html');
-  } else {
-    mainWindow.loadURL('http://localhost:3001/');
+  const toLoginPage = () => {
+    if (!debug) {
+      // mainWindow.loadFile(MAIN_WINDOW_WEBPACK_ENTRY);
+      mainWindow.loadFile('index.html');
+    } else {
+      mainWindow.loadURL('http://localhost:3001/');
+    }
+  }
+
+  toLoginPage()
+  if (debug) {
     mainWindow.webContents.openDevTools({ mode: 'detach' });
   }
 
   ipcMain.handle('dev:is-debug-mode',      async () => debug)
   ipcMain.handle('dev:toggle-dev-tools',   async () => { mainWindow.webContents.openDevTools({ mode: 'detach' }) })
   ipcMain.handle('dev:load-extension',     async (event, path) => await session.defaultSession.loadExtension(path))
+
+  ipcMain.handle('nav:to-login-page',      toLoginPage)
 
   ipcMain.handle('global:open-external',   async (event, url) => { await shell.openExternal(url) })
   ipcMain.handle("window:minimize",        async () => { mainWindow.minimize() })

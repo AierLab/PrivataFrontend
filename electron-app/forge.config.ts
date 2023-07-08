@@ -12,6 +12,10 @@ import { rendererConfig } from './webpack.renderer.config';
 import path from 'path'
 import fs from 'fs'
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import ForgeExternalsPlugin from '@timfish/forge-externals-plugin';
+
 const config: ForgeConfig = {
   packagerConfig: {
     asar: true,
@@ -36,6 +40,10 @@ const config: ForgeConfig = {
         ],
       },
     }),
+    new ForgeExternalsPlugin({
+      externals: ['usb', 'drivelist']
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    }) as any
   ],
   hooks: {
     packageAfterCopy: async (config, buildPath, electronVersion, platform, arch) => {
