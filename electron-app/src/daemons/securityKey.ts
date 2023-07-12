@@ -3,7 +3,7 @@ import * as drivelist from 'drivelist'
 import fs from 'fs'
 import path from 'path'
 import { EventEmitter } from 'events'
-import { DeviceModels, ManifestVersions, SecurityKeyManifest, SecurityKeyManifestV1 } from '../types/securityKey'
+import { DeviceModels, ManifestVersions, SecurityKeyManifest, SecurityKeyManifestV1 } from '@/@types/securityKey'
 
 const FILE_EXT = '.prakey'
 export type SecurityKeyVerificationStatus = 'verified' | 'unverified' | 'noKey' | 'error'

@@ -1,26 +1,28 @@
-import React, { useState, useRef, useEffect, useContext } from 'react'
+import { useState, useRef, useContext } from 'react'
 import styles from './chat.module.css'
 import ChatMessage from './chat_messages'
 import { PaperAirplaneIcon } from '@heroicons/react/24/solid'
 import { PersonaContext } from '../../contexts/persona'
 
 import { FetchChatResponse } from '../../api/chat'
+import { ContentGeneratorCallbackFunction, ChatMessageType } from '../../@types/chat'
 
-const Chat = (props) => {
-  const [chats, setChats] = useState([])
-  const messageRef = useRef(null)
+const Chat = () => {
+  const [chats, setChats] = useState<ChatMessageType[]>([])
+  const messageRef = useRef<HTMLTextAreaElement| null>(null)
 
   const persona = useContext(PersonaContext).persona
 
   const handleMessageSend = () => {
+    if(!messageRef.current) return
+
     const content = messageRef.current.value
     if(!content) return;
+
     messageRef.current.value = ""
 
-    const privataContentGenerator = (payload) => {
-      // cb: callback
-      // cb := function(text: string, finished: boolean)
-      return (cb) => {
+    const privataContentGenerator = (payload: any) => {
+      return (cb: ContentGeneratorCallbackFunction) => {
         FetchChatResponse(payload).then(r => {
           cb(r.data.result, true)
         })
@@ -44,12 +46,17 @@ const Chat = (props) => {
     ])
   }
 
-  const handleGenerateDone = (id, text) => {
+  const handleGenerateDone = (id: string, text: string) => {
     setChats(chats => {
       const lastChat = chats.at(-1)
-      lastChat.continuous = false
-      lastChat.content = text
-      return [...chats.slice(0, -1), lastChat]
+      if(!lastChat) return chats
+
+      return [...chats.slice(0, -1), {
+        id: lastChat.id,
+        content: text,
+        time: lastChat.time,
+        avatar: lastChat.avatar,
+      }]
     })
   }
 
@@ -60,7 +67,7 @@ const Chat = (props) => {
         (
           <div className={styles['chat-message-list']}>
             { chats.map(chat => (
-              <ChatMessage key={chat.id} type="text" {...chat} generateDone={(text) => handleGenerateDone(chat.id, text)}/>
+              <ChatMessage key={chat.id} type="text" {...chat} generateDone={(text: string) => handleGenerateDone(chat.id, text)}/>
             ))}
           </div>
         )
@@ -78,7 +85,7 @@ const Chat = (props) => {
           className={styles['send-message']}
           placeholder="Enter messages..."
           onKeyUp={(key) => key.key === 'Enter' && !key.shiftKey ? handleMessageSend() : null}
-          rows="2"
+          rows={2}
         />
         <button className={styles['send-button']} onClick={handleMessageSend}>
           <PaperAirplaneIcon />

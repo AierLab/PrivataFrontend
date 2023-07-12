@@ -1,34 +1,40 @@
-import React, {useState} from "react";
-// import { IpcRenderer } from "electron";
+import React, {ReactElement, useState} from "react";
 import styles from "./home.module.css"
 
 import { ChatBubbleLeftRightIcon, MusicalNoteIcon, PaintBrushIcon, EllipsisVerticalIcon } from "@heroicons/react/20/solid"
-import { PersonaContext } from "../contexts/persona";
+import { PersonaContext } from "contexts/persona";
 import Chat from "./features/chat";
 
-import Titlebar from './Titlebar'
+import Titlebar from 'components/Titlebar'
+import { Persona } from "../@types/persona";
+
+interface Feature {
+    id: string,
+    name: string,
+    icon: ReactElement,
+    element?: ReactElement,
+};
 
 const Home = () => {    
-    const features = [
+    const features: Feature[] = [
         { id: 'chat', name: "Chat", icon: <ChatBubbleLeftRightIcon />, element: <Chat /> },
         { id: 'sing', name: "Sing", icon: <MusicalNoteIcon/> },
         { id: 'dance', name: "Dance", icon: <MusicalNoteIcon/> },
         { id: 'content-creation', name: "Content Creation", icon: <PaintBrushIcon /> },
     ]
 
-    const personas = [
+    const personas: Persona[] = [
         { id: 'bochhi', name: 'Bocchi', desc: 'Hitori Gotou is a guitar player playing for the Kessoku Band.', avatar: 'https://ih1.redbubble.net/image.4489882707.9846/st,small,507x507-pad,600x600,f8f8f8.jpg' },
         { id: 'kita', name: 'Kita', desc: 'Kita Ikuyo is a singer working for Kessoku Band.', avatar: 'https://avatarfiles.alphacoders.com/343/343115.png' },
         { id: 'nijika', name: 'Nijika', desc: 'Nijika Ijichi is a drummer at Kessoku Band.', avatar: 'https://i.pinimg.com/originals/d7/f3/19/d7f319490dd5b677a85389e5b59cee09.jpg' },
         { id: 'ryo', name: 'Ryo', desc: 'Ryo Yamada is in her second year at Shimokitazawa High School and is the bassist of the band, Kessoku Band.', avatar: 'https://i.pinimg.com/736x/1b/88/92/1b8892d1ee65e258a2ce7804f52c5f9a.jpg' },
     ]
 
-    const [selectedFeature,  setSelectedFeature]  = useState(null)
-    const [selectedPersona, setSelectedPersona] = useState(personas[0])
+    const [selectedFeature,      setSelectedFeature]      = useState<Feature | null>(null)
+    const [selectedPersona,      setSelectedPersona]      = useState<Persona>(personas[0])
+    const [personaSelectionShow, setpersonaSelectionShow] = useState<boolean>(false)
 
-    const [personaSelectionShow, setpersonaSelectionShow] = useState(false)
-
-    const handleSelectpersona = (p) => {
+    const handleSelectpersona = (p: Persona) => {
         setpersonaSelectionShow(false)
         setSelectedPersona(p)
     }

@@ -1,7 +1,6 @@
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid"
 import { AnimatePresence, motion } from "framer-motion"
 import { useContext } from "react"
-import { useNavigate } from "react-router-dom"
 import { SecurityKeyContext } from "../contexts/securityKey"
 import styles from './SecurityKeyAlertOverlay.module.css'
 

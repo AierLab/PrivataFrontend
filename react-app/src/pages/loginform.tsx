@@ -1,11 +1,11 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useRef, useContext } from "react";
 import styles from "./loginform.module.css"
-import { getLoginResponse } from "../utils/request";
+import { getLoginResponse } from "utils/request";
 import { useNavigate } from "react-router-dom";
-import Titlebar from "./Titlebar";
+import Titlebar from "components/Titlebar";
 import { ArrowPathIcon, BeakerIcon, ExclamationCircleIcon, MagnifyingGlassCircleIcon, NoSymbolIcon, ShieldCheckIcon } from "@heroicons/react/24/solid";
 import { motion, AnimatePresence } from "framer-motion";
-import { SecurityKeyContext } from "../contexts/securityKey";
+import { SecurityKeyContext } from "contexts/securityKey";
 
 interface VerificationHint {
     icon: any,

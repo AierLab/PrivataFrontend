@@ -1,16 +1,15 @@
 import { createRoot } from 'react-dom/client';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import './index.css';
-import UsbVerification from './components/usbVerification';
-import Home from './components/home'
+import Home from 'pages/home'
 import reportWebVitals from './reportWebVitals';
-import LoginForm from './components/loginform';
-import { SecurityKeyContext } from './contexts/securityKey';
+import LoginForm from 'pages/loginform';
+import { SecurityKeyContext } from 'contexts/securityKey';
 
 import { useState } from 'react';
-import { ManifestVersions } from './types/enums';
+import { ManifestVersions } from './@types/enums';
 
-import SecurityAlertOverlay from './components/SecurityKeyAlertOverlay';
+import SecurityAlertOverlay from 'components/SecurityKeyAlertOverlay';
 
 const RootComponent = () => {
     const [verificationResult, setVerificationResult] = useState<SecurityKeyVerificationContext>(
@@ -29,7 +28,6 @@ const RootComponent = () => {
                     <HashRouter>
                         <Routes>
                             <Route path="/" element={<LoginForm />} />
-                            <Route path="/usbKey.html" element={<UsbVerification />} />
                             <Route path="/home" element={<Home />} />
                         </Routes>
                     </HashRouter>

@@ -1,7 +1,13 @@
-import { useCallback, useEffect, useState } from 'react';
+import { ChatMessageType } from '@/@types/chat';
+import React, { useCallback, useEffect, useState } from 'react';
 import styles from './chat_messages.module.css'
 
-const ChatMessage = (props) => {
+type ChatMessageProps = {
+  type: "text",
+  generateDone: (text: string) => void,
+} & ChatMessageType
+
+const ChatMessage = (props: ChatMessageProps) => {
   let messageContent = <></>
   switch(props.type) {
     case 'text':
@@ -24,12 +30,14 @@ const ChatMessage = (props) => {
   )
 }
 
-const TextMessage = (props) => {
+type TextMessageProps = { } & ChatMessageProps
+
+const TextMessage: React.FC<TextMessageProps> = (props) => {
   const time = props.time
   const [continuous, setContinues] = useState(props.continuous)
-  const [content, setContent] = useState(continuous ? '' : props.content)
+  const [content, setContent] = useState(props.continuous ? '' : props.content)
 
-  const handleContentUpdate = useCallback((content, finished) => {
+  const handleContentUpdate = useCallback((content: string, finished: boolean) => {
     setContent(content)
     setContinues(!finished)
     if(finished) props.generateDone(content)

@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import { ManifestVersions } from '../types/enums'
+import { ManifestVersions } from '../@types/enums'
 
 const SecurityKeyContext = createContext<SecurityKeyVerificationContext>({
   status: 'unverified',
