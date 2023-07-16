@@ -6,15 +6,16 @@
     -webkit-app-region: no-drag;
 }
 
+
 .feature-list-aside {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-
+    /* background-color: #444; */
     height: 100%;
     min-width: 20rem;
     padding: 1rem;
-    border-right: solid 1px #eee;
+    /* border-right: solid 1px #eee; */
 
     -webkit-app-region: drag;
 }
@@ -139,19 +140,26 @@
 }
 
 .section-page {
+    position: relative;
     width: 100%;
     height: 100%;
+    flex: 1;
     display: flex;
     flex-direction: column;
+    
 }
 
+
+
+
 .section-page-header {
+    z-index: 1;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: rgba(255, 255, 255, 0.5);
 
     padding: var(--titlebar-height) 1rem 0.5rem 2rem;
-    border-bottom: solid 1px #eee;
 
     -webkit-app-region: drag;
 }
@@ -160,10 +168,11 @@
     display: flex;
     padding: 0;
     align-items: center;
+    overflow: hidden;    
     border-radius: 999px;
     border: solid 1px #eee;
     background: transparent;
-
+    
     cursor: pointer;
 
     -webkit-app-region: no-drag;
@@ -172,6 +181,7 @@
 .persona-dropdown > img {
     width: 2rem;
     height: 2rem;
+    object-fit: cover;
     border-radius: 999px;
 }
 
@@ -212,8 +222,22 @@
 }
 
 .section-page-content {
-    height: 0;
-    flex: 1;
+    position: relative;
+    display: flex;
+    /* background-color: #a7a7a723; */
+    height: 100%;
+}
+
+.background-image{
+    position: absolute;
+    background-position: center;
+    background-size:cover;
+    width: 100%;
+    height: 100%;
+    top:0;
+    left:0;
+    opacity: 0.3;
+    z-index: 0;
 }
 
 @keyframes blur {
@@ -286,6 +310,7 @@
 .persona-list > .persona-item > .persona-item-avatar {
     height: 6rem;
     width: 6rem;
+    object-fit: cover;
     border: solid 1px #bbb;
     border-radius: 999px;
 
