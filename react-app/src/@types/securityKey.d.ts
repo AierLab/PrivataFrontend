@@ -23,7 +23,7 @@ declare global {
       desc: string
       avatar: string
       features: string[]
-      compability: string
+      compatibility: string
     }[]
   }
 

@@ -46,6 +46,10 @@ class SecurityKeyDaemon extends EventEmitter {
     })
   }
 
+  public getLastVerifiedResult(){
+    return this.last_verify_result;
+  }
+
   public refresh = async () => {
     if (this.last_verify_result.status === 'unverified' || this.last_verify_result.status === 'noKey') {
       this.emit('verifying')
@@ -161,6 +165,16 @@ class SecurityKeyDaemon extends EventEmitter {
       switch (manifest.version) {
         case ManifestVersions.v1: {
           const v1 = manifest as SecurityKeyManifestV1
+          if (v1.device.model === DeviceModels.usbstick){
+            for (var a = 0; a < v1.personas.length; a++){
+              v1.personas[a].avatar = path.join(path.dirname(keyPath),'assets','avatars',v1.personas[a].avatar)
+              const imageBuffer = fs.readFileSync(v1.personas[a].avatar);
+              const imageBase64 = Buffer.from(imageBuffer).toString('base64');
+              const imageDataUrl = `data:image/jpeg;base64,${imageBase64}`;
+              v1.personas[a].avatar = imageDataUrl
+          }
+          }
+          
           return {
             ok: v1.device.model === DeviceModels.usbstick,
             manifest: v1

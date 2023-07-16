@@ -3,10 +3,12 @@ import { createContext } from 'react'
 
 const PersonaContext = createContext<PersonaContextType>({
   persona: {
-    id: '',
+    uuid: '',
     name: '',
     desc: '',
     avatar: '',
+    features: [],
+    compatibility:''
   },
 })
 

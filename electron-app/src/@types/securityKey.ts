@@ -27,6 +27,6 @@ export interface SecurityKeyManifestV1 extends SecurityKeyManifest {
     desc: string
     avatar: string
     features: string[]
-    compability: string
+    compatibility: string
   }[]
 }
