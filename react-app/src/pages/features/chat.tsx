@@ -1,17 +1,51 @@
-import { useState, useRef, useContext } from 'react'
+import { useState, useRef, useContext, useEffect } from 'react'
 import styles from './chat.module.css'
 import ChatMessage from './chat_messages'
 import { PaperAirplaneIcon } from '@heroicons/react/24/solid'
 import { PersonaContext } from '../../contexts/persona'
 
-import { FetchChatResponse } from '../../api/chat'
-import { ContentGeneratorCallbackFunction, ChatMessageType } from '../../@types/chat'
+import { FetchChatResponse, GetChatHistory } from '../../api/chat'
+import { ContentGeneratorCallbackFunction, ChatMessageType} from '../../@types/chat'
 
 const Chat = () => {
   const [chats, setChats] = useState<ChatMessageType[]>([])
   const messageRef = useRef<HTMLTextAreaElement| null>(null)
 
+  
+
   const persona = useContext(PersonaContext).persona
+
+  useEffect(()=>{
+    var history:ChatMessageType[] = []
+      GetChatHistory({chat_uid: 'test'}).then(r => {
+        for (var i = 0; i< r.data.history.length; ++i){
+          if (i%2===0) {
+            history.push(
+              {
+                id: new Date().toISOString(),
+                content: r.data.history[i],
+                time: new Date(),
+                avatar: 'default-avatar.png',
+              }
+            )
+            
+          }else{
+            history.push(
+              {
+                id: `${new Date().toISOString()}-reply`,
+                content: r.data.history[i],
+                time: new Date(),
+                avatar: persona.avatar,
+              }
+            ) 
+          }
+        }
+        setChats(history)
+    
+      }).catch(Error)
+    },[])
+
+  
 
   const handleMessageSend = () => {
     if(!messageRef.current) return
@@ -26,8 +60,20 @@ const Chat = () => {
         FetchChatResponse(payload).then(r => {
           cb(r.data.result, true)
         })
+
       }
     }
+
+
+    
+     
+ 
+    // GetChatHistory({chat_uid: 'test'}).then(r => {
+    //   console.log(r.data.history)
+    // })
+
+    // setChats()
+    console.log(privataContentGenerator({ text: content }))
 
     setChats(chats => [...chats,
       {

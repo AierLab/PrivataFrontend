@@ -26,8 +26,11 @@ const Home = () => {
     ]
 
     const verificationResult = useContext(SecurityKeyContext)
+    if (verificationResult.status==="noKey"){
+        
+    }
 
-    const personas = (verificationResult.manifest as SecurityKeyManifestV1).personas
+    const personas = verificationResult.status==="verified"?(verificationResult.manifest as SecurityKeyManifestV1).personas:[{uuid:"", name:"", desc:"", avatar:"default-avatar.png",features:[],compatibility:""}]
     // const personas: Persona[] = [
     //     { id: 'bochhi', name: 'Bocchi', desc: 'Hitori Gotou is a guitar player playing for the Kessoku Band.', avatar: 'https://ih1.redbubble.net/image.4489882707.9846/st,small,507x507-pad,600x600,f8f8f8.jpg' },
     //     { id: 'kita', name: 'Kita', desc: 'Kita Ikuyo is a singer working for Kessoku Band.', avatar: 'https://avatarfiles.alphacoders.com/343/343115.png' },
