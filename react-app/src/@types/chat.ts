@@ -1,4 +1,6 @@
 export type ContentGeneratorCallbackFunction = (text: string, finished: boolean) => void
+
+export type HistoryCallbackFunction = (history: ChatConversation[]) => void
 export type ContentGenerator = (cb: ContentGeneratorCallbackFunction) => void
 
 export interface ChatMessageTypeNonContinuous {
@@ -14,6 +16,11 @@ export interface ChatMessageTypeContinuous {
   time: Date,
   avatar: string,
   continuous: true
+}
+
+interface ChatConversation {
+  sender:string,
+  message: string
 }
 export type ChatMessageType = ChatMessageTypeContinuous | ChatMessageTypeNonContinuous
 

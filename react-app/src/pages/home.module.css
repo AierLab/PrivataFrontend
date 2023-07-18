@@ -131,7 +131,7 @@
 
 .user-desc-name {
     font-weight: bold;
-    color: #444;
+    color: black;
 }
 
 .user-desc-email {
@@ -225,7 +225,8 @@
     position: relative;
     display: flex;
     /* background-color: #a7a7a723; */
-    height: 100%;
+    height: 0;
+    flex:1
 }
 
 .background-image{

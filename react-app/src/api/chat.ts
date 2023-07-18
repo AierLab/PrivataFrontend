@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 
-const API_ENDPOINT = 'http://hw9fnp.natappfree.cc/'
+const API_ENDPOINT = 'http://localhost:8080'
 const api = axios.create({
   baseURL: API_ENDPOINT,
   headers: {
@@ -18,8 +18,28 @@ export interface ChatResponse {
   result: string
 }
 
+interface ChatConversation {
+  sender:string,
+  message: string
+}
+
+
+export interface HistoryRequestPayload {
+  chat_uid:string,
+}
+
+
+export interface HistoryResponse{
+  history:string[]
+
+}
+
 const FetchChatResponse = async (payload: ChatRequestPayload) => {
   return api.post<ChatRequestPayload, AxiosResponse<ChatResponse>>('/api/text', payload)
 }
 
-export { FetchChatResponse }
+const GetChatHistory = async (payload: HistoryRequestPayload) => {
+  return api.post<HistoryRequestPayload,AxiosResponse<HistoryResponse>>('/api/history', payload)
+}
+
+export { FetchChatResponse, GetChatHistory}
