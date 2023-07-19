@@ -1,5 +1,5 @@
-import React, {ReactElement, useState, useContext, useEffect} from "react";
-import extractColors, { extractColorsFromImageData, extractColorsFromSrc } from "extract-colors";
+import React, {ReactElement, useState, useContext} from "react";
+import { extractColorsFromSrc } from "extract-colors";
 import styles from "./home.module.css"
 
 import { ChatBubbleLeftRightIcon, MusicalNoteIcon, PaintBrushIcon, EllipsisVerticalIcon } from "@heroicons/react/20/solid"
@@ -7,7 +7,7 @@ import Chat from "./features/chat";
 import { SecurityKeyContext } from "contexts/securityKey";
 
 import Titlebar from 'components/Titlebar'
-import { Persona, PersonaContextType } from "../@types/persona";
+import { Persona} from "../@types/persona";
 import { PersonaContext } from "contexts/persona";
 
 interface Feature {
@@ -26,9 +26,7 @@ const Home = () => {
     ]
 
     const verificationResult = useContext(SecurityKeyContext)
-    if (verificationResult.status==="noKey"){
-        
-    }
+    
 
     const personas = verificationResult.status==="verified"?(verificationResult.manifest as SecurityKeyManifestV1).personas:[{uuid:"", name:"", desc:"", avatar:"default-avatar.png",features:[],compatibility:""}]
     // const personas: Persona[] = [
@@ -58,8 +56,14 @@ const Home = () => {
 
     return(
         <>
+            
             <PersonaContext.Provider value={{ persona: selectedPersona }}>
-                <main className={styles['container']} >
+            <div className={styles['container']}>
+                
+
+                <main className={styles['content-wrapper']} >
+                
+                    
                     <aside className={styles['feature-list-aside']}style={{backgroundColor:themeColor}}>
                         <div>
                             <h3 className={styles['application-title']}> Privata </h3>
@@ -92,7 +96,6 @@ const Home = () => {
                     <div className={styles['section-page']}>
                         <div className={styles['background-image']} style={{backgroundImage: `url(${selectedPersona.avatar})`}}></div>
                         <div className={styles['section-page-header']} style={{backgroundColor:themeColor+80}}>
-                            <Titlebar />
                             <span> { selectedFeature && selectedFeature.name } </span>
                             <div>
                                 <button className={styles['persona-dropdown']} onClick={() => setpersonaSelectionShow(true)}>
@@ -114,10 +117,13 @@ const Home = () => {
                 </main>
 
                 { /* ---- persona selection overlay ---- */ }
+                <div>
+                
                 <div
                     className={`${styles['persona-selection-container']} ${personaSelectionShow ? styles['persona-selection-show'] : ''}`}
                     onClick={() => setpersonaSelectionShow(false)}
                 >
+                    
                     <h2 className={styles['persona-selection-title']}> Select Persona </h2>
                     <div className={styles['persona-list']}>
                         { personas.map(p => (
@@ -131,7 +137,11 @@ const Home = () => {
                         ))}
                     </div>
                 </div>
+                </div>
                 { /* ---- end ---- */ }
+
+            </div>
+            <Titlebar /> 
             </PersonaContext.Provider>
         </>
     )

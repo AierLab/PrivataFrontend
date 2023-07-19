@@ -18,6 +18,11 @@ const RootComponent = () => {
 
     window.addEventListener('securityKeyVerificationStatusChanged', (e: any) => {
         const result: SecurityKeyVerificationContext = e.detail
+        // if (result.status==="verified"){
+        //     window.api.startLocalModel()
+        // }else{
+        //     window.api.killLocalModel()
+        // }
         setVerificationResult(result)
     })
 
