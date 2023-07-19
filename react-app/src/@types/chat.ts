@@ -1,6 +1,5 @@
 export type ContentGeneratorCallbackFunction = (text: string, finished: boolean) => void
 
-export type HistoryCallbackFunction = (history: ChatConversation[]) => void
 export type ContentGenerator = (cb: ContentGeneratorCallbackFunction) => void
 
 export interface ChatMessageTypeNonContinuous {

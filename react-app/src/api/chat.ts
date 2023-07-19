@@ -30,7 +30,7 @@ export interface HistoryRequestPayload {
 
 
 export interface HistoryResponse{
-  history:string[]
+  history:ChatConversation[]
 
 }
 

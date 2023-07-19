@@ -19,11 +19,11 @@ const Chat = () => {
     var history:ChatMessageType[] = []
       GetChatHistory({chat_uid: 'test'}).then(r => {
         for (var i = 0; i< r.data.history.length; ++i){
-          if (i%2===0) {
+          if (r.data.history[i].sender==='user') {
             history.push(
               {
                 id: new Date().toISOString(),
-                content: r.data.history[i],
+                content: r.data.history[i].message,
                 time: new Date(),
                 avatar: 'default-avatar.png',
               }
@@ -33,7 +33,7 @@ const Chat = () => {
             history.push(
               {
                 id: `${new Date().toISOString()}-reply`,
-                content: r.data.history[i],
+                content: r.data.history[i].message,
                 time: new Date(),
                 avatar: persona.avatar,
               }
