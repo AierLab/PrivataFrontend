@@ -14,6 +14,8 @@ contextBridge.exposeInMainWorld('api', {
     closeWindow:      () => ipcRenderer.invoke("window:close"),
     toggleMaximize:   () => ipcRenderer.invoke("window:toggle-maximize"),
     userLogin:        () => ipcRenderer.invoke("user:login"),
+    startLocalModel:  () => ipcRenderer.invoke("local-model:start"),
+    killLocalModel:   () => ipcRenderer.invoke("local-model:terminate"),
 
     navToLoginPage:   () => ipcRenderer.invoke('nav:to-login-page'),
     loginPageReady:   () => ipcRenderer.invoke('ready:login-page'),

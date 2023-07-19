@@ -12,6 +12,7 @@
 .chat-message-avatar {
     height: 2rem;
     width: 2rem;
+    object-fit: cover;
     border-radius: 0.5rem;
     border: solid 1px #0001;
 }

@@ -66,7 +66,7 @@ const LoginForm = () => {
             return
         }
         if (getLoginResponse(username, password)) {
-            window.api.userLogin()
+            // window.api.userLogin()
             goto('/home')
         } else {
             alert("please enter username & password")
