@@ -243,11 +243,11 @@
 
 @keyframes blur {
     0%{
-        backdrop-filter: blur(0px)
+        opacity: 0;
     }      
     
     100% {
-        backdrop-filter: blur(18px)
+        opacity: 1;
     }
   }
 
@@ -264,6 +264,7 @@
   }
 
 .persona-selection-container {
+    z-index: 2;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -285,6 +286,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    backdrop-filter: blur(18px);
     opacity: 1;
     animation: blur 500ms ease forwards;
 }
