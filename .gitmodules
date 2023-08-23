@@ -1,3 +1,3 @@
 [submodule "common-types"]
 	path = common-types
-	url = .\\common-types\\
+	url = git@github.com:AierLab/privata-types.git
