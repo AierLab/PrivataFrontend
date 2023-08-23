@@ -22,7 +22,7 @@
     "typeRoots": [
       "./node_modules/@types",
       "./node_modules/@types/privata",
-      "./@types"
+      "./types"
     ],
     "baseUrl": "src",
     "paths": {
