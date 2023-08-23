@@ -1,19 +1,19 @@
+import reportWebVitals from './reportWebVitals';
 import { createRoot } from 'react-dom/client';
 import { HashRouter, Route, Routes } from 'react-router-dom';
-import './index.css';
-import Home from 'pages/home'
-import reportWebVitals from './reportWebVitals';
-import LoginForm from 'pages/loginform';
-import { SecurityKeyContext } from 'contexts/securityKey';
-
 import { useState } from 'react';
-import { ManifestVersions } from './@types/enums';
+import { SecurityKeyContext } from 'contexts/securityKey';
+import { ManifestVersion } from '@privata/types/security-key';
+import { SecurityKeyVerificationContext } from 'types/security-key';
+import './index.css';
 
 import SecurityAlertOverlay from 'components/SecurityKeyAlertOverlay';
+import LoginForm from 'pages/loginform';
+import Home from 'pages/home'
 
 const RootComponent = () => {
     const [verificationResult, setVerificationResult] = useState<SecurityKeyVerificationContext>(
-        { status: 'unverified', manifest: { version: ManifestVersions.v1 } }
+        { status: 'unverified', manifest: { version: ManifestVersion.v1 } }
     )
 
     window.addEventListener('securityKeyVerificationStatusChanged', (e: any) => {

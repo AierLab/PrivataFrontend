@@ -5,53 +5,50 @@ import { PaperAirplaneIcon } from '@heroicons/react/24/solid'
 import { PersonaContext } from '../../contexts/persona'
 
 import { FetchChatResponse, GetChatHistory } from '../../api/chat'
-import { ContentGeneratorCallbackFunction, ChatMessageType} from '../../@types/chat'
+import { ContentGeneratorCallbackFunction, ChatMessageType } from 'types/chat'
 
 const Chat = () => {
   const [chats, setChats] = useState<ChatMessageType[]>([])
-  const messageRef = useRef<HTMLTextAreaElement| null>(null)
-
-  
+  const messageRef = useRef<HTMLTextAreaElement | null>(null)
 
   const persona = useContext(PersonaContext).persona
 
-  useEffect(()=>{
-    var history:ChatMessageType[] = []
-      GetChatHistory({chat_uid: 'test'}).then(r => {
-        for (var i = 0; i< r.data.history.length; ++i){
-          if (r.data.history[i].sender==='user') {
-            history.push(
-              {
-                id: new Date().toISOString(),
-                content: r.data.history[i].message,
-                time: new Date(),
-                avatar: 'default-avatar.png',
-              }
-            )
-            
-          }else{
-            history.push(
-              {
-                id: `${new Date().toISOString()}-reply`,
-                content: r.data.history[i].message,
-                time: new Date(),
-                avatar: persona.avatar,
-              }
-            ) 
-          }
-        }
-        setChats(history)
-    
-      }).catch(Error)
-    },[])
+  useEffect(() => {
+    var history: ChatMessageType[] = []
 
-  
+    GetChatHistory({ chat_uid: 'test' }).then(r => {
+      for (var i = 0; i < r.data.history.length; ++i) {
+        if (r.data.history[i].sender === 'user') {
+          history.push(
+            {
+              id: new Date().toISOString(),
+              content: r.data.history[i].message,
+              time: new Date(),
+              avatar: 'default-avatar.png',
+            }
+          )
+        } else {
+          history.push(
+            {
+              id: `${new Date().toISOString()}-reply`,
+              content: r.data.history[i].message,
+              time: new Date(),
+              avatar: persona.avatar,
+            }
+          )
+        }
+      }
+      setChats(history)
+
+    }).catch(Error)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleMessageSend = () => {
-    if(!messageRef.current) return
+    if (!messageRef.current) return
 
     const content = messageRef.current.value
-    if(!content) return;
+    if (!content) return;
 
     messageRef.current.value = ""
 
@@ -60,42 +57,32 @@ const Chat = () => {
         FetchChatResponse(payload).then(r => {
           cb(r.data.result, true)
         })
-
       }
     }
 
-
-    
-     
- 
-    // GetChatHistory({chat_uid: 'test'}).then(r => {
-    //   console.log(r.data.history)
-    // })
-
-    // setChats()
     console.log(privataContentGenerator({ text: content }))
 
     setChats(chats => [...chats,
-      {
-        id: new Date().toISOString(),
-        content: content,
-        time: new Date(),
-        avatar: 'default-avatar.png',
-      },
-      {
-        id: `${new Date().toISOString()}-reply`,
-        content_provider: privataContentGenerator({ text: content }),
-        time: new Date(),
-        avatar: persona.avatar,
-        continuous: true,
-      }
+    {
+      id: new Date().toISOString(),
+      content: content,
+      time: new Date(),
+      avatar: 'default-avatar.png',
+    },
+    {
+      id: `${new Date().toISOString()}-reply`,
+      content_provider: privataContentGenerator({ text: content }),
+      time: new Date(),
+      avatar: persona.avatar,
+      continuous: true,
+    }
     ])
   }
 
   const handleGenerateDone = (id: string, text: string) => {
     setChats(chats => {
       const lastChat = chats.at(-1)
-      if(!lastChat) return chats
+      if (!lastChat) return chats
 
       return [...chats.slice(0, -1), {
         id: lastChat.id,
@@ -109,11 +96,11 @@ const Chat = () => {
 
   return (
     <div className={styles['chat-message']}>
-      { chats && chats.length !== 0 ?
+      {chats && chats.length !== 0 ?
         (
           <div className={styles['chat-message-list']}>
-            { chats.map(chat => (
-              <ChatMessage key={chat.id} type="text" {...chat} generateDone={(text: string) => handleGenerateDone(chat.id, text)}/>
+            {chats.map(chat => (
+              <ChatMessage key={chat.id} type="text" {...chat} generateDone={(text: string) => handleGenerateDone(chat.id, text)} />
             ))}
           </div>
         )

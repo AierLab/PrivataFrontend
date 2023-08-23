@@ -14,19 +14,20 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "Node16",
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    "isolatedModules": false,
     "noEmit": true,
     "jsx": "react-jsx",
     "typeRoots": [
       "./node_modules/@types",
-      "./src/@types/*",
-      "../../electron-app/src/@types/*"
+      "./node_modules/@types/privata",
+      "./@types"
     ],
     "baseUrl": "src",
     "paths": {
-      "@/*": ["*"]
+      "@/*": ["*"],
+      "types/*": ["types/*"]
     }
   },
   "include": [

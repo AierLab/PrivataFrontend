@@ -10,6 +10,13 @@ This is Privata Client using electron, typescript & react, and bundled by Electr
 
 ## Delevopment
 
+### Read Before Coding
+
+1. 公有的类型声明放在 `common-types` 里面，引用时使用 `@common-types/xxx`。
+2. 每个项目的私有类型声明都是 `types` 打头， e.g. `types/security-key`。
+   > 为什么不用 `@types`? 因为 `@types` 是个保留，会去找 `node_modules/@types`。
+3. 如果你遇到了引用出问题的情况，可以运行 `tsc --traceResolution`，然后搜索你引用的包名即可。
+
 ### For Chinese developers
 
 - Windows: Recommand using [Proxifier](https://www.proxifier.com/) as proxy.
@@ -32,4 +39,3 @@ This is Privata Client using electron, typescript & react, and bundled by Electr
 
 1. Run `npm run build` at `react-app` folder to build react pages.
 2. Run `npm run make` at `electorn` folder to bundle react app & electron into one package.
-

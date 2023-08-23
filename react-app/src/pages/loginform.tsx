@@ -6,6 +6,7 @@ import Titlebar from "components/Titlebar";
 import { ArrowPathIcon, BeakerIcon, ExclamationCircleIcon, MagnifyingGlassCircleIcon, NoSymbolIcon, ShieldCheckIcon } from "@heroicons/react/24/solid";
 import { motion, AnimatePresence } from "framer-motion";
 import { SecurityKeyContext } from "contexts/securityKey";
+import { SecurityKeyVerificationStatus } from '@privata/types/security-key'
 
 interface VerificationHint {
     icon: any,

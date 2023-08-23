@@ -3,7 +3,7 @@ import * as drivelist from 'drivelist'
 import fs from 'fs'
 import path from 'path'
 import { EventEmitter } from 'events'
-import { DeviceModels, ManifestVersions, SecurityKeyManifest, SecurityKeyManifestV1 } from '@/@types/securityKey'
+import { DeviceModel, ManifestVersion, SecurityKeyManifest, SecurityKeyManifestV1 } from '@privata/types/security-key'
 
 const FILE_EXT = '.prakey'
 export type SecurityKeyVerificationStatus = 'verified' | 'unverified' | 'noKey' | 'error'
@@ -33,15 +33,12 @@ class SecurityKeyDaemon extends EventEmitter {
     usb.on('attach', async (device) => {
       console.debug("a new usb device have attached")
       this.emit('device_attach', device)
-
       this.refresh()
     })
 
     usb.on("detach", async (device) => {
       console.debug("a usb device detached")
       this.emit('device_detach', device)
-
-      // TODO: refresh
       this.refresh()
     })
   }
@@ -61,8 +58,7 @@ class SecurityKeyDaemon extends EventEmitter {
           this._watchFile(verify_result.path)
         }
       }
-      
-      
+
     } else if (this.last_verify_result.status === 'verified') {
       const verify_result = this.checkPath(this.last_verify_result.path)
       if (!(verify_result.status === "verified")) {
@@ -70,11 +66,7 @@ class SecurityKeyDaemon extends EventEmitter {
         this.last_verify_result = verify_result
         this.emit('verification_changed', verify_result)
       }
-
     }
-
-
-
   }
 
   private validateStatus = async () => {
@@ -111,7 +103,6 @@ class SecurityKeyDaemon extends EventEmitter {
               }
             }
           }
-
         }
       }
 
@@ -136,12 +127,8 @@ class SecurityKeyDaemon extends EventEmitter {
         return { status: 'noKey' }
       }
     }
-
     return { status: 'noKey' }
-
   }
-
-
 
   private _watchFile = async (filepath: string) => {
     // TODO: continues watch the file changes
@@ -163,10 +150,10 @@ class SecurityKeyDaemon extends EventEmitter {
       const manifest: SecurityKeyManifest = JSON.parse(content)
 
       switch (manifest.version) {
-        case ManifestVersions.v1: {
+        case ManifestVersion.v1: {
           const v1 = manifest as SecurityKeyManifestV1
-          if (v1.device.model === DeviceModels.usbstick){
-            for (var a = 0; a < v1.personas.length; a++){
+          if (v1.device.model === DeviceModel.usbstick){
+            for (let a = 0; a < v1.personas.length; a++){
               v1.personas[a].avatar = path.join(path.dirname(keyPath),'assets','avatars',v1.personas[a].avatar)
               const imageBuffer = fs.readFileSync(v1.personas[a].avatar);
               const imageBase64 = Buffer.from(imageBuffer).toString('base64');
@@ -174,9 +161,9 @@ class SecurityKeyDaemon extends EventEmitter {
               v1.personas[a].avatar = imageDataUrl
           }
           }
-          
+
           return {
-            ok: v1.device.model === DeviceModels.usbstick,
+            ok: v1.device.model === DeviceModel.usbstick,
             manifest: v1
           }
         }

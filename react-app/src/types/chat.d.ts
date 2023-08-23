@@ -9,6 +9,7 @@ export interface ChatMessageTypeNonContinuous {
   avatar: string,
   continuous?: false
 }
+
 export interface ChatMessageTypeContinuous {
   id: string,
   content_provider: ContentGenerator,
@@ -16,7 +17,6 @@ export interface ChatMessageTypeContinuous {
   avatar: string,
   continuous: true
 }
-
 
 export interface ChatRequestPayload {
   text: string,
@@ -29,24 +29,21 @@ export interface ChatResponse {
 }
 
 export interface ChatConversation {
-  sender:string,
+  sender: string,
   message: string
 }
 
-
-export interface HistoryRequestPayload {chat_uid:string}
-export interface HistoryResponse{history:ChatConversation[]}
+export interface HistoryRequestPayload { chat_uid: string }
+export interface HistoryResponse { history: ChatConversation[] }
 
 export interface NewChatRequestPayload { chat_uid: string }
 export interface SwitchChatRequestPayload { chat_uid: string }
 export interface DeleteChatRequestPayload { chat_uid: string }
 
-export interface NewRoleRequestPayload {role_uid: string}
-export interface SwitchRoleRequestPayload {role_uid: string}
-export interface DeleteRoleRequestPayload {role_uid: string}
+export interface NewRoleRequestPayload { role_uid: string }
+export interface SwitchRoleRequestPayload { role_uid: string }
+export interface DeleteRoleRequestPayload { role_uid: string }
 
 export interface UserFeedbackRequestPayload { user_feedback: boolean }
 
-
 export type ChatMessageType = ChatMessageTypeContinuous | ChatMessageTypeNonContinuous
-

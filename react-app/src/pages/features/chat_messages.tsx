@@ -1,4 +1,4 @@
-import { ChatMessageType } from '@/@types/chat';
+import { ChatMessageType } from 'types/chat';
 import React, { useCallback, useEffect, useState } from 'react';
 import styles from './chat_messages.module.css'
 

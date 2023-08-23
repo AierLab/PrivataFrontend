@@ -1,4 +1,4 @@
-import { PersonaContextType } from '../@types/persona'
+import { PersonaContextType } from 'types/persona'
 import { createContext } from 'react'
 
 const PersonaContext = createContext<PersonaContextType>({

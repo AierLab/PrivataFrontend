@@ -99,6 +99,7 @@ out/
 
 # production
 /react-app/build
+/electron-app/dist
 
 # misc
 .DS_Store

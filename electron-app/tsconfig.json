@@ -7,21 +7,21 @@
     "esModuleInterop": true,
     "noImplicitAny": true,
     "sourceMap": true,
-    "baseUrl": ".",
     "outDir": "dist",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "jsx": "react-jsx",
     "typeRoots": [
       "./node_modules/@types",
-      "./src/@types/*",
-      "../../react-app/src/@types/*"
+      "./@types/*",
     ],
-    "baseUrl": "src/",
+    "baseUrl": "src",
     "paths": {
-      "*": ["node_modules/*"],
-      "@/*": ["./*"]
+      "@/*": ["*"],
+      "types/*": ["types/*"],
     }
   },
-  "include": ["src/**/*"]
+  "include": [
+    "src"
+  ]
 }
