@@ -27,7 +27,7 @@ const RootComponent = () => {
     })
 
     return (
-        <div className="container" id="app">
+        <div id="app">
             <SecurityKeyContext.Provider value={verificationResult}>
                 <SecurityAlertOverlay>
                     <HashRouter>
