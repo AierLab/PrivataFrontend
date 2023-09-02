@@ -1,13 +1,7 @@
-* {
-    margin: 0;
-    box-sizing: border-box;
-    font-family: "CustomFont";
-}
-
-@font-face {
-    font-family: "CustomFont";
-    src: url("../fonts/RolexLight.woff2"); 
-}
+/* @font-face { */
+/*     font-family: "CustomFont"; */
+/*     src: url("../fonts/RolexLight.woff2");  */
+/* } */
 
 .login-page-container {
     width: 100%;

@@ -11,6 +11,7 @@ import { Persona } from "types/persona";
 import { PersonaContext } from "contexts/persona";
 
 import { SecurityKeyManifestV1 } from '@privata/types/security-key'
+import { ChevronDoubleLeftIcon, ChevronLeftIcon } from "@heroicons/react/24/solid";
 
 interface Feature {
     id: string,
@@ -21,21 +22,14 @@ interface Feature {
 
 const Home = () => {
     const features: Feature[] = [
-        { id: 'chat', name: "Chat", icon: <ChatBubbleLeftRightIcon />, element: <Chat /> },
-        { id: 'sing', name: "Sing", icon: <MusicalNoteIcon /> },
-        { id: 'dance', name: "Dance", icon: <MusicalNoteIcon /> },
-        { id: 'content-creation', name: "Content Creation", icon: <PaintBrushIcon /> },
+        { id: 'reports-review', name: "Reports Review", icon: <ChatBubbleLeftRightIcon />, element: <Chat /> },
+        { id: 'quan-eval',      name: "Quantitative Evaluation", icon: <MusicalNoteIcon /> },
+        { id: 'design-plans',   name: "Design Plans", icon: <MusicalNoteIcon /> },
     ]
 
     const verificationResult = useContext(SecurityKeyContext)
 
     const personas = verificationResult.status === "verified" ? (verificationResult.manifest as SecurityKeyManifestV1).personas : [{ uuid: "", name: "", desc: "", avatar: "default-avatar.png", features: [], compatibility: "" }]
-    // const personas: Persona[] = [
-    //     { id: 'bochhi', name: 'Bocchi', desc: 'Hitori Gotou is a guitar player playing for the Kessoku Band.', avatar: 'https://ih1.redbubble.net/image.4489882707.9846/st,small,507x507-pad,600x600,f8f8f8.jpg' },
-    //     { id: 'kita', name: 'Kita', desc: 'Kita Ikuyo is a singer working for Kessoku Band.', avatar: 'https://avatarfiles.alphacoders.com/343/343115.png' },
-    //     { id: 'nijika', name: 'Nijika', desc: 'Nijika Ijichi is a drummer at Kessoku Band.', avatar: 'https://i.pinimg.com/originals/d7/f3/19/d7f319490dd5b677a85389e5b59cee09.jpg' },
-    //     { id: 'ryo', name: 'Ryo', desc: 'Ryo Yamada is in her second year at Shimokitazawa High School and is the bassist of the band, Kessoku Band.', avatar: 'https://i.pinimg.com/736x/1b/88/92/1b8892d1ee65e258a2ce7804f52c5f9a.jpg' },
-    // ]
 
     const [selectedFeature, setSelectedFeature] = useState<Feature | null>(null)
     const [selectedPersona, setSelectedPersona] = useState(personas[0])
@@ -59,7 +53,17 @@ const Home = () => {
                     <main className={styles['content-wrapper']} >
                         <aside className={styles['feature-list-aside']} style={{ backgroundColor: themeColor }}>
                             <div>
-                                <h3 className={styles['application-title']}> Privata </h3>
+                                <div className={styles['org-name-wrapper']}>
+                                    <div className={styles['org-title-wrapper']}>
+                                        <span className={styles['org-avatar']}>  </span>
+                                        <h2 className={styles['org-name']}> Valmech </h2>
+                                    </div>
+                                    <button className={styles['aside-collapse']}>
+                                        <ChevronDoubleLeftIcon/>
+                                    </button>
+                                </div>
+
+                                <div className={styles['aside-devider']}></div>
                                 <ul className={styles['feature-list']}>
                                     {features.map(f => (
                                         <li key={f.id}>
