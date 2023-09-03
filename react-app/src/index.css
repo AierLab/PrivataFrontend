@@ -37,31 +37,3 @@ body {
   @apply no-drag;
 }
 
-.cover{
-  background-color: white;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  border-radius: 1em;
-  /* box-shadow: 0 0.0188em 1.350em rgb(156, 156, 156); */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  -webkit-app-region: drag;
-}
-
-.loginCover{
-  background-color: white;
-  width: 30em;
-  height: 35em;
-  position: relative;
-  border-radius: 1em;
-  box-shadow: 0 0.0188em 1.350em rgb(156, 156, 156);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  -webkit-app-region: drag;
-}
-

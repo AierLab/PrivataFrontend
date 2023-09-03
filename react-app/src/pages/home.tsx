@@ -8,10 +8,13 @@ import { SecurityKeyContext } from "contexts/securityKey";
 
 import Titlebar from 'components/Titlebar'
 import { Persona } from "types/persona";
-import { PersonaContext } from "contexts/persona";
+import { PersonaContext } from "contexts/persona"
 
 import { SecurityKeyManifestV1 } from '@privata/types/security-key'
-import { ChevronDoubleLeftIcon, ChevronLeftIcon } from "@heroicons/react/24/solid";
+import { ChevronDoubleLeftIcon } from "@heroicons/react/24/solid"
+import Separator from "components/Separator"
+import { BellIcon, Cog8ToothIcon } from "@heroicons/react/24/outline";
+import { modulize } from "utils/classNames";
 
 interface Feature {
     id: string,
@@ -27,11 +30,13 @@ const Home = () => {
         { id: 'design-plans',   name: "Design Plans", icon: <MusicalNoteIcon /> },
     ]
 
+    const s = modulize(styles)
+
     const verificationResult = useContext(SecurityKeyContext)
 
     const personas = verificationResult.status === "verified" ? (verificationResult.manifest as SecurityKeyManifestV1).personas : [{ uuid: "", name: "", desc: "", avatar: "default-avatar.png", features: [], compatibility: "" }]
 
-    const [selectedFeature, setSelectedFeature] = useState<Feature | null>(null)
+    const [currentTab, setCurrentTab] = useState<string | null>(null)
     const [selectedPersona, setSelectedPersona] = useState(personas[0])
     const [personaSelectionShow, setpersonaSelectionShow] = useState<boolean>(false)
     const [themeColor, setThemeColor] = useState('white')
@@ -51,7 +56,7 @@ const Home = () => {
             <PersonaContext.Provider value={{ persona: selectedPersona }}>
                 <div className={styles['container']}>
                     <main className={styles['content-wrapper']} >
-                        <aside className={styles['feature-list-aside']} style={{ backgroundColor: themeColor }}>
+                        <aside className={styles['nav-aside']} style={{ backgroundColor: themeColor }}>
                             <div>
                                 <div className={styles['org-name-wrapper']}>
                                     <div className={styles['org-title-wrapper']}>
@@ -63,22 +68,69 @@ const Home = () => {
                                     </button>
                                 </div>
 
-                                <div className={styles['aside-devider']}></div>
-                                <ul className={styles['feature-list']}>
+                                <Separator/>
+                                <ul className={s('feature-list nav-list')}>
                                     {features.map(f => (
-                                        <li key={f.id}>
+                                        <li key={f.id} className={styles['item']}>
                                             <button
-                                                onClick={() => setSelectedFeature(f)}
-                                                className={selectedFeature && selectedFeature.id === f.id ? styles['selected'] : ''}
-                                                style={selectedFeature && selectedFeature.id === f.id ? { backgroundColor: scndThemeColor } : {}}
+                                                onClick={() => setCurrentTab(f.id)}
+                                                className={currentTab && currentTab === f.id ? styles['selected'] : ''}
+                                                style={currentTab && currentTab === f.id ? { backgroundColor: scndThemeColor } : {}}
                                             >
-                                                <span className={styles['feature-icon']}> {f.icon} </span>
-                                                <span className={styles['feature-name']}> {f.name} </span>
+                                                <span className={styles['icon']}> {f.icon} </span>
+                                                <span className={styles['title']}> {f.name} </span>
                                             </button>
                                         </li>
                                     ))}
                                 </ul>
                             </div>
+                            
+                            <ul className={s('bottom-nav nav-list')}>
+                                <Separator margin={0}/>
+                                <li>
+                                    <button
+                                        className={s(currentTab === 'notifications' ? 'selected' : '')}
+                                        onClick={() => setCurrentTab('notifications')}
+                                    >
+                                        <span className={styles['icon']}>
+                                            <BellIcon />
+                                        </span>
+                                        <span className={styles['title']}>
+                                            Notifications
+                                        </span>
+                                    </button>
+                                </li>
+
+
+                                <li>
+                                    <button
+                                        className={s(currentTab === 'help-and-services' ? 'selected' : '')}
+                                        onClick={() => setCurrentTab('help-and-services')}
+                                    >
+                                        <span className={styles['icon']}>
+                                            <Cog8ToothIcon />
+                                        </span>
+                                        <span className={styles['title']}>
+                                            Help & Services
+                                        </span>
+                                    </button>
+                                </li>
+
+                                <li>
+                                    <button
+                                        className={s(currentTab === 'settings' ? 'selected' : '')}
+                                        onClick={() => setCurrentTab('settings')}
+                                    >
+                                        <span className={styles['icon']}>
+                                            <Cog8ToothIcon />
+                                        </span>
+                                        <span className={styles['title']}>
+                                            Settings
+                                        </span>
+                                    </button>
+                                </li>
+                            </ul>
+                            { /*
                             <div className={styles['user-info']}>
                                 <div className={styles['left']}>
                                     <img alt="User avatar" src="default-avatar.png" />
@@ -89,11 +141,12 @@ const Home = () => {
                                 </div>
                                 <EllipsisVerticalIcon className={styles['menu-icon']} />
                             </div>
+                            */ }
                         </aside>
                         <div className={styles['section-page']}>
                             <div className={styles['background-image']} style={{ backgroundImage: `url(${selectedPersona.avatar})` }}></div>
                             <div className={styles['section-page-header']} style={{ backgroundColor: themeColor + 80 }}>
-                                <span> {selectedFeature && selectedFeature.name} </span>
+                                <span> {currentTab && currentTab} </span>
                                 <div>
                                     <button className={styles['persona-dropdown']} onClick={() => setpersonaSelectionShow(true)}>
                                         <img alt="Persona avatar" src={selectedPersona.avatar} />
@@ -108,7 +161,7 @@ const Home = () => {
                                 </div>
                             </div>
                             <div className={styles['section-page-content']}>
-                                {selectedFeature && selectedFeature.element ? selectedFeature.element : "TODO"}
+                                {"TODO"}
                             </div>
                         </div>
                     </main>
