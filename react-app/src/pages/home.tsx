@@ -1,8 +1,7 @@
-import React, { ReactElement, useState, useContext } from "react";
+import { ReactElement, useState, useContext, useEffect } from "react";
 import { extractColorsFromSrc } from "extract-colors";
 import styles from "./home.module.css"
 
-import { ChatBubbleLeftRightIcon, MusicalNoteIcon, PaintBrushIcon, EllipsisVerticalIcon } from "@heroicons/react/20/solid"
 import Chat from "./features/chat";
 import { SecurityKeyContext } from "contexts/securityKey";
 
@@ -13,8 +12,10 @@ import { PersonaContext } from "contexts/persona"
 import { SecurityKeyManifestV1 } from '@privata/types/security-key'
 import { ChevronDoubleLeftIcon } from "@heroicons/react/24/solid"
 import Separator from "components/Separator"
-import { BellIcon, Cog8ToothIcon } from "@heroicons/react/24/outline";
+import { BellIcon, Cog8ToothIcon, ChatBubbleLeftRightIcon, MusicalNoteIcon } from "@heroicons/react/24/outline";
 import { modulize } from "utils/classNames";
+
+import { motion, Variants } from "framer-motion"
 
 interface Feature {
     id: string,
@@ -26,8 +27,8 @@ interface Feature {
 const Home = () => {
     const features: Feature[] = [
         { id: 'reports-review', name: "Reports Review", icon: <ChatBubbleLeftRightIcon />, element: <Chat /> },
-        { id: 'quan-eval',      name: "Quantitative Evaluation", icon: <MusicalNoteIcon /> },
-        { id: 'design-plans',   name: "Design Plans", icon: <MusicalNoteIcon /> },
+        { id: 'quan-eval', name: "Quantitative Evaluation", icon: <MusicalNoteIcon /> },
+        { id: 'design-plans', name: "Design Plans", icon: <MusicalNoteIcon /> },
     ]
 
     const s = modulize(styles)
@@ -42,6 +43,8 @@ const Home = () => {
     const [themeColor, setThemeColor] = useState('white')
     const [scndThemeColor, setScndThemeColor] = useState('#39c5bb')
 
+    const [navCollapsed, setNavCollapsed] = useState(false)
+
     const handleSelectpersona = (p: Persona) => {
         setpersonaSelectionShow(false)
         setSelectedPersona(p)
@@ -51,83 +54,134 @@ const Home = () => {
         })
     }
 
+    const navCollapseVariants: Variants = {
+        collapsed: { width: '4.25rem', },
+        normal: { width: '17.5rem', }
+    }
+    const collapseButtonVariants: Variants = {
+        collapsed: { rotate: '180deg', },
+        normal: { rotate: '0deg', }
+    }
+    const navListTitleVariants: Variants = {
+        collapsed: { opacity: 0 },
+        normal: { opacity: 1 },
+    }
+    const navListItemVariants: Variants = {
+        collapsed: { paddingLeft: '0.5rem', paddingRight: '0.5rem' },
+        normal: { paddingLeft: '1rem', paddingRight: '1rem' },
+    }
+    const orgNameVariants: Variants = {
+        collapsed: { opacity: 0 },
+        normal: { opacity: 1 },
+    }
+
     return (
         <>
             <PersonaContext.Provider value={{ persona: selectedPersona }}>
                 <div className={styles['container']}>
                     <main className={styles['content-wrapper']} >
-                        <aside className={styles['nav-aside']} style={{ backgroundColor: themeColor }}>
+                        <motion.aside
+                            className={s('nav')}
+                            style={{ backgroundColor: themeColor }}
+                            variants={navCollapseVariants}
+                            initial='collapsed'
+                            animate={navCollapsed ? 'collapsed' : 'normal'}
+                        >
                             <div>
                                 <div className={styles['org-name-wrapper']}>
-                                    <div className={styles['org-title-wrapper']}>
+                                    <motion.div
+                                        className={styles['org-title-wrapper']}
+                                        variants={orgNameVariants}
+                                    >
                                         <span className={styles['org-avatar']}>  </span>
                                         <h2 className={styles['org-name']}> Valmech </h2>
-                                    </div>
-                                    <button className={styles['aside-collapse']}>
-                                        <ChevronDoubleLeftIcon/>
+                                    </motion.div>
+                                    <button className={s('aside-collapse')} onClick={() => setNavCollapsed(c => !c)}>
+                                        <motion.span className="block" variants={collapseButtonVariants}>
+                                            <ChevronDoubleLeftIcon />
+                                        </motion.span>
                                     </button>
                                 </div>
 
-                                <Separator/>
+                                <Separator />
                                 <ul className={s('feature-list nav-list')}>
                                     {features.map(f => (
                                         <li key={f.id} className={styles['item']}>
-                                            <button
+                                            <motion.button
                                                 onClick={() => setCurrentTab(f.id)}
                                                 className={currentTab && currentTab === f.id ? styles['selected'] : ''}
                                                 style={currentTab && currentTab === f.id ? { backgroundColor: scndThemeColor } : {}}
+                                                variants={navListItemVariants}
                                             >
                                                 <span className={styles['icon']}> {f.icon} </span>
-                                                <span className={styles['title']}> {f.name} </span>
-                                            </button>
+                                                <motion.span
+                                                    className={styles['title']}
+                                                    variants={navListTitleVariants}
+                                                    transition={{ duration: 0.1 }}
+                                                >
+                                                    {f.name}
+                                                </motion.span>
+                                            </motion.button>
                                         </li>
                                     ))}
                                 </ul>
                             </div>
-                            
+
                             <ul className={s('bottom-nav nav-list')}>
-                                <Separator margin={0}/>
+                                <Separator margin={0} />
                                 <li>
-                                    <button
+                                    <motion.button
                                         className={s(currentTab === 'notifications' ? 'selected' : '')}
                                         onClick={() => setCurrentTab('notifications')}
+                                        variants={navListItemVariants}
                                     >
                                         <span className={styles['icon']}>
                                             <BellIcon />
                                         </span>
-                                        <span className={styles['title']}>
+                                        <motion.span
+                                            className={s('title')}
+                                            variants={navListTitleVariants}
+                                        >
                                             Notifications
-                                        </span>
-                                    </button>
+                                        </motion.span>
+                                    </motion.button>
                                 </li>
 
 
                                 <li>
-                                    <button
+                                    <motion.button
                                         className={s(currentTab === 'help-and-services' ? 'selected' : '')}
                                         onClick={() => setCurrentTab('help-and-services')}
+                                        variants={navListItemVariants}
                                     >
                                         <span className={styles['icon']}>
                                             <Cog8ToothIcon />
                                         </span>
-                                        <span className={styles['title']}>
+                                        <motion.span
+                                            className={s('title')}
+                                            variants={navListTitleVariants}
+                                        >
                                             Help & Services
-                                        </span>
-                                    </button>
+                                        </motion.span>
+                                    </motion.button>
                                 </li>
 
                                 <li>
-                                    <button
+                                    <motion.button
                                         className={s(currentTab === 'settings' ? 'selected' : '')}
                                         onClick={() => setCurrentTab('settings')}
+                                        variants={navListItemVariants}
                                     >
                                         <span className={styles['icon']}>
                                             <Cog8ToothIcon />
                                         </span>
-                                        <span className={styles['title']}>
+                                        <motion.span
+                                            className={s('title')}
+                                            variants={navListTitleVariants}
+                                        >
                                             Settings
-                                        </span>
-                                    </button>
+                                        </motion.span>
+                                    </motion.button>
                                 </li>
                             </ul>
                             { /*
@@ -142,7 +196,7 @@ const Home = () => {
                                 <EllipsisVerticalIcon className={styles['menu-icon']} />
                             </div>
                             */ }
-                        </aside>
+                        </motion.aside>
                         <div className={styles['section-page']}>
                             <div className={styles['background-image']} style={{ backgroundImage: `url(${selectedPersona.avatar})` }}></div>
                             <div className={styles['section-page-header']} style={{ backgroundColor: themeColor + 80 }}>

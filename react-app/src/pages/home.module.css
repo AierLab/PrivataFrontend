@@ -15,10 +15,10 @@
     @apply no-drag;
 }
 
-.nav-aside {
+.nav {
     @apply flex flex-col justify-between;
     @apply h-full p-4;
-    @apply min-w-[17.5rem];
+    @apply overflow-x-hidden;
     @apply drag;
 }
 
@@ -31,6 +31,7 @@
 .org-name-wrapper {
     @apply w-full;
     @apply flex items-center justify-between;
+    @apply relative;
 }
 
 .org-title-wrapper {
@@ -52,13 +53,16 @@
 .org-name-wrapper .aside-collapse {
     @apply no-drag;
 
+    @apply absolute right-0;
+
     @apply h-8 w-8;
     @apply p-2;
     @apply rounded-lg;
     @apply transition duration-100;
 
     @apply hover:bg-gray-200;
-    @apply focus:ring focus:ring-gray-100;
+    @apply focus:outline-none;
+    @apply focus:ring focus:ring-gray-200;
 }
 
 .nav-list > li > button {
@@ -67,11 +71,13 @@
     @apply transition duration-75;
 
     @apply flex flex-row items-center;
-    @apply w-full px-4 py-2;
+    @apply w-full py-2;
 
     @apply hover:bg-gray-50;
-
     @apply focus:outline-gray-400;
+
+    @apply relative;
+    @apply select-none;
 }
 
 .nav-list > li > button.selected {
@@ -85,11 +91,14 @@
 }
 
 .icon > svg {
-    @apply w-4 h-4;
+    @apply w-5 h-5;
 }
 
 .title {
-    @apply text-sm;
+    @apply text-sm text-left;
+    @apply w-[17.5rem];
+    @apply absolute;
+    @apply ml-6;
 }
 
 .section-page {
