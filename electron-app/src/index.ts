@@ -36,7 +36,7 @@ const createWindow = (): void => {
       // mainWindow.loadFile(MAIN_WINDOW_WEBPACK_ENTRY);
       mainWindow.loadFile('index.html');
     } else {
-      mainWindow.loadURL('http://localhost:3001/');
+      mainWindow.loadURL('http://localhost:3002/');
     }
   }
 
@@ -92,7 +92,7 @@ const createWindow = (): void => {
     console.log(result)
     mainWindow.webContents.send('verification_changed', result)
   })
-  
+
 };
 
 // This method will be called when Electron has finished
