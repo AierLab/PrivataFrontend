@@ -1,3 +1,7 @@
+body {
+    @apply bg-slate-200;
+}
+
 .container {
     position: relative;
     display: flex;  
@@ -29,6 +33,7 @@
 }
 
 .org-name-wrapper {
+    @apply select-none;
     @apply w-full;
     @apply flex items-center justify-between;
     @apply relative;
@@ -42,7 +47,7 @@
 .org-name-wrapper .org-avatar {
     @apply rounded-xl;
     @apply h-12 w-12;
-    @apply bg-gray-200;
+    @apply bg-slate-400;
 }
 
 .org-name-wrapper .org-name {
@@ -60,9 +65,9 @@
     @apply rounded-lg;
     @apply transition duration-100;
 
-    @apply hover:bg-gray-200;
+    @apply hover:bg-slate-300;
     @apply focus:outline-none;
-    @apply focus:ring focus:ring-gray-200;
+    @apply focus:ring focus:ring-slate-400;
 }
 
 .nav-list > li > button {
@@ -73,8 +78,8 @@
     @apply flex flex-row items-center;
     @apply w-full py-2;
 
-    @apply hover:bg-gray-50;
-    @apply focus:outline-gray-400;
+    @apply hover:bg-slate-300;
+    @apply focus:outline-slate-400;
 
     @apply relative;
     @apply select-none;
@@ -102,25 +107,38 @@
 }
 
 .section-page {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    
+    @apply my-2 mr-2 rounded-lg overflow-hidden shadow bg-stone-100;
+
+    @appy h-full w-full;
+    @apply relative;
+    @apply flex flex-1 flex-col;
 }
 
 .section-page-header {
-    z-index: 1;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: rgba(255, 255, 255, 0.5);
+    @apply flex justify-between items-center;
+    @apply bg-white;
 
-    padding: var(--titlebar-height) 1rem 0.5rem 2rem;
+    @apply pt-[var(--titlebar-height)] pr-4 pb-2 pl-8;
+    @apply border-b border-b-slate-300;
+    @apply drag;
+}
 
-    -webkit-app-region: drag;
+.section-tab-list {
+    @apply grid gap-x-4 items-center h-full;
+    @apply grid-cols-[repeat(5,fit-content(100%))];
+    @apply grid-rows-1; /* for seleced tab indicator */
+
+    @apply no-drag;
+    @apply font-semibold;
+    @apply select-none;
+}
+
+.section-tab-list button {
+    @apply rounded;
+    @apply py-1 px-2;
+    @apply transition duration-100;
+    @apply hover:bg-slate-100;
+    @apply focus:outline-slate-100;
 }
 
 .persona-dropdown, .persona-dropdown:hover {
@@ -181,9 +199,9 @@
 }
 
 .section-page-content {
+    @apply bg-white;
     position: relative;
     display: flex;
-    /* background-color: #a7a7a723; */
     height: 0;
     flex:1
 }

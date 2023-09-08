@@ -1,5 +1,14 @@
-.dev-menu button, .dev-menu input {
-    @apply border border-gray-500 p-1;
+.dev-menu button {
+    @apply px-2 py-1;
+    @apply rounded;
+    @apply bg-blue-600 text-white shadow-sm;
+    @apply focus:ring focus:ring-blue-200;
+    @apply focus:outline-none;
+}
+
+.dev-menu input {
+    @apply px-2;
+    @apply focus:ring focus:ring-blue-200 focus:outline-none;
     @apply rounded;
 }
 

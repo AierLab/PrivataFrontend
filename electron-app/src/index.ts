@@ -40,7 +40,7 @@ const createWindow = (): void => {
     }
   }
 
-  var modelID:number = null
+  let modelID: number = null
 
   toLoginPage()
   if (debug) {

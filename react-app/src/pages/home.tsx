@@ -1,4 +1,4 @@
-import { ReactElement, useState, useContext, useEffect } from "react";
+import { ReactElement, useState, useContext } from "react";
 import { extractColorsFromSrc } from "extract-colors";
 import styles from "./home.module.css"
 
@@ -12,7 +12,7 @@ import { PersonaContext } from "contexts/persona"
 import { SecurityKeyManifestV1 } from '@privata/types/security-key'
 import { ChevronDoubleLeftIcon } from "@heroicons/react/24/solid"
 import Separator from "components/Separator"
-import { BellIcon, Cog8ToothIcon, ChatBubbleLeftRightIcon, MusicalNoteIcon } from "@heroicons/react/24/outline";
+import { BellIcon, Cog8ToothIcon, ChatBubbleLeftRightIcon, MusicalNoteIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { modulize } from "utils/classNames";
 
 import { motion, Variants } from "framer-motion"
@@ -55,12 +55,12 @@ const Home = () => {
     }
 
     const navCollapseVariants: Variants = {
-        collapsed: { width: '4.25rem', },
-        normal: { width: '17.5rem', }
+        collapsed: { width: '4.25rem', transition: { ease: 'circOut' }},
+        normal: { width: '17.5rem', transition: { ease: 'circOut' }}
     }
     const collapseButtonVariants: Variants = {
-        collapsed: { rotate: '180deg', },
-        normal: { rotate: '0deg', }
+        collapsed: { rotate: '180deg', transition: { ease: 'circOut' }},
+        normal: { rotate: '0deg', transition: { ease: 'circOut' }}
     }
     const navListTitleVariants: Variants = {
         collapsed: { opacity: 0 },
@@ -82,7 +82,7 @@ const Home = () => {
                     <main className={styles['content-wrapper']} >
                         <motion.aside
                             className={s('nav')}
-                            style={{ backgroundColor: themeColor }}
+                            /* style={{ backgroundColor: themeColor }} */
                             variants={navCollapseVariants}
                             initial='collapsed'
                             animate={navCollapsed ? 'collapsed' : 'normal'}
@@ -198,9 +198,24 @@ const Home = () => {
                             */ }
                         </motion.aside>
                         <div className={styles['section-page']}>
-                            <div className={styles['background-image']} style={{ backgroundImage: `url(${selectedPersona.avatar})` }}></div>
-                            <div className={styles['section-page-header']} style={{ backgroundColor: themeColor + 80 }}>
-                                <span> {currentTab && currentTab} </span>
+                            { /* <div className={styles['background-image']} style={{ backgroundImage: `url(${selectedPersona.avatar})` }}></div> */}
+                            <div className={styles['section-page-header']} /* style={{ backgroundColor: themeColor + 80 }} */>
+                                <Titlebar />
+                                <div className={s('section-tab-list')}>
+                                    { /* use https://www.radix-ui.com/primitives/docs/components/tabs instead */ }
+                                    <button>
+                                        Workspace
+                                    </button>
+                                    <button>
+                                        Documents
+                                    </button>
+                                    <button>
+                                        Dashboard
+                                    </button>
+                                    <Separator vertical={true}/>
+                                    <MagnifyingGlassIcon className='h-6 w-6'/>
+
+                                </div>
                                 <div>
                                     <button className={styles['persona-dropdown']} onClick={() => setpersonaSelectionShow(true)}>
                                         <img alt="Persona avatar" src={selectedPersona.avatar} />
@@ -243,7 +258,6 @@ const Home = () => {
                     { /* ---- end ---- */}
 
                 </div>
-                <Titlebar />
             </PersonaContext.Provider>
         </>
     )

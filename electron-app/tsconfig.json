@@ -13,12 +13,12 @@
     "jsx": "react-jsx",
     "typeRoots": [
       "./node_modules/@types",
-      "./types/*",
+      "./types/*"
     ],
     "baseUrl": "src",
     "paths": {
       "@/*": ["*"],
-      "types/*": ["types/*"],
+      "types/*": ["types/*"]
     }
   },
   "include": [

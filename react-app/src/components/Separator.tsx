@@ -7,10 +7,9 @@ interface SeparatorProps {
 
 export default function Separator({ vertical, margin }: SeparatorProps) {
     if (vertical === undefined) vertical = false
-    const dim = vertical ? 'h-full' : 'w-full'
+    const dim = vertical ? 'h-full w-[2px]' : 'w-full h-[2px]'
     const bg = vertical ? 'bg-gradient-to-b' : 'bg-gradient-to-r'
-    const gradient = 'from-transparent via-gray-50 to-transparent'
-    const other = 'h-[2px]'
+    const gradient = 'from-transparent via-black/5 to-transparent'
 
     let marginClass = 'my-4'
     switch (margin) {
@@ -25,6 +24,6 @@ export default function Separator({ vertical, margin }: SeparatorProps) {
     }
 
     return (
-        <div className={classNames(dim, bg, gradient, marginClass, other)} />
+        <div className={classNames(dim, bg, gradient, marginClass)} />
     )
 }
