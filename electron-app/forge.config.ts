@@ -49,8 +49,7 @@ const config: ForgeConfig = {
     packageAfterCopy: async (config, buildPath, electronVersion, platform, arch) => {
       const reactBuild = path.join(__dirname, '../react-app/build/')
       if (!fs.existsSync(reactBuild)) {
-        console.error('React App needs to be built before building electron! Navigate to react-app folder and run `npm run build`.')
-        return
+        throw new Error('React App needs to be built before building electron! Navigate to react-app folder and run `npm run build`.')
       }
       const dst = buildPath;
       fs.cpSync(reactBuild, dst, { recursive: true });

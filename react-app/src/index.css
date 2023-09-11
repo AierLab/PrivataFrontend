@@ -13,6 +13,14 @@
   }
 }
 
+* {
+  @apply selection:bg-sky-600 selection:text-white;
+}
+
+div, button, img {
+  @apply select-none;
+}
+
 html {
   --titlebar-padding: 0.5rem;
   --titlebar-icon-size: 1rem;

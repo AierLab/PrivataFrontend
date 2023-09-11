@@ -29,24 +29,20 @@
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "@vercel/webpack-asset-relocator-loader": "1.7.3",
+    "@timfish/forge-externals-plugin": "^0.2.1",
     "@privata/types": "file:../common-types",
-    "css-loader": "^6.0.0",
+    "electron-squirrel-startup": "^1.0.0",
     "electron": "25.2.0",
     "eslint": "^8.0.1",
     "eslint-plugin-import": "^2.25.0",
     "fork-ts-checker-webpack-plugin": "^7.2.13",
     "node-loader": "^2.0.0",
-    "style-loader": "^3.0.0",
     "ts-loader": "^9.2.2",
     "ts-node": "^10.0.0",
     "typescript": "~4.5.4"
   },
   "dependencies": {
-    "@timfish/forge-externals-plugin": "^0.2.1",
-    "copy-webpack-plugin": "^11.0.0",
     "drivelist": "^11.1.0",
-    "electron-squirrel-startup": "^1.0.0",
-    "react": "^18.2.0",
     "usb": "^2.9.0"
   }
 }

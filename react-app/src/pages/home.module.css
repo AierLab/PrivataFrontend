@@ -33,7 +33,6 @@ body {
 }
 
 .org-name-wrapper {
-    @apply select-none;
     @apply w-full;
     @apply flex items-center justify-between;
     @apply relative;
@@ -82,7 +81,6 @@ body {
     @apply focus:outline-slate-400;
 
     @apply relative;
-    @apply select-none;
 }
 
 .nav-list > li > button.selected {
@@ -130,7 +128,6 @@ body {
 
     @apply no-drag;
     @apply font-semibold;
-    @apply select-none;
 }
 
 .section-tab-list button {
