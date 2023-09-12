@@ -1,43 +1,20 @@
 import reportWebVitals from './reportWebVitals';
 import { createRoot } from 'react-dom/client';
 import { HashRouter, Route, Routes } from 'react-router-dom';
-import { useState } from 'react';
-import { SecurityKeyContext } from 'contexts/securityKey';
-import { ManifestVersion } from '@privata/types/security-key';
-import { SecurityKeyVerificationContext } from 'types/security-key';
 import './index.css';
 
-import SecurityAlertOverlay from 'components/SecurityKeyAlertOverlay';
 import LoginForm from 'pages/loginform';
 import Home from 'pages/home'
 
 const RootComponent = () => {
-    const [verificationResult, setVerificationResult] = useState<SecurityKeyVerificationContext>(
-        { status: 'unverified', manifest: { version: ManifestVersion.v1 } }
-    )
-
-    window.addEventListener('securityKeyVerificationStatusChanged', (e: any) => {
-        const result: SecurityKeyVerificationContext = e.detail
-        // if (result.status==="verified"){
-        //     window.api.startLocalModel()
-        // }else{
-        //     window.api.killLocalModel()
-        // }
-        setVerificationResult(result)
-    })
-
     return (
         <div id="app">
-            <SecurityKeyContext.Provider value={verificationResult}>
-                <SecurityAlertOverlay>
-                    <HashRouter>
-                        <Routes>
-                            <Route path="/" element={<LoginForm />} />
-                            <Route path="/home" element={<Home />} />
-                        </Routes>
-                    </HashRouter>
-                </SecurityAlertOverlay>
-            </SecurityKeyContext.Provider>
+            <HashRouter>
+                <Routes>
+                    <Route path="/" element={<LoginForm />} />
+                    <Route path="/home" element={<Home />} />
+                </Routes>
+            </HashRouter>
         </div >
     )
 };

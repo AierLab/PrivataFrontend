@@ -17,8 +17,12 @@
   @apply selection:bg-sky-600 selection:text-white;
 }
 
-div, button, img {
+div, button, img, span {
   @apply select-none;
+}
+
+* {
+  @apply selection:bg-neutral-300 selection:text-black;;
 }
 
 html {
@@ -28,12 +32,10 @@ html {
 }
 
 body {
-  margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Poppins', 'Inter', 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  @apply subpixel-antialiased;
 }
 
 #root {

@@ -1,20 +1,15 @@
 body {
-    @apply bg-slate-200;
+    @apply bg-white;
 }
 
 .container {
-    position: relative;
-    display: flex;  
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    -webkit-app-region: no-drag;
-
-    color: rgb(17, 38, 60);
+    @apply flex flex-col;
+    @apply h-full w-full;
+    @apply no-drag;
 }
 
 .content-wrapper{
-    @apply relative flex flex-row;
+    @apply flex flex-row;
     @apply h-full w-full;
     @apply no-drag;
 }
@@ -32,7 +27,7 @@ body {
     @apply no-drag;
 }
 
-.org-name-wrapper {
+.org-info-wrapper {
     @apply w-full;
     @apply flex items-center justify-between;
     @apply relative;
@@ -43,18 +38,18 @@ body {
     @apply gap-3;
 }
 
-.org-name-wrapper .org-avatar {
+.org-info-wrapper .org-avatar {
     @apply rounded-xl;
     @apply h-12 w-12;
-    @apply bg-slate-400;
+    @apply bg-neutral-50;
 }
 
-.org-name-wrapper .org-name {
+.org-info-wrapper .org-name {
     @apply font-semibold;
     @apply text-lg;
 }
 
-.org-name-wrapper .aside-collapse {
+.org-info-wrapper .aside-collapse {
     @apply no-drag;
 
     @apply absolute right-0;
@@ -64,9 +59,9 @@ body {
     @apply rounded-lg;
     @apply transition duration-100;
 
-    @apply hover:bg-slate-300;
+    @apply hover:bg-neutral-50;
     @apply focus:outline-none;
-    @apply focus:ring focus:ring-slate-400;
+    @apply focus:ring focus:ring-neutral-200;
 }
 
 .nav-list > li > button {
@@ -76,17 +71,13 @@ body {
 
     @apply flex flex-row items-center;
     @apply w-full py-2;
-
-    @apply hover:bg-slate-300;
-    @apply focus:outline-slate-400;
-
-    @apply relative;
+    
+    @apply hover:bg-neutral-50;
+    @apply focus:outline-neutral-400;
 }
 
 .nav-list > li > button.selected {
-    background-color: #39c5bb;
-    /* background: #2563eb; */
-    color: #fff;
+    @apply bg-neutral-100;
 }
 
 .icon {
@@ -97,18 +88,16 @@ body {
     @apply w-5 h-5;
 }
 
-.title {
+button > .title {
     @apply text-sm text-left;
-    @apply w-[17.5rem];
     @apply absolute;
-    @apply ml-6;
+    @apply ml-12;
+    @apply pointer-events-none;
 }
 
 .section-page {
-    @apply my-2 mr-2 rounded-lg overflow-hidden shadow bg-stone-100;
+    @apply overflow-hidden;
 
-    @appy h-full w-full;
-    @apply relative;
     @apply flex flex-1 flex-col;
 }
 
@@ -116,198 +105,47 @@ body {
     @apply flex justify-between items-center;
     @apply bg-white;
 
-    @apply pt-[var(--titlebar-height)] pr-4 pb-2 pl-8;
-    @apply border-b border-b-slate-300;
+    @apply pr-4 py-6 pl-4;
     @apply drag;
 }
 
 .section-tab-list {
+    @apply mt-[calc(-var(--titlebar-height))];
     @apply grid gap-x-4 items-center h-full;
     @apply grid-cols-[repeat(5,fit-content(100%))];
     @apply grid-rows-1; /* for seleced tab indicator */
 
     @apply no-drag;
     @apply font-semibold;
+    @apply text-neutral-300;
 }
 
 .section-tab-list button {
     @apply rounded;
     @apply py-1 px-2;
     @apply transition duration-100;
-    @apply hover:bg-slate-100;
-    @apply focus:outline-slate-100;
+    @apply hover:bg-neutral-50;
+    @apply focus:outline-neutral-100;
 }
 
-.persona-dropdown, .persona-dropdown:hover {
-    display: flex;
-    padding: 0;
-    align-items: center;
-    overflow: hidden;    
-    border-radius: 999px;
-    border: solid 1px #eee;
-    background: transparent;
-    
-    cursor: pointer;
+.user-avatar {
+    @apply relative top-[calc(var(--titlebar-height)/4)];
+    @apply rounded-lg;
 
-    -webkit-app-region: no-drag;
+    @apply overflow-hidden;
+    @apply cursor-pointer;
+    @apply no-drag;
 }
 
-.persona-dropdown > img {
-    width: 2rem;
-    height: 2rem;
-    object-fit: cover;
-    border-radius: 999px;
-}
-
-.persona-info {
-    opacity: 0;
-    position: absolute;
-    right: 3rem;
-
-    z-index: 10;
-    background: #fff;
-    padding: 1rem;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-
-    border: solid 1px #eee;
-
-    max-width: 20rem;
-}
-
-.persona-info * {
-    font-family: sans-serif;
-}
-
-.persona-dropdown:hover + .persona-info {
-    display: block;
-    opacity: 1;
-}
-
-.persona-info > .persona-name {
-    font-weight: bold;
-}
-
-.persona-info > .persona-hint {
-    font-size: 0.75rem;
-}
-
-.persona-info > .persona-description {
-    margin-top: 1rem;
+.user-avatar > img {
+    @apply h-8 w-8;
+    @apply object-cover;
 }
 
 .section-page-content {
-    @apply bg-white;
-    position: relative;
-    display: flex;
-    height: 0;
-    flex:1
+    @apply bg-neutral-100;
+    @apply rounded-3xl;
+    @apply p-4 mb-2 mr-2 h-0;
+    @apply flex flex-1;
 }
 
-.background-image{
-    position: absolute;
-    background-position: center;
-    background-size:cover;
-    width: 100%;
-    height: 100%;
-    top:0;
-    left:0;
-    opacity: 0.3;
-    z-index: 0;
-}
-
-@keyframes blur {
-    0%{
-        opacity: 0;
-    }      
-    
-    100% {
-        opacity: 1;
-    }
-  }
-
-  @keyframes noblur {
-    0%{
-        backdrop-filter: blur(18px);
-        opacity:1;
-    }      
-    
-    100% {
-        backdrop-filter: blur(0px);
-        opacity: 0;
-    }
-  }
-
-.persona-selection-container {
-    z-index: 2;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    border-radius: 1em;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    display: none;
-}
-
-.persona-selection-container > .persona-selection-title {
-    margin-bottom: 2rem;
-}
-
-.persona-selection-container.persona-selection-show {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    backdrop-filter: blur(18px);
-    opacity: 1;
-    animation: blur 500ms ease forwards;
-}
-
-.persona-list {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    width: 50%;
-    min-width: 32rem;
-}
-
-.persona-list > * + * {
-    margin-left: 0.5rem;
-}
-
-.persona-list > .persona-item {
-    cursor: pointer;
-    padding: 0.5rem;
-}
-
-.persona-list > .persona-item > .persona-item-avatar {
-    height: 6rem;
-    width: 6rem;
-    object-fit: cover;
-    border: solid 1px #bbb;
-    border-radius: 999px;
-
-    transition: 250ms ease;
-}
-
-.persona-list > .persona-item > .persona-item-name {
-    font-size: 0.75rem;
-    text-align: center;
-}
-
-.persona-list > .persona-item:hover > .persona-item-avatar {
-    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-    transform: translateY(-0.25rem);
-}
-
-.persona-list > .persona-item-selected > .persona-item-avatar {
-    border: solid 2px #2563eb;
-}
-
-.persona-list > .persona-item-selected > .persona-item-name {
-    font-weight: bold;
-}
