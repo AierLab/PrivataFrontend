@@ -1,7 +1,6 @@
 // See the Electron documentation for details on how to use preload scripts:
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 import { contextBridge, ipcRenderer } from 'electron'
-import { SecurtyKeyVerificationResult } from './daemons/securityKey';
 
 contextBridge.exposeInMainWorld('api', {
     // node: () => process.versions.node,
@@ -24,12 +23,5 @@ contextBridge.exposeInMainWorld('api', {
     toggleDevTools:   () => ipcRenderer.invoke("dev:toggle-dev-tools"),
     loadDevExtension: (path: string) => ipcRenderer.invoke("dev:load-extension", path),
   })
-
-
-ipcRenderer.on('verification_changed', (event, result: SecurtyKeyVerificationResult) => {
-  window.dispatchEvent(
-    new CustomEvent<SecurtyKeyVerificationResult>('securityKeyVerificationStatusChanged', { detail: result }))
-})
-// we can also expose variables, not just functions
 
 console.log("ALL API LOADED!")

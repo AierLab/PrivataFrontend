@@ -42,7 +42,5 @@
     "typescript": "~4.5.4"
   },
   "dependencies": {
-    "drivelist": "^11.1.0",
-    "usb": "^2.9.0"
   }
 }

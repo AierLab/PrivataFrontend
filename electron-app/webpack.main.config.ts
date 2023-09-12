@@ -17,8 +17,8 @@ export const mainConfig: Configuration = {
 
   plugins: [
     // ...your existing plugins...
-   new ExternalsPlugin("commonjs", ["usb"]),
-   new ExternalsPlugin("commonjs", ["drivelist"])
+    // new ExternalsPlugin("commonjs", ["usb"]),
+    // new ExternalsPlugin("commonjs", ["drivelist"])
   ],
 
   resolve: {

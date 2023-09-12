@@ -41,7 +41,7 @@ const config: ForgeConfig = {
       },
     }),
     new ForgeExternalsPlugin({
-      externals: ['usb', 'drivelist']
+      // externals: ['usb', 'drivelist']
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }) as any
   ],
