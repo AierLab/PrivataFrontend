@@ -61,7 +61,7 @@ export default function OTPInput({ n, className, disabled, autoFocus, onValueCha
         const next = Math.min(i + 1, n - 1)
         const prev = Math.max(i - 1, 0)
 
-        if(/[0-9]/g.test(e.key)) {
+        if(/^[0-9]$/.test(e.key)) {
             setOtp(i, e.key)
             focusOn(next) 
             return
@@ -85,7 +85,7 @@ export default function OTPInput({ n, className, disabled, autoFocus, onValueCha
                 if(!e.getModifierState('Control') && !e.getModifierState('Meta')) return
                 window.api.readClipboard().then((text: string) => {
                     for(let j = 0; j < Math.min(n - i, text.length); j++) {
-                        if(/[0-9]/.test(text[j])) setOtp(i + j, text[j])
+                        if(/^[0-9]$/.test(text[j])) setOtp(i + j, text[j])
                         else break
                     }
                 })
