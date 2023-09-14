@@ -1,0 +1,88 @@
+.login-page {
+    @apply h-full w-full;
+    @apply bg-neutral-100;
+    @apply drag;
+    @apply flex flex-row items-center;
+}
+
+.feature-slide-container {
+    @apply h-full w-full;
+    @apply flex items-center justify-center;
+}
+
+.login-form-container {
+    @apply h-full w-full;
+    @apply flex items-center justify-center;
+}
+
+.login-form {
+    @apply h-[570px] w-[480px] p-16;
+    @apply bg-white;
+    @apply rounded-2xl shadow-lg;
+    @apply no-drag;
+    @apply relative;
+}
+
+.login-form h1 {
+    @apply text-neutral-900 font-semibold text-3xl;
+}
+
+.login-form .login-method-tab {
+    @apply mt-10;
+}
+
+.login-form .login-method-tab .login-method-list {
+    @apply space-x-8;
+}
+
+.login-method-list > button {
+    @apply text-neutral-400;
+    @apply transition duration-75;
+    @apply hover:text-neutral-600;
+}
+
+.login-method-list > button[data-state="active"] {
+    @apply font-semibold;
+    @apply text-black;
+}
+
+.email-input {
+    @apply w-full;
+    @apply h-12 pl-4 pr-3 py-3;
+    @apply bg-white rounded-md;
+    @apply border-2 border-neutral-200;
+    @apply justify-end items-center gap-2.5;
+    
+    @apply focus:outline-none focus:border-neutral-700;
+    @apply transition duration-100;
+}
+
+#remember-me {
+    @apply w-4 h-4;
+    @apply rounded;
+    @apply border-2 border-neutral-200;
+
+    @apply transition duration-100;
+    @apply hover:border-neutral-400;
+}
+
+#remember-me ~ label {
+    @apply ml-2;
+    @apply cursor-pointer;
+}
+
+.login-form .next-step {
+    @apply absolute bottom-10 left-14 right-14;
+    @apply py-4;
+    @apply bg-black text-white;
+    @apply rounded-xl;
+
+    @apply transition duration-100;
+    @apply focus:ring focus:ring-neutral-300;
+    @apply hover:bg-neutral-950;
+}
+
+.otp-input {
+    @apply mt-10;
+    @apply w-full;
+}

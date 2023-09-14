@@ -1,4 +1,4 @@
-export function classNames(...classes: string[]) {
+export function classNames(...classes: (string | undefined | null)[]) {
     classes = classes.filter(c => c)
     return classes.join(' ')
 }

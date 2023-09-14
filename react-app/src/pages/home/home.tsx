@@ -1,7 +1,7 @@
 import { ReactElement, useState } from "react";
 import styles from "./home.module.css"
 
-import Chat from "./features/chat";
+import Chat from "pages/features/chat";
 
 import Titlebar from 'components/Titlebar'
 import { ChevronDoubleLeftIcon } from "@heroicons/react/24/solid"
@@ -57,7 +57,7 @@ const Home = () => {
                     <motion.aside
                         className={s('nav')}
                         variants={navCollapseVariants}
-                        initial='collapsed'
+                        initial='normal'
                         animate={navCollapsed ? 'collapsed' : 'normal'}
                     >
                         <div>

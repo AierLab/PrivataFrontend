@@ -22,6 +22,8 @@ contextBridge.exposeInMainWorld('api', {
     isDebug:          () => ipcRenderer.invoke("dev:is-debug-mode"),
     toggleDevTools:   () => ipcRenderer.invoke("dev:toggle-dev-tools"),
     loadDevExtension: (path: string) => ipcRenderer.invoke("dev:load-extension", path),
+
+    readClipboard:    () => ipcRenderer.invoke('sys:read-clipboard'),
   })
 
 console.log("ALL API LOADED!")

@@ -1,0 +1,48 @@
+.wrapper {
+    @apply h-full w-full;
+    @apply flex flex-row justify-between items-center;
+}
+
+.input-field {
+    @apply w-11 h-11;
+    @apply border-2 border-neutral-200;
+    @apply rounded;
+
+    @apply transition duration-150;
+
+    @apply focus:outline-none;
+    @apply flex items-center justify-center;
+
+    @apply overflow-hidden;
+}
+
+.input-field:not(.disabled) {
+    @apply cursor-text;
+    @apply hover:border-indigo-300;
+    @apply focus:ring focus:border-indigo-400 focus:ring-indigo-200;
+}
+
+.input-field:not([data-otp='']) {
+    @apply border-indigo-500;
+}
+
+.input-field.disabled {
+    @apply cursor-not-allowed;
+}
+
+.otp-value {
+    @apply font-bold;
+    @apply pointer-events-none;
+}
+
+.input-field .pseudo-i-beam {
+    @apply opacity-0;
+    @apply w-[2px] h-4;
+    @apply bg-neutral-800;
+
+    @apply pointer-events-none;
+}
+
+button:not(.disabled):focus > .pseudo-i-beam {
+    @apply opacity-100;
+}
