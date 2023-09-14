@@ -63,7 +63,8 @@
     @apply border-2 border-neutral-200;
 
     @apply transition duration-100;
-    @apply hover:border-neutral-400;
+    @apply hover:border-neutral-400 focus:ring focus:ring-neutral-100;
+    @apply focus:outline-none;
 }
 
 #remember-me ~ label {
@@ -80,6 +81,7 @@
     @apply transition duration-100;
     @apply focus:ring focus:ring-neutral-300;
     @apply hover:bg-neutral-950;
+    @apply focus:outline-none;
 }
 
 .otp-input {

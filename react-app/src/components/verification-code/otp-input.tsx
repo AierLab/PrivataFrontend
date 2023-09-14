@@ -84,7 +84,7 @@ export default function OTPInput({ n, className, disabled, autoFocus, onValueCha
             case "v":
                 if(!e.getModifierState('Control') && !e.getModifierState('Meta')) return
                 window.api.readClipboard().then((text: string) => {
-                    for(let j = 0; j < Math.min(n, text.length); j++) {
+                    for(let j = 0; j < Math.min(n - i, text.length); j++) {
                         if(/[0-9]/.test(text[j])) setOtp(i + j, text[j])
                         else break
                     }
