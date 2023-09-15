@@ -30,24 +30,24 @@ const Home = () => {
     const [navCollapsed, setNavCollapsed] = useState(false)
 
     const navCollapseVariants: Variants = {
-        collapsed: { width: '4.25rem', transition: { ease: 'circOut' }},
-        normal: { width: '17.5rem', transition: { ease: 'circOut' }}
+        collapsed: { width: '4.25rem', transition: { ease: 'circOut', duration: 0.2 }},
+        normal: { width: '17.5rem', transition: { ease: 'circOut', duration: 0.2 }}
     }
     const collapseButtonVariants: Variants = {
-        collapsed: { rotate: '180deg', transition: { ease: 'circOut' }},
-        normal: { rotate: '0deg', transition: { ease: 'circOut' }}
+        collapsed: { rotate: '180deg', transition: { ease: 'circOut', duration: 0.2 }},
+        normal: { rotate: '0deg', transition: { ease: 'circOut', duration: 0.2 }}
     }
     const navListTitleVariants: Variants = {
-        collapsed: { opacity: 0, },
-        normal: { opacity: 1, },
+        collapsed: { opacity: 0, transition: { duration: 0.1 } },
+        normal: { opacity: 1, transition: { duration: 0.1 } },
     }
     const navListItemVariants: Variants = {
-        collapsed: { paddingLeft: '0.5rem', paddingRight: '0.5rem' },
-        normal: { paddingLeft: '1rem', paddingRight: '1rem' },
+        collapsed: { paddingLeft: '0.5rem', paddingRight: '0.5rem', transition: { duration: 0.2 } },
+        normal: { paddingLeft: '1rem', paddingRight: '1rem', transition: { duration: 0.2 } },
     }
     const orgNameVariants: Variants = {
-        collapsed: { opacity: 0 },
-        normal: { opacity: 1 },
+        collapsed: { opacity: 0, transition: { duration: 0.2 } },
+        normal: { opacity: 1, transition: { duration: 0.2 } },
     }
 
     return (
@@ -89,7 +89,6 @@ const Home = () => {
                                             <motion.span
                                                 className={styles['title']}
                                                 variants={navListTitleVariants}
-                                                transition={{ duration: 0.1 }}
                                             >
                                                 {f.name}
                                             </motion.span>

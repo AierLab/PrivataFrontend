@@ -9,7 +9,6 @@ interface OTPInputProps {
     className?: string
     disabled?: boolean
     autoFocus?: boolean
-    verifing?: boolean
     onValueChanged?: (value: Array<string>) => void,
     onComplete?: (value: Array<string>) => void,
 }

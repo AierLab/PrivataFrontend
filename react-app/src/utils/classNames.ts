@@ -17,7 +17,7 @@ export function modulize(styles: CssModule) {
         const classes = keys
             .reduce((prev, curr) => { return [...prev, ...curr.split(' ')] }, [] as string[])
             .filter(c => c)
-        const realClasses = classes.map(c => styles[c])
+        const realClasses = classes.map(c => styles[c] || c)
         return realClasses.join(' ')
     }
 }
