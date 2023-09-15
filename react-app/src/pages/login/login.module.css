@@ -57,6 +57,21 @@
     @apply transition duration-100;
 }
 
+.call-code {
+    @apply absolute left-4;
+}
+
+.phone-number-input {
+    @apply w-full;
+    @apply h-12 pl-14 pr-3 py-3;
+    @apply bg-white rounded-md;
+    @apply border-2 border-neutral-200;
+    @apply justify-end items-center gap-2.5;
+    
+    @apply focus:outline-none focus:border-neutral-700;
+    @apply transition duration-100;
+}
+
 #remember-me {
     @apply w-4 h-4;
     @apply rounded;
@@ -88,3 +103,9 @@
     @apply mt-10;
     @apply w-full;
 }
+
+.tips {
+    @apply mt-2;
+    @apply text-neutral-400;
+}
+

@@ -18,7 +18,7 @@
 
 .input-field:not(.disabled) {
     @apply cursor-text;
-    @apply hover:border-indigo-300;
+    @apply hover:border-indigo-500;
     @apply focus:ring focus:border-indigo-400 focus:ring-indigo-200;
 }
 
@@ -35,14 +35,3 @@
     @apply pointer-events-none;
 }
 
-.input-field .pseudo-i-beam {
-    @apply opacity-0;
-    @apply w-[2px] h-4;
-    @apply bg-neutral-800;
-
-    @apply pointer-events-none;
-}
-
-button:not(.disabled):focus > .pseudo-i-beam {
-    @apply opacity-100;
-}

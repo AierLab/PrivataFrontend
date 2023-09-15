@@ -1,6 +1,5 @@
 import { useRef, useState } from "react"
 import styles from "./login.module.css"
-import { getLoginResponse } from "utils/request"
 import { useNavigate } from "react-router-dom"
 import { modulize } from 'utils/classNames'
 import Titlebar from "components/Titlebar"
@@ -9,20 +8,33 @@ import * as Checkbox from '@radix-ui/react-checkbox'
 import { CheckIcon } from "@heroicons/react/24/outline"
 import { motion, AnimatePresence, MotionProps } from "framer-motion"
 import OTPInput from "components/verification-code/otp-input"
+import { argv0 } from "process"
 
 const Login = () => {
     const s = modulize(styles)
 
     const [loginStage, setLoginStage] = useState('login-method')
 
-    const emailInput = useRef<HTMLInputElement>(null)
-    const phoneNumberInput = useRef<HTMLInputElement>(null)
+    const [email, setEmail] = useState<string>('')
+    const [phoneNumber, setPhoneNumber] = useState<string>('')
+
     const goto = useNavigate()
 
     const tabTransitionConfig: MotionProps = {
         initial: { opacity: 0, x: 20 },
         animate: { opacity: 1, x: 0 },
         exit:    { opacity: 0, x: -20 },
+    }
+
+    const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let value = e.target.value.replaceAll(/[^\d]/g, '')
+        if(value.length > 11) value = value.substring(0, 11)
+
+        let i = 0
+        value = '### #### ####'.replace(/#/g, _ => value[i++] || '')
+        value = value.trimEnd()
+
+        setPhoneNumber(value)
     }
 
     const handleNextStepClick = () => {
@@ -47,8 +59,8 @@ const Login = () => {
             </div>
             <div className={s('login-form-container')}>
                 <form className={s('login-form')}>
-                    <Tabs.Root className={s("login-form-content-tabs")} value={loginStage}>
-                        <AnimatePresence mode="wait" initial={false}>
+                    <AnimatePresence mode="wait" initial={false}>
+                        <Tabs.Root className={s("login-form-content-tabs")} value={loginStage}>
                             <Tabs.Content value="login-method">
                                 <motion.div {...tabTransitionConfig}>
                                     <h1> 欢迎使用 </h1>
@@ -63,7 +75,26 @@ const Login = () => {
                                         </Tabs.List>
                                         <div className="mt-3 w-full">
                                             <Tabs.Content value="email">
-                                                <input spellCheck="false" className={s("email-input")} placeholder="请输入你的邮箱"/>
+                                                <input
+                                                    spellCheck="false"
+                                                    className={s("email-input")}
+                                                    placeholder="请输入你的邮箱"
+                                                    type="email"
+                                                    value={email}
+                                                    onChange={(e) => setEmail(e.target.value)}
+                                                />
+                                            </Tabs.Content>
+                                            <Tabs.Content value="phone-number" className="relative flex items-center">
+                                                <span className={s('call-code')}> +86 </span>
+                                                <input
+                                                    spellCheck="false"
+                                                    className={s("phone-number-input")}
+                                                    placeholder="请输入你的手机号码"
+                                                    type="tel"
+                                                    inputMode="numeric"
+                                                    value={phoneNumber}
+                                                    onChange={handlePhoneNumberChange}
+                                                />
                                             </Tabs.Content>
                                         </div>
                                     </Tabs.Root>
@@ -82,6 +113,9 @@ const Login = () => {
                             <Tabs.Content value="email-verification-code">
                                 <motion.div {...tabTransitionConfig}>
                                     <h1> 输入邮箱验证码 </h1>
+                                    <p className={s('tips')}>
+                                        已向邮箱 t*******@******* 发送 6 位验证码，有效期10分钟
+                                    </p>
                                     <OTPInput
                                         className={s('otp-input')}
                                         n={6}
@@ -90,8 +124,8 @@ const Login = () => {
                                     />
                                 </motion.div>
                             </Tabs.Content>
-                        </AnimatePresence>
-                    </Tabs.Root>
+                        </Tabs.Root>
+                    </AnimatePresence>
                     <button type="button" className={s('next-step')} onClick={() => handleNextStepClick()}>
                         下一步
                     </button>

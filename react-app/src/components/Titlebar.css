@@ -52,18 +52,15 @@
 }
 
 .titlebar > #minimize:hover{
-    transform: scale(1.3);
     color: #2f6df1;
     -webkit-app-region: no-drag;
 }
 
 .titlebar > #maximize:hover{
-    transform: scale(1.3);
     color: #eeb437
 }
 
 .titlebar > #close:hover{
-    transform: scale(1.3);
     color: #FF0000;
     -webkit-app-region: no-drag;
 }

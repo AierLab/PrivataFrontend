@@ -13,16 +13,19 @@
   }
 }
 
-* {
-  @apply selection:bg-sky-600 selection:text-white;
-}
-
 div, button, img, span {
   @apply select-none;
 }
 
 * {
   @apply selection:bg-neutral-300 selection:text-black;;
+  @apply focus:outline-none;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 html {
@@ -32,7 +35,7 @@ html {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Poppins', 'Inter', 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: -apple-system, BlinkMacSystemFont, 'Poppins', 'HarmonyOS Sans', 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   @apply subpixel-antialiased;

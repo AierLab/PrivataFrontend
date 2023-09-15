@@ -2,13 +2,14 @@ import { classNames, modulize } from 'utils/classNames'
 import React, { useEffect, useRef, useState, useCallback } from 'react'
 import styles from './otp-input.module.css'
 
-import { motion, MotionProps } from 'framer-motion'
+import { AnimatePresence, motion, MotionProps } from 'framer-motion'
 
 interface OTPInputProps {
     n: number
     className?: string
     disabled?: boolean
     autoFocus?: boolean
+    verifing?: boolean
     onValueChanged?: (value: Array<string>) => void,
     onComplete?: (value: Array<string>) => void,
 }
@@ -30,9 +31,16 @@ export default function OTPInput({ n, className, disabled, autoFocus, onValueCha
 
     const motionConfig: MotionProps = {
         initial: { y: '3rem' },
-        animate: { y: '0rem' },
-        exit:    { y: '-3rem' },
-        transition: { type: 'spring', duration: 0.4 }
+        animate: {
+            y: '0rem',
+            opacity: 1,
+            transition: { type: 'spring', duration: 0.4 }
+        },
+        exit: {
+            opacity: 0,
+            scale: 0.8,
+            transition: { duration: 0.1 }
+        },
     }
 
     const setOtp = (i: number, value: string) => {
@@ -112,13 +120,13 @@ export default function OTPInput({ n, className, disabled, autoFocus, onValueCha
                         data-otp={otp[i]}
                         onKeyDown={(e) => handleOtpInput(i, e)}
                     >
-                        { otp[i] !== '' ? 
-                            <motion.label {...motionConfig} className={s('otp-value')}>
-                                {otp[i]}
-                            </motion.label > 
-                            :
-                            <span className={s("pseudo-i-beam")}/>
-                        }
+                        <AnimatePresence mode="wait">
+                            { otp[i] !== '' &&
+                                <motion.label {...motionConfig} className={s('otp-value')}>
+                                    {otp[i]}
+                                </motion.label > 
+                            }
+                        </AnimatePresence>
                     </button>
                 </React.Fragment>
             ))}

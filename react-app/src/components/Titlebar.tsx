@@ -2,20 +2,14 @@ import { BugAntIcon, MinusIcon, StopIcon, XMarkIcon } from '@heroicons/react/24/
 import { useRef, useState, useEffect } from 'react';
 import './Titlebar.css'
 
-interface TitleBarProps {
-  colorScheme?: 'light' | 'dark',
-};
-
 // to avoid OS deem the titlebar as a draggable area, have to seperate
 // titlebar as a independent component, place it as a child of the
 // page's top right element, if there's no such element, place it as a
 // child of root.
-const Titlebar = ({ colorScheme }: TitleBarProps) => {
+const Titlebar = () => {
   const [debug, setDebug] = useState<boolean>(false)
   const [devMenuOpen, setDevMenuOpen] = useState<boolean>(false)
   const devExtPathRef = useRef<HTMLInputElement>(null)
-
-  const color = colorScheme === 'light' ? 'white' : 'black'
 
   useEffect(() => {
     window.api.isDebug().then((d: boolean) => {
@@ -32,7 +26,7 @@ const Titlebar = ({ colorScheme }: TitleBarProps) => {
       { debug ?
         <>
           <button id="open-dev-menu" onClick={ () => setDevMenuOpen(o => !o) } title="Open Dev Menu">
-            <BugAntIcon color={color} />
+            <BugAntIcon />
           </button>
           { devMenuOpen ?
             <div className="dev-menu" onClick={ () => setDevMenuOpen(false) }>
@@ -66,13 +60,13 @@ const Titlebar = ({ colorScheme }: TitleBarProps) => {
       }
 
       <button id="minimize" onClick={window.api.minimizeWindow} title="Minimize Window">
-        <MinusIcon color={color}/>
+        <MinusIcon />
       </button>
       <button id="maximize" onClick={window.api.toggleMaximize} title="Maximize Window">
-        <StopIcon color={color}/>
+        <StopIcon />
       </button >
       <button id="close" onClick={window.api.closeWindow} title="Close Window">
-        <XMarkIcon color={color}/>
+        <XMarkIcon />
       </button>
     </div>
   )
