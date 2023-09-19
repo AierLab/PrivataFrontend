@@ -36,7 +36,7 @@ const RootComponent = () => {
                 <Routes>
                     <Route path="/" element={<Index />} />
                     <Route path="/login" element={<Login />} />
-                    <Route path="/home" element={<Home />} />
+                    <Route path="/home/:tab?/:workspace?" element={<Home />} />
                 </Routes>
             </HashRouter>
         </div >

@@ -2,7 +2,7 @@ import { classNames, modulize } from 'utils/classNames'
 import React, { useEffect, useRef, useState, useCallback } from 'react'
 import styles from './otp-input.module.css'
 
-import { AnimatePresence, motion, MotionProps } from 'framer-motion'
+import { AnimatePresence, motion, MotionProps, Variants } from 'framer-motion'
 
 interface OTPInputProps {
     n: number
@@ -18,6 +18,7 @@ export default function OTPInput({ n, className, disabled, autoFocus, onValueCha
     const [otp, setOtpArray] = useState<string[]>(new Array(n).fill(""))
     const fieldListRef = useRef<HTMLDivElement>(null)
 
+    // nunber of fields that is not empty
     const [nFilled, setNFilled] = useState(0)
 
     useEffect(() => {
@@ -28,18 +29,27 @@ export default function OTPInput({ n, className, disabled, autoFocus, onValueCha
         if(nFilled === n) onComplete && onComplete(otp)
     }, [nFilled, onComplete, otp, n]);
 
-    const motionConfig: MotionProps = {
-        initial: { y: '3rem' },
+    const otpValueMotion: MotionProps = {
+        initial: { y: '2rem' },
         animate: {
             y: '0rem',
             opacity: 1,
-            transition: { type: 'spring', duration: 0.4 }
+            transition: { type: 'spring', duration: 0.5 }
         },
         exit: {
             opacity: 0,
             scale: 0.8,
             transition: { duration: 0.1 }
         },
+    }
+
+    const buttonMotionVariants: Variants = {
+        validating: {
+            backgroundColor: 'hsl(0, 0%, 89.8%)',
+        },
+        verified: {
+            backgroundColor: 'hsl(142, 70.6%, 45.3%)',
+        }
     }
 
     const setOtp = (i: number, value: string) => {
@@ -63,6 +73,10 @@ export default function OTPInput({ n, className, disabled, autoFocus, onValueCha
     }, [autoFocus]);
 
     const handleOtpInput = useCallback((i: number, e: React.KeyboardEvent<HTMLButtonElement>) => {
+        // FIXME:
+        // potential bug: keyboard will not prompt on mobile device,
+        // use a opcacity-0 input may fix this, or programmatically
+        // prompt the keyboard when focus
         if(disabled) return
 
         const next = Math.min(i + 1, n - 1)
@@ -79,7 +93,8 @@ export default function OTPInput({ n, className, disabled, autoFocus, onValueCha
                 setOtp(i, '')
                 break
             case "Backspace":
-                setOtp(i, '')
+                if(otp[i] === '') setOtp(prev, '')
+                else setOtp(i, '')
                 focusOn(prev)
                 break
             case "ArrowLeft":
@@ -104,7 +119,7 @@ export default function OTPInput({ n, className, disabled, autoFocus, onValueCha
                 focusOn(0)
                 break;
         }
-    }, [n, disabled])
+    }, [disabled, n, otp])
 
     return (
         <div
@@ -121,7 +136,7 @@ export default function OTPInput({ n, className, disabled, autoFocus, onValueCha
                     >
                         <AnimatePresence mode="wait">
                             { otp[i] !== '' &&
-                                <motion.label {...motionConfig} className={s('otp-value')}>
+                                <motion.label key={otp[i]} {...otpValueMotion} className={s('otp-value')}>
                                     {otp[i]}
                                 </motion.label > 
                             }

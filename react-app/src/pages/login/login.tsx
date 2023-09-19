@@ -33,6 +33,9 @@ const Login = () => {
     }
 
     const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        // FIXME:
+        // if the cursor is not at the end of text,
+        // editing would make cursor be put on the end.
         let value = e.target.value.replaceAll(/[^\d]/g, '')
         if (value.length > 11) value = value.substring(0, 11)
 

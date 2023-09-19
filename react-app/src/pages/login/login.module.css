@@ -156,7 +156,7 @@ input {
 }
 
 .select-label {
-    @apply text-sm text-neutral-400;
+    @apply text-sm text-neutral-400 mx-2;
 }
 
 .select-separator {
@@ -170,7 +170,7 @@ input {
 }
 
 .org-list .org-item {
-    @apply rounded-lg;
+    @apply rounded-xl;
     @apply px-4 py-3;
     @apply flex items-center space-x-4;
     @apply border-2 border-neutral-200;
@@ -181,7 +181,7 @@ input {
 }
 
 .org-list .org-item .org-icon {
-    @apply h-12 w-12 rounded-lg;
+    @apply h-12 w-12 rounded-xl;
     @apply bg-neutral-100;
 }
 
