@@ -16,6 +16,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+          token: ${{ secrets.GH_PAT }}
       - uses: actions/setup-node@v3
         with:
           node-version: 18
@@ -35,7 +36,7 @@ jobs:
       - name: Publish release
         uses: svenstaro/upload-release-action@v2
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: ${{ secrets.GH_PAT }}
           file: electron-app/out/make/**/*.{exe,zip}
           file_glob: true
           release_name: CI - ${{ github.ref }}
