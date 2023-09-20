@@ -11,6 +11,7 @@ import { modulize } from "utils/classNames"
 import { motion, Variants } from "framer-motion"
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { useQueryItem } from "utils/useQueryItem"
+import FileCard from "components/FileCard/index"
 
 type TabIDs = 'reports-review' | 'quan-eval'
 type DialogIDs = 'notifications' | 'help' | 'settings' | 'search' | null
@@ -215,19 +216,58 @@ const Home = () => {
                         </div>
 
                         <div className={styles['section-page-content']}>
+
+                            { /* workspaces dialog */ }
                             { currentWorkspace === 'workspace' && currentTab === 'reports-review' &&
-                                <div className={s('workspace-header')}>
-                                    <h2> 文件审核 </h2>
-                                    <button className="rounded-full p-2 -m-2 hover:bg-neutral-200 transition duration-100">
-                                        <FolderIcon className="h-5 w-5"/>
-                                    </button>
+                                <div>
+                                    <div className={s('workspace-header')}>
+                                        <h2> 文件审核 </h2>
+                                        <button className="rounded-full p-2 -m-2 hover:bg-neutral-200 transition duration-100">
+                                            <FolderIcon className="h-5 w-5"/>
+                                        </button>
+
+                                    </div>
+                                    <div className="h-full w-full overflow-y-auto px-[5%] lg:px-[15%] 2xl:px-[25%]">
+                                        <FileCard
+                                            type='review'
+                                            filetype='txt'
+                                            filesize={3.1 * 1024 * 1024}
+                                            filename="dadwad.txt"
+                                            uploadProgress={0.7}
+                                            done={true}
+                                            mentionables={[
+                                                { id: 'dawda', username: 'Alister', avatar: ''},
+                                                { id: 'dadaw', username: 'Alister', avatar: ''},
+                                                { id: 'dgfaw', username: 'Alister', avatar: ''},
+                                                { id: 'dgdfw', username: 'Alister', avatar: ''},
+                                                { id: 'doguw', username: 'Alister', avatar: ''},
+                                                { id: 'gdfad', username: 'Alister', avatar: ''},
+                                                { id: 'jdkfg', username: 'Alister', avatar: ''},
+                                                { id: 'lkjdf', username: 'Alister', avatar: ''},
+                                            ]}
+                                            mentioned={[
+                                                { id: 'dawda', username: 'Alister', avatar: ''},
+                                                { id: 'dadaw', username: 'Alister', avatar: ''},
+                                                { id: 'dgfaw', username: 'Alister', avatar: ''},
+                                                { id: 'dgdfw', username: 'Alister', avatar: ''},
+                                                { id: 'doguw', username: 'Alister', avatar: ''},
+                                                { id: 'gdfad', username: 'Alister', avatar: ''},
+                                                { id: 'jdkfg', username: 'Alister', avatar: ''},
+                                                { id: 'lkjdf', username: 'Alister', avatar: ''},
+                                            ]}
+                                            overview="你说的对，但是《原神》是由米哈游自主研发的一款全新开放世界冒险游戏。游戏发生在一个被称作「提瓦特」的幻想世界，在这里，被神选中的人将被授予"
+                                            reviewFilename="dfgdfgdf.txt"
+                                            reviewFilesize={1234}
+                                        />
+                                    </div>
                                 </div>
                             }
                         </div>
                     </div>
                 </main>
-                
+
                 { /* dialogs */ }
+                { /* settings dialog */ }
                 <Dialog.Root open={dialog === 'settings'}>
                     <Dialog.Portal>
                         <Dialog.Overlay id={s('dialog-overlay')} />

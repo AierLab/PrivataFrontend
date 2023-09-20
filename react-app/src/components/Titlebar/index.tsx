@@ -1,6 +1,6 @@
 import { BugAntIcon, MinusIcon, StopIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useRef, useState, useEffect } from 'react';
-import './Titlebar.css'
+import './index.css'
 
 // to avoid OS deem the titlebar as a draggable area, have to seperate
 // titlebar as a independent component, place it as a child of the

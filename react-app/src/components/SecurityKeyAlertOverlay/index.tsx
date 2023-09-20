@@ -1,8 +1,8 @@
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid"
 import { AnimatePresence, motion } from "framer-motion"
 import { useContext } from "react"
-import { SecurityKeyContext } from "../contexts/securityKey"
-import styles from './SecurityKeyAlertOverlay.module.css'
+import { SecurityKeyContext } from "contexts/securityKey"
+import styles from './index.module.css'
 import { SecurityKeyVerificationContext } from 'types/security-key'
 
 interface Props {

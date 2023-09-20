@@ -8,7 +8,7 @@ import * as Checkbox from '@radix-ui/react-checkbox'
 import * as Select from '@radix-ui/react-select'
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/24/outline"
 import { motion, AnimatePresence, MotionProps } from "framer-motion"
-import OTPInput from "components/verification-code/otp-input"
+import OTPInput from "components/OTPInput"
 
 type Pathway = 'unregistered' | 'invited' | 'registered'
 const pathways: Record<Pathway, Array<string>> = {

@@ -1,6 +1,6 @@
 import { classNames, modulize } from 'utils/classNames'
 import React, { useEffect, useRef, useState, useCallback } from 'react'
-import styles from './otp-input.module.css'
+import styles from './index.module.css'
 
 import { AnimatePresence, motion, MotionProps, Variants } from 'framer-motion'
 

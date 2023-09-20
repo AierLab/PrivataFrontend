@@ -1,0 +1,63 @@
+.container {
+    @apply p-1 rounded-2xl;
+    @apply bg-indigo-100;
+    @apply space-y-1;
+}
+
+.card {
+    @apply rounded-xl;
+    @apply bg-white;
+    @apply p-4 flex;
+}
+
+.card.shadow {
+    @apply shadow-sm;
+}
+
+.card.horizontal {
+    @apply flex-col justify-between items-center;
+}
+
+.card.vertical {
+    @apply flex-row items-start;
+}
+
+.card h2 {
+    @apply font-bold;
+}
+
+.card.horizontal {
+    @apply flex-row justify-between;
+}
+
+.file-info-wrap {
+    @apply flex flex-col justify-between;
+}
+
+.file-info-wrap .file-name {
+    @apply font-bold;
+}
+
+.file-info-wrap .file-size {
+    @apply text-sm text-neutral-400;
+}
+
+.upload-progress {
+    @apply -rotate-90;
+}
+
+.overview {
+    @apply select-text;
+    @apply text-sm;
+}
+
+.mentions {
+    @apply flex gap-x-2 gap-y-1 flex-wrap;
+}
+
+.mention-card {
+    @apply flex flex-row space-x-1 items-center;
+    @apply border-2 border-neutral-200/75;
+    @apply rounded-lg py-0.5 px-2;
+    @apply text-sm text-indigo-500;
+}
