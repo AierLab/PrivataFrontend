@@ -110,7 +110,7 @@ button > .title {
 }
 
 .section-tab-list {
-    @apply mt-[calc(-var(--titlebar-height))];
+    @apply mt-[calc(var(--titlebar-height)*-1)];
     @apply grid gap-x-4 items-center h-full;
     @apply grid-cols-[repeat(5,fit-content(100%))];
     @apply grid-rows-1; /* for seleced tab indicator */
