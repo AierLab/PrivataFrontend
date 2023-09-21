@@ -2,7 +2,7 @@ import { classNames, modulize } from 'utils/classNames'
 import React, { useEffect, useRef, useState, useCallback } from 'react'
 import styles from './index.module.css'
 
-import { AnimatePresence, motion, MotionProps, Variants } from 'framer-motion'
+import { AnimatePresence, motion, MotionProps } from 'framer-motion'
 
 interface OTPInputProps {
     n: number
@@ -41,15 +41,6 @@ export default function OTPInput({ n, className, disabled, autoFocus, onValueCha
             scale: 0.8,
             transition: { duration: 0.1 }
         },
-    }
-
-    const buttonMotionVariants: Variants = {
-        validating: {
-            backgroundColor: 'hsl(0, 0%, 89.8%)',
-        },
-        verified: {
-            backgroundColor: 'hsl(142, 70.6%, 45.3%)',
-        }
     }
 
     const setOtp = (i: number, value: string) => {
