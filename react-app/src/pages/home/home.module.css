@@ -61,7 +61,8 @@ body {
 
     @apply hover:bg-neutral-50;
     @apply focus:outline-none;
-    @apply focus:ring focus:ring-neutral-200;
+    @apply focus:outline focus:outline-neutral-300;
+
 }
 
 .nav-list > li > button {
@@ -71,9 +72,9 @@ body {
 
     @apply flex flex-row items-center;
     @apply w-full py-2;
-    
+
     @apply hover:bg-neutral-50;
-    @apply focus:outline-neutral-400;
+    @apply focus:outline-neutral-300;
 }
 
 .nav-list > li > button.selected {
@@ -109,9 +110,14 @@ button > .title {
     @apply drag;
 }
 
-.section-tab-list {
+.section-page-header .search-button {
+    @apply p-1 -m-1;
+    @apply rounded-full;
+}
+
+.section-workspaces-list {
     @apply mt-[calc(var(--titlebar-height)*-1)];
-    @apply grid gap-x-4 items-center h-full;
+    @apply grid gap-x-6 items-center h-full;
     @apply grid-cols-[repeat(5,fit-content(100%))];
     @apply grid-rows-1; /* for seleced tab indicator */
 
@@ -120,12 +126,16 @@ button > .title {
     @apply text-neutral-300;
 }
 
-.section-tab-list button {
+.section-workspaces-list button {
     @apply rounded;
     @apply py-1 px-2;
     @apply transition duration-100;
     @apply hover:bg-neutral-50;
-    @apply focus:outline-neutral-100;
+}
+
+.section-workspaces-list button.selected {
+    @apply text-neutral-900;
+    @apply font-bold;
 }
 
 .user-avatar {
@@ -145,7 +155,89 @@ button > .title {
 .section-page-content {
     @apply bg-neutral-100;
     @apply rounded-3xl;
-    @apply p-4 mb-2 mr-2 h-0;
-    @apply flex flex-1;
+    @apply p-6 mb-2 mr-2;
+    @apply h-full;
 }
 
+.section-page-content .workspace-header {
+    @apply w-full pb-8;
+    @apply flex items-center justify-between;
+}
+
+#dialog-overlay {
+    @apply bg-black/30;
+    @apply fixed inset-0;
+    @apply no-drag;
+    animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dialog-content {
+    @apply fixed left-[50%] top-[50%];
+    @apply max-h-[75vh] max-w-[75vw] translate-x-[-50%] translate-y-[-50%];
+    @apply shadow-lg bg-white;
+    @apply rounded-2xl overflow-hidden;
+    @apply no-drag;
+    animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.settings-dialog {
+    @apply sm:h-[410px] lg:h-[620px];
+    @apply sm:w-[960px] lg:w-[1040px];
+}
+
+.settings-dialog-nav {
+    @apply w-56 h-full;
+    @apply bg-neutral-100;
+}
+
+.dialog-title {
+    @apply p-5;
+    @apply text-lg font-bold;
+}
+
+.nav-group {
+    @apply mt-2;
+    @apply px-3;
+}
+
+.nav-icon {
+    @apply h-5 w-5;
+}
+
+.settings-dialog-nav .nav-group [role='columnheader'] {
+    @apply ml-1 block;
+    @apply text-xs text-neutral-400;
+}
+
+.settings-dialog-nav .nav-item {
+    @apply mt-1 px-2 py-1 w-full;
+    @apply flex items-center justify-start space-x-6;
+    @apply rounded-lg;
+    @apply hover:bg-neutral-200;
+}
+
+.settings-dialog-content {
+    @apply w-full h-full;
+    @apply flex-1;
+}
+
+.settings-dialog-content .content-header {
+    @apply p-5;
+    @apply flex items-center justify-between;
+}
+
+@keyframes overlayShow {
+from { opacity: 0; }
+to { opacity: 1; }
+}
+
+@keyframes contentShow {
+from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.96);
+}
+to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+}
