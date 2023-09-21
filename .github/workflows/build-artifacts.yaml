@@ -39,4 +39,4 @@ jobs:
           repo_token: ${{ secrets.GH_PAT }}
           file: electron-app/out/make/**/*.{exe,zip}
           file_glob: true
-          release_name: CI - ${{ github.ref }}
+          release_name: CI - ${{ github.sha }}
