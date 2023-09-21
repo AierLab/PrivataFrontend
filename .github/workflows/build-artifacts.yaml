@@ -3,11 +3,40 @@ run-name: Build Artifacts
 on: [push]
 jobs:
   build-mac-artifacts:
-    runs-on: macos-latest
+    name: Build ${{ matrix.os }} artifacts
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+          - os: macos-latest
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          token: ${{ secrets.GH_PAT }}
       - uses: actions/setup-node@v3
         with:
-          node-version: '14'
-      - run: npm install -g bats
-      - run: bats -v
+          node-version: 18
+      - name: Build react app
+        run: |
+          cd react-app
+          yarn
+          yarn build
+      - name: Install electron dependencies
+        run: |
+          cd electron-app
+          yarn
+      - name: Build artifacts
+        run: |
+          cd electron-app
+          yarn make
+      - name: Publish release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GH_PAT }}
+          file: electron-app/out/make/**/*.{exe,zip}
+          file_glob: true
+          release_name: CI - ${{ github.sha }}
