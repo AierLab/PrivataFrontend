@@ -116,7 +116,6 @@ button > .title {
 }
 
 .section-workspaces-list {
-    @apply mt-[calc(var(--titlebar-height)*-1)];
     @apply grid gap-x-6 items-center h-full;
     @apply grid-cols-[repeat(5,fit-content(100%))];
     @apply grid-rows-1; /* for seleced tab indicator */
@@ -153,15 +152,54 @@ button > .title {
 }
 
 .section-page-content {
-    @apply bg-neutral-100;
-    @apply rounded-3xl;
-    @apply p-6 mb-2 mr-2;
-    @apply h-full;
+    @apply mb-2;
+    @apply flex-1;
+    @apply flex flex-row;
+    @apply h-0;
+    @apply overflow-hidden;
 }
 
-.section-page-content .workspace-header {
-    @apply w-full pb-8;
+.section-page-content .workspace-card {
+    @apply bg-neutral-100;
+    @apply rounded-3xl;
+    @apply mr-2;
+    @apply h-full flex flex-col;
+}
+
+.workspace-card .workspace-header {
+    @apply w-full p-6 pb-3;
     @apply flex items-center justify-between;
+}
+
+.workspace-card input {
+    @apply h-12 w-full pl-4 pr-3 py-3;
+    @apply bg-white rounded-md;
+    @apply border-2 border-neutral-200;
+    @apply justify-end items-center gap-2.5;
+
+    @apply focus:outline-none focus:border-neutral-700;
+    @apply transition duration-100;
+}
+
+.workspace-card input.prefix {
+    @apply pl-10;
+}
+
+.scrollbar {
+    @apply flex p-0.5 pb-5;
+    @apply select-none touch-none;
+    @apply transition duration-150 ease-out;
+    @apply data-[orientation=vertical]:w-2.5 data-[orientation=horizontal]:flex-col data-[orientation=horizontal]:h-2.5;
+}
+
+.scrollbar .thumb {
+    @apply flex-1 bg-neutral-400 rounded;
+    @apply relative;
+    @apply before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-full before:h-full before:min-w-[44px] before:min-h-[44px];
+}
+
+.filecard + .filecard {
+    @apply mt-4;
 }
 
 #dialog-overlay {

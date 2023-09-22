@@ -56,7 +56,7 @@
     @apply text-black;
 }
 
-input {
+.login-form input {
     @apply h-12 pl-4 pr-3 py-3;
     @apply bg-white rounded-md;
     @apply border-2 border-neutral-200;

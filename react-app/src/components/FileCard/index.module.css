@@ -8,10 +8,7 @@
     @apply rounded-xl;
     @apply bg-white;
     @apply p-4 flex;
-}
-
-.card.shadow {
-    @apply shadow-sm;
+    @apply border-neutral-200;
 }
 
 .card.horizontal {
@@ -58,6 +55,12 @@
 .mention-card {
     @apply flex flex-row space-x-1 items-center;
     @apply border-2 border-neutral-200/75;
-    @apply rounded-lg py-0.5 px-2;
+    @apply rounded-lg py-0.5 pl-2 pr-1;
     @apply text-sm text-indigo-500;
+}
+
+.grade {
+    @apply block;
+    @apply py-2 mt-2;
+    @apply text-indigo-500 text-lg;
 }

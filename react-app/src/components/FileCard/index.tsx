@@ -11,6 +11,8 @@ type FileType = 'txt' | 'pdf' | 'doc'
 
 export interface FileCardCommonProps {
     type: 'review' | 'rating'
+    
+    className?: string
 
     filetype: FileType
     filesize: number
@@ -53,9 +55,14 @@ export default function FileCard(props: FileCardProps) {
     const s = modulize(styles)
     const strokeEnd = (1 - props.uploadProgress) * 2 * Math.PI * 6
 
+    const handleOverviewCopy = () => {
+        // TODO
+        alert('还没做捏')
+    }
+
     return (
-        <div className={s('container')}>
-            <div className={s('card horizontal shadow')}>
+        <div className={s('container', props.className || '')}>
+            <div className={s('card horizontal border')}>
                 <div className="flex flex-row space-x-4 items-center">
                     <DocumentIcon type={props.filetype} />
                     <div className={s('file-info-wrap')}>
@@ -71,7 +78,7 @@ export default function FileCard(props: FileCardProps) {
                 </svg>
             </div>
             {props.done &&
-                <div className={s('card vertical shadow')}>
+                <div className={s('card vertical border')}>
                     {props.type === 'review' &&
                         <div className="w-full">
                             <h2> 审核概述 </h2>
@@ -92,25 +99,55 @@ export default function FileCard(props: FileCardProps) {
                                     <ArrowDownTrayIcon className="h-full w-full" />
                                 </button>
                             </div>
-                            <div className="w-full flex justify-between items-center flex-wrap mt-2">
-                                <div className={s('mentions')}>
-                                    {props.mentioned.map((p) =>
-                                        <MentionCard key={p.id} people={p} />
-                                    )}
-                                </div>
-                                <div className="ml-auto">
-                                    <button className="w-7 h-7 p-1 rounded-full hover:bg-neutral-50">
-                                        <ClipboardDocumentIcon className="w-full h-full"/>
-                                    </button>
-                                    <button className="w-7 h-7 p-1 rounded-full hover:bg-neutral-50">
-                                        <AtSymbolIcon className="w-full h-full"/>
-                                    </button>
-                                </div>
-                            </div>
+                            <Mention mentioned={props.mentioned} mentionables={props.mentionables} onCopyOverview={handleOverviewCopy}/>
+                        </div>
+                    }
+                    { props.type === 'rating' &&
+                        <div className="w-full">
+                            <h2> 评分结果 </h2>
+                            <span className={s("grade")}>
+                                {props.grade} 分，玩原神玩的(TODO: 分数和评价mapping)
+                            </span>
+                            <DashedSparator className={s("my-4")} />
+                            <p className={s('overview')}>
+                                {props.overview}
+                            </p>
+                            <DashedSparator className="my-4" />
+                            <Mention mentioned={props.mentioned} mentionables={props.mentionables} onCopyOverview={handleOverviewCopy}/>
                         </div>
                     }
                 </div>
             }
+        </div>
+    )
+}
+
+interface MentionProps {
+    mentioned: People[]
+    mentionables: People[]
+    onDelete?: (p: People) => void
+    onAppend?: (p: People) => void
+    onCopyOverview?: () => void
+}
+
+function Mention(props: MentionProps) {
+    const s = modulize(styles)
+
+    return(
+        <div className="w-full flex justify-between items-center flex-wrap mt-2">
+            <div className={s('mentions')}>
+                {props.mentioned.map((p) =>
+                    <MentionCard key={p.id} people={p} onDelete={props.onDelete}/>
+                )}
+            </div>
+            <div className="ml-auto">
+                <button className="w-7 h-7 p-1 rounded-full hover:bg-neutral-50" onClick={props.onCopyOverview}>
+                    <ClipboardDocumentIcon className="w-full h-full"/>
+                </button>
+                <button className="w-7 h-7 p-1 rounded-full hover:bg-neutral-50">
+                    <AtSymbolIcon className="w-full h-full"/>
+                </button>
+            </div>
         </div>
     )
 }

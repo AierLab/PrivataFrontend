@@ -3,6 +3,7 @@ import styles from "./home.module.css"
 
 import * as Tabs from '@radix-ui/react-tabs'
 import * as Dialog from '@radix-ui/react-dialog'
+import * as ScrollArea from '@radix-ui/react-scroll-area'
 import Titlebar from 'components/Titlebar'
 import Separator from "components/Separator"
 
@@ -53,6 +54,7 @@ const Home = () => {
     const [query] = useSearchParams()
     const [dialog, setDialog] = useState<DialogIDs>(null)
     const [navCollapsed, setNavCollapsedValue] = useQueryItem('navCollapsed')
+    const [historyFileOpen, setHistoryFileOpen] = useQueryItem('historyFileOpen')
 
     const goto = useNavigate()
 
@@ -217,50 +219,104 @@ const Home = () => {
 
                         <div className={styles['section-page-content']}>
 
-                            { /* workspaces dialog */ }
+                            { /* workspaces */ }
                             { currentWorkspace === 'workspace' && currentTab === 'reports-review' &&
-                                <div>
-                                    <div className={s('workspace-header')}>
-                                        <h2> 文件审核 </h2>
-                                        <button className="rounded-full p-2 -m-2 hover:bg-neutral-200 transition duration-100">
-                                            <FolderIcon className="h-5 w-5"/>
-                                        </button>
+                                <>
+                                    <div className={s('workspace-card w-full')}>
+                                        <div className={s('workspace-header')}>
+                                            <h2> 文件审核 </h2>
+                                            <button
+                                                className="rounded-full p-2 -m-2 hover:bg-neutral-200 transition duration-100 data-[open]:bg-neutral-200"
+                                                onClick={() => setHistoryFileOpen(!historyFileOpen ? 'true' : null)}
+                                                data-open={historyFileOpen}
+                                            >
+                                                <FolderIcon className="h-5 w-5"/>
+                                            </button>
 
+                                        </div>
+                                        <ScrollArea.Root className="w-full h-0 flex-1">
+                                            <ScrollArea.Viewport className="h-full px-[5%] lg:px-[15%] 2xl:px-[25%]">
+                                                <FileCard
+                                                    className={s('filecard')}
+                                                    type='review'
+                                                    filetype='txt'
+                                                    filesize={3.1 * 1024 * 1024}
+                                                    filename="dadwad.txt"
+                                                    uploadProgress={0.7}
+                                                    done={true}
+                                                    mentionables={[
+                                                        { id: 'dawda', username: 'Alister', avatar: ''},
+                                                        { id: 'dadaw', username: 'Alister', avatar: ''},
+                                                        { id: 'dgfaw', username: 'Alister', avatar: ''},
+                                                        { id: 'dgdfw', username: 'Alister', avatar: ''},
+                                                        { id: 'doguw', username: 'Alister', avatar: ''},
+                                                        { id: 'gdfad', username: 'Alister', avatar: ''},
+                                                        { id: 'jdkfg', username: 'Alister', avatar: ''},
+                                                        { id: 'lkjdf', username: 'Alister', avatar: ''},
+                                                    ]}
+                                                    mentioned={[
+                                                        { id: 'dawda', username: 'Alister', avatar: ''},
+                                                        { id: 'dadaw', username: 'Alister', avatar: ''},
+                                                        { id: 'dgfaw', username: 'Alister', avatar: ''},
+                                                        { id: 'dgdfw', username: 'Alister', avatar: ''},
+                                                        { id: 'doguw', username: 'Alister', avatar: ''},
+                                                        { id: 'gdfad', username: 'Alister', avatar: ''},
+                                                        { id: 'jdkfg', username: 'Alister', avatar: ''},
+                                                        { id: 'lkjdf', username: 'Alister', avatar: ''},
+                                                    ]}
+                                                    overview="你说的对，但是《原神》是由米哈游自主研发的一款全新开放世界冒险游戏。游戏发生在一个被称作「提瓦特」的幻想世界，在这里，被神选中的人将被授予"
+                                                    reviewFilename="dfgdfgdf.txt"
+                                                    reviewFilesize={1234}
+                                                />
+                                                <FileCard
+                                                    className={s('filecard')}
+                                                    type='rating'
+                                                    filetype='txt'
+                                                    filesize={3.1 * 1024 * 1024}
+                                                    filename="dadwad.txt"
+                                                    uploadProgress={0.7}
+                                                    done={true}
+                                                    mentionables={[
+                                                        { id: 'dawda', username: 'Alister', avatar: ''},
+                                                        { id: 'dadaw', username: 'Alister', avatar: ''},
+                                                        { id: 'dgfaw', username: 'Alister', avatar: ''},
+                                                        { id: 'dgdfw', username: 'Alister', avatar: ''},
+                                                        { id: 'doguw', username: 'Alister', avatar: ''},
+                                                        { id: 'gdfad', username: 'Alister', avatar: ''},
+                                                        { id: 'jdkfg', username: 'Alister', avatar: ''},
+                                                        { id: 'lkjdf', username: 'Alister', avatar: ''},
+                                                    ]}
+                                                    mentioned={[
+                                                        { id: 'dawda', username: 'Alister', avatar: ''},
+                                                        { id: 'dadaw', username: 'Alister', avatar: ''},
+                                                        { id: 'dgfaw', username: 'Alister', avatar: ''},
+                                                    ]}
+                                                    grade={80}
+                                                    overview="你说的对，但是《原神》是由米哈游自主研发的一款全新开放世界冒险游戏。游戏发生在一个被称作「提瓦特」的幻想世界，在这里，被神选中的人将被授予"
+                                                />
+                                            </ScrollArea.Viewport>
+                                            <ScrollArea.Scrollbar className={s('scrollbar')} orientation="vertical">
+                                                <ScrollArea.Thumb className={s('thumb')} />
+                                            </ScrollArea.Scrollbar>
+                                        </ScrollArea.Root>
                                     </div>
-                                    <div className="h-full w-full overflow-y-auto px-[5%] lg:px-[15%] 2xl:px-[25%]">
-                                        <FileCard
-                                            type='review'
-                                            filetype='txt'
-                                            filesize={3.1 * 1024 * 1024}
-                                            filename="dadwad.txt"
-                                            uploadProgress={0.7}
-                                            done={true}
-                                            mentionables={[
-                                                { id: 'dawda', username: 'Alister', avatar: ''},
-                                                { id: 'dadaw', username: 'Alister', avatar: ''},
-                                                { id: 'dgfaw', username: 'Alister', avatar: ''},
-                                                { id: 'dgdfw', username: 'Alister', avatar: ''},
-                                                { id: 'doguw', username: 'Alister', avatar: ''},
-                                                { id: 'gdfad', username: 'Alister', avatar: ''},
-                                                { id: 'jdkfg', username: 'Alister', avatar: ''},
-                                                { id: 'lkjdf', username: 'Alister', avatar: ''},
-                                            ]}
-                                            mentioned={[
-                                                { id: 'dawda', username: 'Alister', avatar: ''},
-                                                { id: 'dadaw', username: 'Alister', avatar: ''},
-                                                { id: 'dgfaw', username: 'Alister', avatar: ''},
-                                                { id: 'dgdfw', username: 'Alister', avatar: ''},
-                                                { id: 'doguw', username: 'Alister', avatar: ''},
-                                                { id: 'gdfad', username: 'Alister', avatar: ''},
-                                                { id: 'jdkfg', username: 'Alister', avatar: ''},
-                                                { id: 'lkjdf', username: 'Alister', avatar: ''},
-                                            ]}
-                                            overview="你说的对，但是《原神》是由米哈游自主研发的一款全新开放世界冒险游戏。游戏发生在一个被称作「提瓦特」的幻想世界，在这里，被神选中的人将被授予"
-                                            reviewFilename="dfgdfgdf.txt"
-                                            reviewFilesize={1234}
-                                        />
-                                    </div>
-                                </div>
+                                    { historyFileOpen &&
+                                        <div className={s('workspace-card w-[400px]')}>
+                                            <div className={s('workspace-header')}>
+                                                <h2> 历史文件 </h2>
+                                            </div>
+                                            <ScrollArea.Root className="w-full h-0 flex-1">
+                                                <div className="px-6 w-full relative flex items-center">
+                                                    <input placeholder="搜索" className={s('prefix')}/>
+                                                    <MagnifyingGlassIcon className="h-6 w-6 absolute left-9"/>
+                                                </div>
+                                                <ScrollArea.Viewport className="h-full px-6 mt-4">
+                                                    TODO
+                                                </ScrollArea.Viewport>
+                                            </ScrollArea.Root>
+                                        </div>
+                                    }
+                                </>
                             }
                         </div>
                     </div>

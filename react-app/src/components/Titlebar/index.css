@@ -13,97 +13,63 @@
 }
 
 .titlebar {
-    position: absolute;
-    top: 0;
-    right: 0;
-    
-    width:100%;
-
-    display: flex;
-    flex-direction: row;
-    padding: var(--titlebar-padding);
-    justify-content: flex-end;
-    background-color: transparent;
-    z-index: 99999;
-
-    -webkit-app-region: drag;
-
-    color: #000;
+    @apply absolute right-0 top-0;
+    @apply flex flex-row justify-end p-[var(--titlebar-padding)];
+    @apply bg-transparent z-40;
+    @apply drag;
+    /* @apply w-full; */
+    @apply text-black;
 }
 
-.titlebar * {
-    font-family: sans-serif;
+.titlebar > * + button {
+    @apply ml-4;
 }
 
 .titlebar > button {
-    cursor: pointer;
-    width: var(--titlebar-icon-size);
-    height: var(--titlebar-icon-size);
-    -webkit-app-region: no-drag;
-    transition: 250ms ease;
+    @apply cursor-pointer;
+    @apply w-[var(--titlebar-icon-size)] h-[var(--titlebar-icon-size)];
+    @apply no-drag;
+    @apply transition duration-100;
 
-    padding: 0;
-    border: none;
-    background: transparent;
+    @apply p-0 border-none bg-transparent;
 } 
 
-.titlebar > * + * {
-    margin-left: 1rem;
-}
-
-.titlebar > #minimize:hover{
-    color: #2f6df1;
-    -webkit-app-region: no-drag;
+.titlebar > #minimize:hover {
+    @apply text-sky-600;
 }
 
 .titlebar > #maximize:hover{
-    color: #eeb437
+    @apply text-yellow-600;
 }
 
 .titlebar > #close:hover{
-    color: #FF0000;
-    -webkit-app-region: no-drag;
+    @apply text-red-600;
 }
 
 .titlebar > #open-dev-menu:hover {
-    transform: scale(1.3);
-    -webkit-app-region: no-drag;
+    @apply text-indigo-600;
 }
 
 .titlebar > .dev-menu {
-    position: fixed;
-    right: 0;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    display: flex;
-    backdrop-filter: brightness(0.5);
-
-    padding: 10rem;
-    margin: 0;
-
-    -webkit-app-region: no-drag;
+    @apply fixed inset-0;
+    @apply flex;
+    @apply backdrop-brightness-50;
+    @apply p-40;
+    @apply no-drag;
 }
 
 .titlebar > .dev-menu > .dev-menu-content {
-    background: #fff;
-    border-radius: 0.5rem;
-    width: 100%;
-    height: 100%;
-    box-shadow: 0 0 0.5rem 0.25rem #0001;
-    padding: 1rem 2rem;
-
-    overflow-y: auto;
-
-    -webkit-app-region: no-drag;
+    @apply bg-white rounded-lg w-full h-full;
+    @apply shadow-lg py-4 px-8;
+    @apply overflow-y-auto;
+    @apply no-drag;
 }
 
 .titlebar > .dev-menu > .dev-menu-content > * + * {
-    margin-top: 1rem;
+    @apply mt-4;
 }
 
 .titlebar > .dev-menu > .dev-menu-content input {
-    padding: 0;
-    height: initial;
-    width: initial;
+    @apply p-0;
+    @apply h-fit w-fit;
 }
