@@ -1,6 +1,6 @@
 name: build-artifacts
 run-name: Build Artifacts
-on: [push]
+on: workflow_dispatch
 jobs:
   build-artifacts:
     name: Build ${{ matrix.os }} artifacts
