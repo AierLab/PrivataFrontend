@@ -36,10 +36,13 @@ jobs:
         run: |
           cd electron-app
           yarn make
+      - name: Retrive commit hash
+        id: commit_hash
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       - name: Publish release
         uses: svenstaro/upload-release-action@v2
         with:
-          tag: ${{ github.sha }}
+          tag: action-ci-${{ steps.commit_hash.outputs.sha_short }}
           repo_token: ${{ secrets.GH_PAT }}
           file: electron-app/out/make/**/*.{exe,zip}
           file_glob: true
