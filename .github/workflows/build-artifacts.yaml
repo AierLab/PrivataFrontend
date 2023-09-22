@@ -13,7 +13,7 @@ jobs:
     permissions:
       contents: write
     concurrency:
-      group: ${{ github.head_ref }}-init
+      group: ${{ github.head_ref }}-${{ matrix.os }}
       cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
