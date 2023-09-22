@@ -39,6 +39,7 @@ jobs:
       - name: Publish release
         uses: svenstaro/upload-release-action@v2
         with:
+          tag: ${{ github.sha }}
           repo_token: ${{ secrets.GH_PAT }}
           file: electron-app/out/make/**/*.{exe,zip}
           file_glob: true
