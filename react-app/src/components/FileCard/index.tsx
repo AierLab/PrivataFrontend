@@ -62,7 +62,7 @@ export default function FileCard(props: FileCardProps) {
 
     return (
         <div className={s('container', props.className || '')}>
-            <div className={s('card horizontal border')}>
+            <div className={s('card horizontal')}>
                 <div className="flex flex-row space-x-4 items-center">
                     <DocumentIcon type={props.filetype} />
                     <div className={s('file-info-wrap')}>
@@ -73,12 +73,12 @@ export default function FileCard(props: FileCardProps) {
 
 
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className={s('upload-progress')}>
-                    <circle cx="8" cy="8" r="6" stroke="#5855FF" stroke-width="4" strokeDasharray={2 * Math.PI * 6} strokeDashoffset={strokeEnd} />
-                    <circle cx="8" cy="8" r="6" stroke="#5855FF" stroke-opacity="0.08" stroke-width="4" />
+                    <circle cx="8" cy="8" r="6" stroke="#5855FF" strokeWidth="4" strokeDasharray={2 * Math.PI * 6} strokeDashoffset={strokeEnd} />
+                    <circle cx="8" cy="8" r="6" stroke="#5855FF" strokeOpacity="0.08" strokeWidth="4" />
                 </svg>
             </div>
             {props.done &&
-                <div className={s('card vertical border')}>
+                <div className={s('card vertical')}>
                     {props.type === 'review' &&
                         <div className="w-full">
                             <h2> 审核概述 </h2>
@@ -87,7 +87,7 @@ export default function FileCard(props: FileCardProps) {
                                 {props.overview}
                             </p>
                             <DashedSparator className={s("my-4")} />
-                            <div className={s('card horizontal border-2 border-neutral-200/75')}>
+                            <div className={s('card horizontal')}>
                                 <div className="flex flex-row space-x-4 items-center">
                                     <DocumentIcon type={props.filetype} />
                                     <div className={s('file-info-wrap')}>
@@ -167,8 +167,8 @@ function MentionCard({ people, onDelete }: { people: People, onDelete?: (p: Peop
 
 function DashedSparator({ className }: { className?: string }) {
     return (
-        <svg width="auto" height="2" fill="none" xmlns="http://www.w4.org/2000/svg" className={`w-full ${className}`}>
-            <line x1="0" y1="0" x2="100%" y2="0" stroke="black" strokeOpacity="0.2" stroke-linecap="round" stroke-dasharray="1 3" />
+        <svg width="2" height="2" fill="none" xmlns="http://www.w4.org/2000/svg" className={`w-full ${className}`}>
+            <line x1="0" y1="0" x2="100%" y2="0" stroke="black" strokeOpacity="0.2" strokeLinecap="round" strokeDasharray="1 3" />
         </svg>
     )
 }
