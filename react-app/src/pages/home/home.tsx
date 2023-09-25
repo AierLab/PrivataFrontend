@@ -7,6 +7,7 @@ import * as ScrollArea from '@radix-ui/react-scroll-area'
 import Titlebar from 'components/Titlebar'
 import Separator from "components/Separator"
 
+
 import { People } from "@privata/types/people"
 
 import {
@@ -24,6 +25,7 @@ import {
     EllipsisHorizontalIcon
 } from "@heroicons/react/24/outline"
 import { modulize } from "utils/classNames"
+import { humanizeFileSize } from "utils/humanize"
 import { motion, Variants } from "framer-motion"
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { useQueryItem } from "utils/useQueryItem"
@@ -74,7 +76,7 @@ const mentionables: People[] = [
 // debug: data mock
 const historyFiles: File[] = [
     { filename: "dawwadawdawdawdlfghjsfgklsdhgdfkjghwjeyriwuef.txt", ext: 'txt', size: 114514, date: 114514, chatId: 1919810, url: '' },
-    { filename: "123.pdf", ext: 'pdf', size: 114514, date: 114514, chatId: 1919810, url: '' },
+    { filename: "123.pdf", ext: 'pdf', size: 114.514 * 1024, date: 114514, chatId: 1919810, url: '' },
     { filename: "123.doc", ext: 'doc', size: 114514, date: 114514, chatId: 1919810, url: '' },
 ]
 
@@ -297,7 +299,7 @@ const Home = () => {
                                                     className={s('filecard')}
                                                     type='rating'
                                                     filetype='pdf'
-                                                    filesize={3.1 * 1024 * 1024}
+                                                    filesize={0.91 * 1024}
                                                     filename="dadwad.pdf"
                                                     uploadProgress={0.2}
                                                     done={true}
@@ -329,7 +331,7 @@ const Home = () => {
                                                                 <DocumentIcon type={f.ext}/>
                                                                 <div className="flex flex-col items-start flex-1 w-0">
                                                                     <span className="w-full text-ellipsis overflow-hidden"> {f.filename} </span>
-                                                                    <span className="text-sm text-neutral-500"> { f.size }B { new Date(f.date).toLocaleDateString() }</span>
+                                                                    <span className="text-sm text-neutral-500"> { humanizeFileSize(f.size) } { new Date(f.date).toLocaleDateString() }</span>
                                                                 </div>
                                                             </div>
                                                             <button className="w-6 h-6 p-1 rounded hover:bg-neutral-300 dark:hover:bg-neutral-600">

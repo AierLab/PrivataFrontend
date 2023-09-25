@@ -4,6 +4,8 @@ import { forwardRef, ReactElement } from 'react'
 import styles from './index.module.css'
 import { ArrowDownTrayIcon, AtSymbolIcon, ClipboardDocumentIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
+import { humanizeFileSize } from 'utils/humanize'
+
 import Tooltip from 'components/Tooltip/index'
 
 // TODO: how to download? by open a link in browser
@@ -68,7 +70,7 @@ export function FileCard(props: FileCardProps) {
                     <DocumentIcon type={props.filetype} />
                     <div className={s('file-info-wrap')}>
                         <span className={s('file-name')}> {props.filename} </span>
-                        <span className={s('file-size')}> {props.filesize}(TODO) </span>
+                        <span className={s('file-size')}> {humanizeFileSize(props.filesize)} </span>
                     </div>
                 </div>
 
@@ -92,7 +94,7 @@ export function FileCard(props: FileCardProps) {
                                     <DocumentIcon type={props.filetype} />
                                     <div className={s('file-info-wrap')}>
                                         <span className={s('file-name text-indigo-500 dark:text-indigo-300')}> {props.reviewFilename} </span>
-                                        <span className={s('file-size')}> {props.reviewFilesize}(TODO) </span>
+                                        <span className={s('file-size')}> {humanizeFileSize(props.reviewFilesize)} </span>
                                     </div>
                                 </div>
                                 <button
