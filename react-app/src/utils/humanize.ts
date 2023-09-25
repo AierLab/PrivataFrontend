@@ -5,7 +5,7 @@ export function humanizeFileSize(bytes: number) {
     let i = 0
     let result = bytes
     for (i = 0; i < 5; i++) {
-        let tmp = result / Math.pow(2, 10)
+        let tmp = result / 1024
         if (tmp < 0.9) break
         else result = tmp
     }
