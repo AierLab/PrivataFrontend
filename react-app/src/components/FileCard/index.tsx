@@ -53,7 +53,7 @@ export interface FileCardRatingProps {
 
 export type FileCardProps = FileCardCommonProps & (FileCardNotDoneProps | FileCardReviewProps | FileCardRatingProps)
 
-export default function FileCard(props: FileCardProps) {
+export function FileCard(props: FileCardProps) {
     const s = modulize(styles)
     const strokeEnd = (1 - props.uploadProgress) * 2 * Math.PI * 6
 
@@ -64,7 +64,7 @@ export default function FileCard(props: FileCardProps) {
     return (
         <div className={s('container', props.className || '')}>
             <div className={s('card horizontal shadow')}>
-                <div className="flex flex-row space-x-4 items-center">
+                <div className="flex flex-row space-x-4 items-center flex-1 w-0">
                     <DocumentIcon type={props.filetype} />
                     <div className={s('file-info-wrap')}>
                         <span className={s('file-name')}> {props.filename} </span>
@@ -88,7 +88,7 @@ export default function FileCard(props: FileCardProps) {
                             </p>
                             <DashedSparator className={s("my-4")} />
                             <div className={s('card horizontal bordered')}>
-                                <div className="flex flex-row space-x-4 items-center">
+                                <div className="flex flex-row space-x-4 items-center flex-1 w-0">
                                     <DocumentIcon type={props.filetype} />
                                     <div className={s('file-info-wrap')}>
                                         <span className={s('file-name text-indigo-500 dark:text-indigo-300')}> {props.reviewFilename} </span>
@@ -182,7 +182,7 @@ function DashedSparator({ className }: { className?: string }) {
     )
 }
 
-function DocumentIcon({ type, classNames }: { type: FileType, classNames?: string }) {
+export function DocumentIcon({ type, classNames }: { type: FileType, classNames?: string }) {
     const mappings: Record<FileType, ReactElement> = {
         'txt': <TxtIcon className={classNames} />,
         'pdf': <PdfIcon className={classNames} />,

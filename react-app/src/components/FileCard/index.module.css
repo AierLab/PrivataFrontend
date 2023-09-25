@@ -32,14 +32,15 @@
 }
 
 .card.horizontal {
-    @apply flex-row justify-between;
+    @apply flex-row justify-between space-x-8;
 }
 
 .file-info-wrap {
-    @apply flex flex-col justify-between;
+    @apply flex flex-col justify-between flex-1 w-0;
 }
 
 .file-info-wrap .file-name {
+    @apply overflow-hidden text-ellipsis;
     @apply font-bold;
 }
 

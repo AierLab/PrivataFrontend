@@ -20,13 +20,14 @@ import {
     UserIcon,
     BriefcaseIcon,
     UsersIcon,
-    XMarkIcon
+    XMarkIcon,
+    EllipsisHorizontalIcon
 } from "@heroicons/react/24/outline"
 import { modulize } from "utils/classNames"
 import { motion, Variants } from "framer-motion"
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { useQueryItem } from "utils/useQueryItem"
-import FileCard from "components/FileCard/index"
+import { FileCard, DocumentIcon } from "components/FileCard/index"
 
 type TabIDs = 'reports-review' | 'quan-eval'
 type DialogIDs = 'notifications' | 'help' | 'settings' | 'search' | null
@@ -49,7 +50,16 @@ interface URLParams {
     workspace: WorkspaceIDs
 }
 
-// debug
+interface File {
+    filename: string
+    ext: 'txt' | 'pdf' | 'doc'
+    size: number // number of bytes
+    date: number
+    chatId: number
+    url: string
+}
+
+// debug: data mock
 const mentionables: People[] = [
     { id: 'dawda', username: 'Alister', avatar: '' },
     { id: 'dadaw', username: 'Alister', avatar: '' },
@@ -59,6 +69,13 @@ const mentionables: People[] = [
     { id: 'gdfad', username: 'Alister', avatar: '' },
     { id: 'jdkfg', username: 'Alister', avatar: '' },
     { id: 'lkjdf', username: 'Alister', avatar: '' },
+]
+
+// debug: data mock
+const historyFiles: File[] = [
+    { filename: "dawwadawdawdawdlfghjsfgklsdhgdfkjghwjeyriwuef.txt", ext: 'txt', size: 114514, date: 114514, chatId: 1919810, url: '' },
+    { filename: "123.pdf", ext: 'pdf', size: 114514, date: 114514, chatId: 1919810, url: '' },
+    { filename: "123.doc", ext: 'doc', size: 114514, date: 114514, chatId: 1919810, url: '' },
 ]
 
 const Home = () => {
@@ -267,7 +284,7 @@ const Home = () => {
                                                     type='review'
                                                     filetype='txt'
                                                     filesize={3.1 * 1024 * 1024}
-                                                    filename="dadwad.txt"
+                                                    filename="dadwadogkjfshgskjfhsdkfjhsddhfskdjfhwop;ireqwolhfnkjdsafhquoerhfkufhbmwafbeugwfiugbwifwefuoiweghwi.txt"
                                                     uploadProgress={0.7}
                                                     done={true}
                                                     mentionables={mentionables}
@@ -279,9 +296,9 @@ const Home = () => {
                                                 <FileCard
                                                     className={s('filecard')}
                                                     type='rating'
-                                                    filetype='txt'
+                                                    filetype='pdf'
                                                     filesize={3.1 * 1024 * 1024}
-                                                    filename="dadwad.txt"
+                                                    filename="dadwad.pdf"
                                                     uploadProgress={0.2}
                                                     done={true}
                                                     mentionables={mentionables}
@@ -306,7 +323,20 @@ const Home = () => {
                                                     <MagnifyingGlassIcon className="h-6 w-6 absolute left-9" />
                                                 </div>
                                                 <ScrollArea.Viewport className="h-full px-6 mt-4">
-                                                    TODO
+                                                    { historyFiles.map((f) => (
+                                                        <div key={`${f.filename}-${f.url}`} className={s('history-file-item')}>
+                                                            <div className="flex justify-start items-center flex-1 w-0 space-x-2">
+                                                                <DocumentIcon type={f.ext}/>
+                                                                <div className="flex flex-col items-start flex-1 w-0">
+                                                                    <span className="w-full text-ellipsis overflow-hidden"> {f.filename} </span>
+                                                                    <span className="text-sm text-neutral-500"> { f.size }B { new Date(f.date).toLocaleDateString() }</span>
+                                                                </div>
+                                                            </div>
+                                                            <button className="w-6 h-6 p-1 rounded hover:bg-neutral-300 dark:hover:bg-neutral-600">
+                                                                <EllipsisHorizontalIcon />
+                                                            </button>
+                                                        </div>
+                                                    ))}
                                                 </ScrollArea.Viewport>
                                             </ScrollArea.Root>
                                         </div>

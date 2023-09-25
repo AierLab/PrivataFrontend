@@ -205,6 +205,12 @@ button > .title {
     @apply mt-4;
 }
 
+.history-file-item {
+    @apply flex justify-between items-center;
+    @apply p-2 hover:bg-neutral-200 dark:hover:bg-neutral-700;
+    @apply rounded-lg;
+}
+
 #dialog-overlay {
     @apply bg-black/30 dark:bg-black/70;
     @apply fixed inset-0;
