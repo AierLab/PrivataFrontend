@@ -1,6 +1,6 @@
 .login-page {
     @apply h-full w-full;
-    @apply bg-neutral-100;
+    @apply bg-neutral-100 dark:bg-neutral-900 dark:text-white;
     @apply drag;
     @apply flex flex-row items-center;
 }
@@ -22,19 +22,19 @@
 .login-form {
     @apply mr-20;
     @apply h-[570px] w-[480px] p-16 pb-28;
-    @apply bg-white;
+    @apply bg-white dark:bg-neutral-950 dark:text-white;
     @apply rounded-2xl shadow-lg;
     @apply no-drag;
     @apply relative;
 }
 
 .login-form h1 {
-    @apply text-neutral-900 font-semibold text-3xl;
+    @apply text-neutral-900 dark:text-neutral-100 font-semibold text-3xl;
 }
 
 .login-form h2 {
     @apply mt-10;
-    @apply text-neutral-900 font-semibold text-lg;
+    @apply text-neutral-900 dark:text-neutral-100 font-semibold text-lg;
 }
 
 .login-form .login-method-tab {
@@ -46,23 +46,23 @@
 }
 
 .login-method-list > button {
-    @apply text-neutral-400;
+    @apply text-neutral-400 dark:text-neutral-600;
     @apply transition duration-75;
-    @apply hover:text-neutral-600;
+    @apply hover:text-neutral-600 dark:hover:text-neutral-400;
 }
 
 .login-method-list > button[data-state="active"] {
     @apply font-semibold;
-    @apply text-black;
+    @apply text-black dark:text-white;
 }
 
 .login-form input {
     @apply h-12 pl-4 pr-3 py-3;
-    @apply bg-white rounded-md;
-    @apply border-2 border-neutral-200;
+    @apply bg-white dark:bg-neutral-950 rounded-md;
+    @apply border-2 border-neutral-200 dark:border-neutral-800;
     @apply justify-end items-center gap-2.5;
 
-    @apply focus:outline-none focus:border-neutral-700;
+    @apply focus:outline-none focus:border-neutral-700 dark:focus:border-neutral-400;
     @apply transition duration-100;
 }
 
@@ -78,7 +78,7 @@
     @apply absolute left-4;
 }
 
-.phone-number-input {
+input.phone-number-input {
     @apply w-full;
     @apply pl-14;
 }
@@ -86,15 +86,17 @@
 #remember-me {
     @apply w-4 h-4;
     @apply rounded;
-    @apply border-2 border-neutral-200;
+    @apply border-2 border-neutral-200 dark:border-neutral-800;
 
     @apply transition duration-100;
-    @apply hover:border-neutral-400 focus:ring focus:ring-neutral-100;
+    @apply hover:border-neutral-400 dark:hover:border-neutral-600;
+    @apply focus:ring focus:ring-neutral-100 dark:focus:ring-neutral-800;
     @apply focus:outline-none;
 }
 
 #remember-me[data-state='checked'] {
     @apply bg-neutral-200 border-neutral-200;
+    @apply dark:bg-neutral-800 border-neutral-800;
 }
 
 #remember-me ~ label {
@@ -105,12 +107,12 @@
 .login-form .next-step {
     @apply absolute bottom-10 left-14 right-14;
     @apply py-4;
-    @apply bg-black text-white;
+    @apply bg-black dark:bg-neutral-100 text-white dark:text-black;
     @apply rounded-xl;
 
     @apply transition duration-100;
-    @apply focus:ring focus:ring-neutral-300;
-    @apply hover:bg-neutral-950;
+    @apply focus:ring focus:ring-neutral-300 dark:focus:ring-neutral-700;
+    @apply hover:bg-neutral-950 dark:hover:bg-neutral-300;
     @apply focus:outline-none;
 }
 
@@ -126,11 +128,11 @@
 .select-trigger {
     @apply w-full;
     @apply h-12 pl-4 pr-3 py-3;
-    @apply bg-white rounded-md;
-    @apply border-2 border-neutral-200;
+    @apply bg-white dark:bg-neutral-950 rounded-md;
+    @apply border-2 border-neutral-200 dark:border-neutral-800;
     @apply justify-end items-center gap-2.5;
 
-    @apply focus:outline-none focus:border-neutral-700;
+    @apply focus:outline-none focus:border-neutral-700 dark:focus:border-neutral-500;
     @apply transition duration-100;
 
     @apply relative;
@@ -139,28 +141,28 @@
 }
 
 .select-trigger[data-placeholder] {
-    @apply text-neutral-400;
+    @apply text-neutral-400 dark:text-gray-400;
 }
 
 .select-icon {
     @apply w-4 h-4;
     @apply absolute right-4;
-    @apply text-neutral-400;
+    @apply text-neutral-400 dark:text-neutral-600;
 }
 
 .select-content {
     @apply overflow-hidden;
-    @apply bg-white rounded-xl;
+    @apply bg-white dark:bg-black rounded-xl;
     @apply shadow-lg;
-    @apply border border-neutral-200;
+    @apply border border-neutral-200 dark:border-neutral-800;
 }
 
 .select-label {
-    @apply text-sm text-neutral-400 mx-2;
+    @apply text-sm text-neutral-400 dark:text-neutral-500 mx-2;
 }
 
 .select-separator {
-    @apply h-[1px] bg-neutral-100 my-4;
+    @apply h-[1px] bg-neutral-100 dark:bg-neutral-700 my-4;
 }
 
 .org-list {
@@ -177,12 +179,12 @@
 }
 
 .org-list .org-item[data-selected="true"] {
-    @apply border-indigo-400;
+    @apply border-indigo-400 dark:border-indigo-500;
 }
 
 .org-list .org-item .org-icon {
     @apply h-12 w-12 rounded-xl;
-    @apply bg-neutral-100;
+    @apply bg-neutral-100 dark:bg-neutral-800;
 }
 
 .org-list .org-item .org-title {

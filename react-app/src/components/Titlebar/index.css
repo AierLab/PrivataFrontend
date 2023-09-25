@@ -32,22 +32,23 @@
     @apply transition duration-100;
 
     @apply p-0 border-none bg-transparent;
+    @apply dark:text-white;
 } 
 
 .titlebar > #minimize:hover {
-    @apply text-sky-600;
+    @apply text-sky-600 dark:text-sky-400;
 }
 
 .titlebar > #maximize:hover{
-    @apply text-yellow-600;
+    @apply text-yellow-600 dark:text-yellow-400;
 }
 
 .titlebar > #close:hover{
-    @apply text-red-600;
+    @apply text-red-600 dark:text-red-400;
 }
 
 .titlebar > #open-dev-menu:hover {
-    @apply text-indigo-600;
+    @apply text-indigo-600 dark:text-indigo-400;
 }
 
 .titlebar > .dev-menu {

@@ -18,7 +18,8 @@ div, button, img, span {
 }
 
 * {
-  @apply selection:bg-neutral-300 selection:text-black;;
+  @apply selection:bg-gray-600 selection:text-white;
+  @apply dark:selection:bg-neutral-300 dark:selection:text-black;
   @apply focus:outline-none;
 }
 
@@ -38,7 +39,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'HarmonyOS Sans', 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-  @apply subpixel-antialiased;
+  -webkit-font-smoothing: subpixel-antialiased;
 }
 
 #root {

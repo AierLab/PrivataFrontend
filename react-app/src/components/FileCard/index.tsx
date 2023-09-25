@@ -4,6 +4,8 @@ import { forwardRef, ReactElement } from 'react'
 import styles from './index.module.css'
 import { ArrowDownTrayIcon, AtSymbolIcon, ClipboardDocumentIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
+import Tooltip from 'components/Tooltip/index'
+
 // TODO: how to download? by open a link in browser
 // or as background job?
 
@@ -56,13 +58,12 @@ export default function FileCard(props: FileCardProps) {
     const strokeEnd = (1 - props.uploadProgress) * 2 * Math.PI * 6
 
     const handleOverviewCopy = () => {
-        // TODO
-        alert('还没做捏')
+        if(props.done) window.api.setClipboard(props.overview)
     }
 
     return (
         <div className={s('container', props.className || '')}>
-            <div className={s('card horizontal')}>
+            <div className={s('card horizontal shadow')}>
                 <div className="flex flex-row space-x-4 items-center">
                     <DocumentIcon type={props.filetype} />
                     <div className={s('file-info-wrap')}>
@@ -71,14 +72,13 @@ export default function FileCard(props: FileCardProps) {
                     </div>
                 </div>
 
-
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className={s('upload-progress')}>
                     <circle cx="8" cy="8" r="6" stroke="#5855FF" strokeWidth="4" strokeDasharray={2 * Math.PI * 6} strokeDashoffset={strokeEnd} />
                     <circle cx="8" cy="8" r="6" stroke="#5855FF" strokeOpacity="0.08" strokeWidth="4" />
                 </svg>
             </div>
             {props.done &&
-                <div className={s('card vertical')}>
+                <div className={s('card vertical shadow')}>
                     {props.type === 'review' &&
                         <div className="w-full">
                             <h2> 审核概述 </h2>
@@ -87,15 +87,17 @@ export default function FileCard(props: FileCardProps) {
                                 {props.overview}
                             </p>
                             <DashedSparator className={s("my-4")} />
-                            <div className={s('card horizontal')}>
+                            <div className={s('card horizontal bordered')}>
                                 <div className="flex flex-row space-x-4 items-center">
                                     <DocumentIcon type={props.filetype} />
                                     <div className={s('file-info-wrap')}>
-                                        <span className={s('file-name text-indigo-500')}> {props.reviewFilename} </span>
+                                        <span className={s('file-name text-indigo-500 dark:text-indigo-300')}> {props.reviewFilename} </span>
                                         <span className={s('file-size')}> {props.reviewFilesize}(TODO) </span>
                                     </div>
                                 </div>
-                                <button className="h-9 w-9 p-2 rounded-full hover:bg-neutral-50 focus:outline focus:outline-neutral-100 transition duration-100">
+                                <button
+                                    className="h-9 w-9 p-2 rounded-full hover:bg-neutral-50 dark:hover:bg-neutral-700 focus:outline focus:outline-neutral-100 dark:focus:outline-neutral-600 transition duration-100"
+                                >
                                     <ArrowDownTrayIcon className="h-full w-full" />
                                 </button>
                             </div>
@@ -141,12 +143,16 @@ function Mention(props: MentionProps) {
                 )}
             </div>
             <div className="ml-auto">
-                <button className="w-7 h-7 p-1 rounded-full hover:bg-neutral-50" onClick={props.onCopyOverview}>
-                    <ClipboardDocumentIcon className="w-full h-full"/>
-                </button>
-                <button className="w-7 h-7 p-1 rounded-full hover:bg-neutral-50">
-                    <AtSymbolIcon className="w-full h-full"/>
-                </button>
+                <Tooltip content="复制文本信息">
+                    <button className="w-7 h-7 p-1 rounded-full hover:bg-neutral-50 dark:hover:bg-neutral-700" onClick={props.onCopyOverview}>
+                        <ClipboardDocumentIcon className="w-full h-full"/>
+                    </button>
+                </Tooltip>
+                <Tooltip content="提醒用户查看文件">
+                    <button className="w-7 h-7 p-1 rounded-full hover:bg-neutral-50 dark:hover:bg-neutral-700">
+                        <AtSymbolIcon className="w-full h-full"/>
+                    </button>
+                </Tooltip>
             </div>
         </div>
     )
@@ -158,7 +164,10 @@ function MentionCard({ people, onDelete }: { people: People, onDelete?: (p: Peop
     return (
         <div className={s("mention-card")}>
             <span> @{people.username} </span>
-            <button className="w-4 h-4 p-[2px] text-black rounded-full hover:bg-neutral-50">
+            <button
+                className="w-4 h-4 p-[2px] text-black dark:text-white rounded-full hover:bg-neutral-50 dark:hover:bg-neutral-700"
+                onClick={() => onDelete && onDelete(people)}
+            >
                 <XMarkIcon className="w-full h-full"/>
             </button>
         </div>

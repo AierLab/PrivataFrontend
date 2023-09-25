@@ -44,6 +44,7 @@ const createWindow = (): void => {
   ipcMain.handle('dev:load-extension',     async (event, path) => await session.defaultSession.loadExtension(path))
 
   ipcMain.handle('sys:read-clipboard',     () => clipboard.readText())
+  ipcMain.handle('sys:set-clipboard',      (event, text: string) => clipboard.writeText(text))
 
   ipcMain.handle('nav:to-login-page',      toLoginPage)
 

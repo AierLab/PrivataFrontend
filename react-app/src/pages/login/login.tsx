@@ -124,7 +124,7 @@ const Login = () => {
                                     <div className="inline-flex items-center mt-4">
                                         <Checkbox.Root id={s("remember-me")} checked={rememberMe} onCheckedChange={c => setRemeberMe(c as boolean)}>
                                             <Checkbox.Indicator>
-                                                <CheckIcon className="text-black" />
+                                                <CheckIcon className="text-black dark:text-white" />
                                             </Checkbox.Indicator>
                                         </Checkbox.Root>
                                         <label htmlFor={s("remember-me")}> 30 天内自动登录 </label>
@@ -305,7 +305,7 @@ const SelectItem = React.forwardRef<HTMLDivElement, Select.SelectItemProps>(({ c
         <Select.Item
             className={classNames(
                 'leading-none rounded-lg flex items-center py-2 px-8 my-1 relative',
-                'focus:bg-neutral-100',
+                'focus:bg-neutral-100 dark:focus:bg-neutral-900',
                 className
             )}
             {...props}

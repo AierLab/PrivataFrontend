@@ -1,5 +1,5 @@
 body {
-    @apply bg-white;
+    @apply bg-white dark:bg-neutral-900 dark:text-white;
 }
 
 .container {
@@ -59,9 +59,9 @@ body {
     @apply rounded-lg;
     @apply transition duration-100;
 
-    @apply hover:bg-neutral-50;
+    @apply hover:bg-neutral-50 dark:hover:bg-neutral-800;
     @apply focus:outline-none;
-    @apply focus:outline focus:outline-neutral-300;
+    @apply focus:outline focus:outline-neutral-300 dark:focus:outline-neutral-700;
 
 }
 
@@ -73,12 +73,14 @@ body {
     @apply flex flex-row items-center;
     @apply w-full py-2;
 
-    @apply hover:bg-neutral-50;
-    @apply focus:outline-neutral-300;
+    @apply hover:bg-neutral-50 dark:hover:bg-neutral-800;
+    @apply focus:outline-neutral-300 dark:focus:outline-neutral-700;
+    @apply dark:text-white;
 }
 
 .nav-list > li > button.selected {
     @apply bg-neutral-100;
+    @apply dark:bg-neutral-800 dark:text-white;
 }
 
 .icon {
@@ -104,7 +106,7 @@ button > .title {
 
 .section-page-header {
     @apply flex justify-between items-center;
-    @apply bg-white;
+    @apply bg-white dark:bg-neutral-900 dark:text-white;
 
     @apply pr-4 py-6 pl-4;
     @apply drag;
@@ -129,11 +131,11 @@ button > .title {
     @apply rounded;
     @apply py-1 px-2;
     @apply transition duration-100;
-    @apply hover:bg-neutral-50;
+    @apply hover:bg-neutral-50 dark:hover:bg-neutral-800;
 }
 
 .section-workspaces-list button.selected {
-    @apply text-neutral-900;
+    @apply text-neutral-900 dark:text-neutral-100;
     @apply font-bold;
 }
 
@@ -160,7 +162,7 @@ button > .title {
 }
 
 .section-page-content .workspace-card {
-    @apply bg-neutral-100;
+    @apply bg-neutral-100 dark:bg-neutral-800 dark:text-white;
     @apply rounded-3xl;
     @apply mr-2;
     @apply h-full flex flex-col;
@@ -173,11 +175,12 @@ button > .title {
 
 .workspace-card input {
     @apply h-12 w-full pl-4 pr-3 py-3;
-    @apply bg-white rounded-md;
-    @apply border-2 border-neutral-200;
+    @apply bg-white dark:bg-neutral-800 rounded-md;
+    @apply border-2 border-neutral-200 dark:border-neutral-700;
     @apply justify-end items-center gap-2.5;
 
     @apply focus:outline-none focus:border-neutral-700;
+    @apply dark:focus:border-neutral-400;
     @apply transition duration-100;
 }
 
@@ -193,7 +196,7 @@ button > .title {
 }
 
 .scrollbar .thumb {
-    @apply flex-1 bg-neutral-400 rounded;
+    @apply flex-1 bg-neutral-400 dark:bg-neutral-400 rounded;
     @apply relative;
     @apply before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-full before:h-full before:min-w-[44px] before:min-h-[44px];
 }
@@ -203,16 +206,18 @@ button > .title {
 }
 
 #dialog-overlay {
-    @apply bg-black/30;
+    @apply bg-black/30 dark:bg-black/70;
     @apply fixed inset-0;
     @apply no-drag;
     animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .dialog-content {
+    @apply z-30;
     @apply fixed left-[50%] top-[50%];
     @apply max-h-[75vh] max-w-[75vw] translate-x-[-50%] translate-y-[-50%];
-    @apply shadow-lg bg-white;
+    @apply shadow-lg bg-white dark:bg-neutral-900;
+    @apply dark:shadow dark:border-2 dark:border-neutral-700;
     @apply rounded-2xl overflow-hidden;
     @apply no-drag;
     animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -225,7 +230,7 @@ button > .title {
 
 .settings-dialog-nav {
     @apply w-56 h-full;
-    @apply bg-neutral-100;
+    @apply bg-neutral-100 dark:bg-neutral-800;
 }
 
 .dialog-title {
@@ -251,7 +256,7 @@ button > .title {
     @apply mt-1 px-2 py-1 w-full;
     @apply flex items-center justify-start space-x-6;
     @apply rounded-lg;
-    @apply hover:bg-neutral-200;
+    @apply hover:bg-neutral-200 dark:hover:bg-neutral-700;
 }
 
 .settings-dialog-content {

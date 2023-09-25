@@ -7,6 +7,8 @@ import * as ScrollArea from '@radix-ui/react-scroll-area'
 import Titlebar from 'components/Titlebar'
 import Separator from "components/Separator"
 
+import { People } from "@privata/types/people"
+
 import {
     BellIcon,
     Cog8ToothIcon,
@@ -46,6 +48,18 @@ interface URLParams {
     tab: TabIDs,
     workspace: WorkspaceIDs
 }
+
+// debug
+const mentionables: People[] = [
+    { id: 'dawda', username: 'Alister', avatar: '' },
+    { id: 'dadaw', username: 'Alister', avatar: '' },
+    { id: 'dgfaw', username: 'Alister', avatar: '' },
+    { id: 'dgdfw', username: 'Alister', avatar: '' },
+    { id: 'doguw', username: 'Alister', avatar: '' },
+    { id: 'gdfad', username: 'Alister', avatar: '' },
+    { id: 'jdkfg', username: 'Alister', avatar: '' },
+    { id: 'lkjdf', username: 'Alister', avatar: '' },
+]
 
 const Home = () => {
     const features: Feature[] = [
@@ -238,7 +252,7 @@ const Home = () => {
                                         <div className={s('workspace-header')}>
                                             <h2> 文件审核 </h2>
                                             <button
-                                                className="rounded-full p-2 -m-2 hover:bg-neutral-200 transition duration-100 data-[open]:bg-neutral-200"
+                                                className="rounded-full p-2 -m-2 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition duration-100 data-[open]:bg-neutral-200 dark:data-[open]:bg-neutral-700"
                                                 onClick={() => setHistoryFileOpen(!historyFileOpen ? 'true' : null)}
                                                 data-open={historyFileOpen}
                                             >
@@ -256,26 +270,8 @@ const Home = () => {
                                                     filename="dadwad.txt"
                                                     uploadProgress={0.7}
                                                     done={true}
-                                                    mentionables={[
-                                                        { id: 'dawda', username: 'Alister', avatar: '' },
-                                                        { id: 'dadaw', username: 'Alister', avatar: '' },
-                                                        { id: 'dgfaw', username: 'Alister', avatar: '' },
-                                                        { id: 'dgdfw', username: 'Alister', avatar: '' },
-                                                        { id: 'doguw', username: 'Alister', avatar: '' },
-                                                        { id: 'gdfad', username: 'Alister', avatar: '' },
-                                                        { id: 'jdkfg', username: 'Alister', avatar: '' },
-                                                        { id: 'lkjdf', username: 'Alister', avatar: '' },
-                                                    ]}
-                                                    mentioned={[
-                                                        { id: 'dawda', username: 'Alister', avatar: '' },
-                                                        { id: 'dadaw', username: 'Alister', avatar: '' },
-                                                        { id: 'dgfaw', username: 'Alister', avatar: '' },
-                                                        { id: 'dgdfw', username: 'Alister', avatar: '' },
-                                                        { id: 'doguw', username: 'Alister', avatar: '' },
-                                                        { id: 'gdfad', username: 'Alister', avatar: '' },
-                                                        { id: 'jdkfg', username: 'Alister', avatar: '' },
-                                                        { id: 'lkjdf', username: 'Alister', avatar: '' },
-                                                    ]}
+                                                    mentionables={mentionables}
+                                                    mentioned={mentionables}
                                                     overview="你说的对，但是《原神》是由米哈游自主研发的一款全新开放世界冒险游戏。游戏发生在一个被称作「提瓦特」的幻想世界，在这里，被神选中的人将被授予"
                                                     reviewFilename="dfgdfgdf.txt"
                                                     reviewFilesize={1234}
@@ -286,23 +282,10 @@ const Home = () => {
                                                     filetype='txt'
                                                     filesize={3.1 * 1024 * 1024}
                                                     filename="dadwad.txt"
-                                                    uploadProgress={0.7}
+                                                    uploadProgress={0.2}
                                                     done={true}
-                                                    mentionables={[
-                                                        { id: 'dawda', username: 'Alister', avatar: '' },
-                                                        { id: 'dadaw', username: 'Alister', avatar: '' },
-                                                        { id: 'dgfaw', username: 'Alister', avatar: '' },
-                                                        { id: 'dgdfw', username: 'Alister', avatar: '' },
-                                                        { id: 'doguw', username: 'Alister', avatar: '' },
-                                                        { id: 'gdfad', username: 'Alister', avatar: '' },
-                                                        { id: 'jdkfg', username: 'Alister', avatar: '' },
-                                                        { id: 'lkjdf', username: 'Alister', avatar: '' },
-                                                    ]}
-                                                    mentioned={[
-                                                        { id: 'dawda', username: 'Alister', avatar: '' },
-                                                        { id: 'dadaw', username: 'Alister', avatar: '' },
-                                                        { id: 'dgfaw', username: 'Alister', avatar: '' },
-                                                    ]}
+                                                    mentionables={mentionables}
+                                                    mentioned={mentionables.slice(0, 3)}
                                                     grade={80}
                                                     overview="你说的对，但是《原神》是由米哈游自主研发的一款全新开放世界冒险游戏。游戏发生在一个被称作「提瓦特」的幻想世界，在这里，被神选中的人将被授予"
                                                 />
@@ -313,7 +296,7 @@ const Home = () => {
                                         </ScrollArea.Root>
                                     </div>
                                     {historyFileOpen &&
-                                        <div className={s('workspace-card w-[400px]')}>
+                                        <div className={s('workspace-card w-[500px]')}>
                                             <div className={s('workspace-header')}>
                                                 <h2> 历史文件 </h2>
                                             </div>
@@ -367,7 +350,7 @@ const Home = () => {
                                     <div className={s('content-header')}>
                                         <h2> 我的账号 </h2>
                                         <button
-                                            className="rounded-full hover:bg-neutral-100 p-1 -m-1"
+                                            className="rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 p-1 -m-1"
                                             onClick={() => setDialog(null)}
                                         >
                                             <XMarkIcon className="h-5 w-5" />

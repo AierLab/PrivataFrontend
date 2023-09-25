@@ -24,6 +24,6 @@ contextBridge.exposeInMainWorld('api', {
     loadDevExtension: (path: string) => ipcRenderer.invoke("dev:load-extension", path),
 
     readClipboard:    () => ipcRenderer.invoke('sys:read-clipboard'),
-  })
+    setClipboard:     (text: string) => ipcRenderer.invoke('sys:set-clipboard', text),
+})
 
-console.log("ALL API LOADED!")

@@ -1,0 +1,17 @@
+.tooltip-content {
+    @apply bg-black text-white text-xs;
+    @apply py-1 px-2 rounded;
+    @apply shadow;
+    animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes contentShow {
+from {
+    opacity: 0;
+    transform: translateY(-10%) scale(0.96);
+}
+to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+}
