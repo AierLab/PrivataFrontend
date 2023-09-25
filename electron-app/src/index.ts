@@ -58,35 +58,6 @@ const createWindow = (): void => {
   ipcMain.handle("user:login", async () => {
     console.log("Congratulations! You have successfully logged in.")
   })
-
-  ipcMain.handle("ready:login-page",async () => {
-    console.log('content loaded')
-    securityKeyDaemon.refresh()
-  })
-
-  ipcMain.handle("local-model:start",async () => {
-    if (modelID !== null){
-      return
-    }
-    securityKeyDaemon.emit('run_local_model')
-    const model_path = path.join(securityKeyDaemon.getLastVerifiedResult().path,'assets','PrivataLocalModel','dist','model.exe')
-    const child = exec(model_path)
-    modelID = child.pid
-  }),
-
-  ipcMain.handle("local-model:terminate",async () => {
-    if (modelID === null){
-      return
-    }
-    process.kill(modelID, 'SIGINT')
-  })
-
-
-  securityKeyDaemon.on('verification_changed', result => {
-    console.log(result)
-    mainWindow.webContents.send('verification_changed', result)
-  })
-
 };
 
 // This method will be called when Electron has finished
