@@ -1,6 +1,6 @@
 import { BriefcaseIcon, Cog8ToothIcon, UserIcon, UsersIcon } from "@heroicons/react/24/outline"
 import { People } from "@privata/types/people"
-import { ReactElement, ReactNode } from "react"
+import { ReactNode } from "react"
 
 interface File {
     filename: string
