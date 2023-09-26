@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react"
-import styles from "./login.module.css"
+import styles from "./index.module.css"
 import { useNavigate } from "react-router-dom"
 import { classNames, modulize } from 'utils/classNames'
 import Titlebar from "components/Titlebar"

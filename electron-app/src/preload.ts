@@ -1,6 +1,7 @@
 // See the Electron documentation for details on how to use preload scripts:
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 import { contextBridge, ipcRenderer } from 'electron'
+import { ThemeMode } from '@privata/types/theme'
 
 contextBridge.exposeInMainWorld('api', {
     // node: () => process.versions.node,
@@ -25,5 +26,7 @@ contextBridge.exposeInMainWorld('api', {
 
     readClipboard:    () => ipcRenderer.invoke('sys:read-clipboard'),
     setClipboard:     (text: string) => ipcRenderer.invoke('sys:set-clipboard', text),
+
+    setTheme:         (theme: ThemeMode) => ipcRenderer.invoke('app:set-theme', theme),
 })
 

@@ -1,5 +1,5 @@
-import { ReactElement, useCallback, useState } from "react"
-import styles from "./home.module.css"
+import { ReactElement, useCallback, useContext, useState } from "react"
+import styles from "./index.module.css"
 
 import * as Tabs from '@radix-ui/react-tabs'
 import * as Dialog from '@radix-ui/react-dialog'
@@ -7,8 +7,7 @@ import * as ScrollArea from '@radix-ui/react-scroll-area'
 import Titlebar from 'components/Titlebar'
 import Separator from "components/Separator"
 
-
-import { People } from "@privata/types/people"
+import ThemeContext from "contexts/theme"
 
 import {
     BellIcon,
@@ -18,9 +17,6 @@ import {
     MagnifyingGlassIcon,
     ChevronDoubleLeftIcon,
     FolderIcon,
-    UserIcon,
-    BriefcaseIcon,
-    UsersIcon,
     XMarkIcon,
     EllipsisHorizontalIcon
 } from "@heroicons/react/24/outline"
@@ -28,12 +24,15 @@ import { modulize } from "utils/classNames"
 import { humanizeFileSize } from "utils/humanize"
 import { motion, Variants } from "framer-motion"
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
-import { useQueryItem } from "utils/useQueryItem"
+import { useQueryItem } from "hooks/useQueryItem"
 import { FileCard, DocumentIcon } from "components/FileCard/index"
+
+import { mentionables, historyFiles, settingsGroups } from './static-conf'
 
 type TabIDs = 'reports-review' | 'quan-eval'
 type DialogIDs = 'notifications' | 'help' | 'settings' | 'search' | null
 type WorkspaceIDs = 'workspace' | 'file-management'
+
 interface Feature {
     id: TabIDs,
     name: string,
@@ -51,34 +50,6 @@ interface URLParams {
     tab: TabIDs,
     workspace: WorkspaceIDs
 }
-
-interface File {
-    filename: string
-    ext: 'txt' | 'pdf' | 'doc'
-    size: number // number of bytes
-    date: number
-    chatId: number
-    url: string
-}
-
-// debug: data mock
-const mentionables: People[] = [
-    { id: 'dawda', username: 'Alister', avatar: '' },
-    { id: 'dadaw', username: 'Alister', avatar: '' },
-    { id: 'dgfaw', username: 'Alister', avatar: '' },
-    { id: 'dgdfw', username: 'Alister', avatar: '' },
-    { id: 'doguw', username: 'Alister', avatar: '' },
-    { id: 'gdfad', username: 'Alister', avatar: '' },
-    { id: 'jdkfg', username: 'Alister', avatar: '' },
-    { id: 'lkjdf', username: 'Alister', avatar: '' },
-]
-
-// debug: data mock
-const historyFiles: File[] = [
-    { filename: "dawwadawdawdawdlfghjsfgklsdhgdfkjghwjeyriwuef.txt", ext: 'txt', size: 114514, date: 114514, chatId: 1919810, url: '' },
-    { filename: "123.pdf", ext: 'pdf', size: 114.514 * 1024, date: 114514, chatId: 1919810, url: '' },
-    { filename: "123.doc", ext: 'doc', size: 114514, date: 114514, chatId: 1919810, url: '' },
-]
 
 const Home = () => {
     const features: Feature[] = [
@@ -100,6 +71,11 @@ const Home = () => {
     const [dialog, setDialog] = useState<DialogIDs>(null)
     const [navCollapsed, setNavCollapsedValue] = useQueryItem('navCollapsed')
     const [historyFileOpen, setHistoryFileOpen] = useQueryItem('historyFileOpen')
+
+    const { theme, setTheme } = useContext(ThemeContext)
+    const toggleTheme = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        setTheme(theme === 'dark' ? 'light' : 'dark', e.pageX, e.pageY)
+    }, [setTheme, theme])
 
     const goto = useNavigate()
 
@@ -277,7 +253,6 @@ const Home = () => {
                                             >
                                                 <FolderIcon className="h-5 w-5" />
                                             </button>
-
                                         </div>
                                         <ScrollArea.Root className="w-full h-0 flex-1">
                                             <ScrollArea.Viewport className="h-full px-[5%] lg:px-[15%] 2xl:px-[25%]">
@@ -325,13 +300,13 @@ const Home = () => {
                                                     <MagnifyingGlassIcon className="h-6 w-6 absolute left-9" />
                                                 </div>
                                                 <ScrollArea.Viewport className="h-full px-6 mt-4">
-                                                    { historyFiles.map((f) => (
+                                                    {historyFiles.map((f) => (
                                                         <div key={`${f.filename}-${f.url}`} className={s('history-file-item')}>
                                                             <div className="flex justify-start items-center flex-1 w-0 space-x-2">
-                                                                <DocumentIcon type={f.ext}/>
+                                                                <DocumentIcon type={f.ext} />
                                                                 <div className="flex flex-col items-start flex-1 w-0">
                                                                     <span className="w-full text-ellipsis overflow-hidden"> {f.filename} </span>
-                                                                    <span className="text-sm text-neutral-500"> { humanizeFileSize(f.size) } { new Date(f.date).toLocaleDateString() }</span>
+                                                                    <span className="text-sm text-neutral-500"> {humanizeFileSize(f.size)} {new Date(f.date).toLocaleDateString()}</span>
                                                                 </div>
                                                             </div>
                                                             <button className="w-6 h-6 p-1 rounded hover:bg-neutral-300 dark:hover:bg-neutral-600">
@@ -358,24 +333,21 @@ const Home = () => {
                             <Tabs.Root orientation="vertical" className="h-full w-full flex">
                                 <Tabs.List className={s('settings-dialog-nav')}>
                                     <Dialog.Title className={s('dialog-title')}> 设置 </Dialog.Title>
-                                    <div role='group' className={s('nav-group')}>
-                                        <label role='columnheader'> 个人账号 </label>
-                                        <Tabs.Trigger value='my-account' className={s('nav-item')}>
-                                            <UserIcon className={s('nav-icon')} />
-                                            <span> 我的账号 </span>
-                                        </Tabs.Trigger>
-                                    </div>
-                                    <div role='group' className={s('nav-group')}>
-                                        <label role='columnheader'> 组织账号 </label>
-                                        <Tabs.Trigger value='org-account' className={s('nav-item')}>
-                                            <BriefcaseIcon className={s('nav-icon')} />
-                                            <span> 组织账号 </span>
-                                        </Tabs.Trigger>
-                                        <Tabs.Trigger value='member-management' className={s('nav-item')}>
-                                            <UsersIcon className={s('nav-icon')} />
-                                            <span> 成员管理 </span>
-                                        </Tabs.Trigger>
-                                    </div>
+
+                                    { settingsGroups.map(g => (
+                                        <div role='group' className={s('nav-group')} key={g.title}>
+                                            <label role='columnheader'> {g.title}</label>
+                                            { g.items.map(i => (
+                                                <Tabs.Trigger key={i.id} value={i.id} className={s('nav-item')}>
+                                                    <>
+                                                        {i.icon}
+                                                        <span> {i.title} </span>
+                                                    </>
+                                                </Tabs.Trigger>
+                                            ))}
+                                        </div>
+                                    ))}
+
                                 </Tabs.List>
 
                                 <div className={s('settings-dialog-content')}>
@@ -388,6 +360,11 @@ const Home = () => {
                                             <XMarkIcon className="h-5 w-5" />
                                         </button>
                                     </div>
+                                    <Tabs.Content value="app-settings">
+                                        <button onClick={toggleTheme}>
+                                            切换黑暗模式
+                                        </button>
+                                    </Tabs.Content>
                                 </div>
                             </Tabs.Root>
                         </Dialog.Content>

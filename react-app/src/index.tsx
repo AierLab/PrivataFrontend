@@ -3,16 +3,18 @@ import { createRoot } from 'react-dom/client';
 import { HashRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import './index.css';
 
-import Login from 'pages/login/login';
-import Home from 'pages/home/home'
-import { useEffect } from 'react';
+import Login from 'pages/login';
+import Home from 'pages/home'
+import { useEffect, useState } from 'react';
+import ThemeContext from 'contexts/theme'
+import { ThemeMode } from '@privata/types/theme';
 
 const Index = () => {
     const goto = useNavigate();
 
     useEffect(() => {
         // TODO: if not login
-        if(true) goto('/login')
+        if (true) goto('/login')
         else goto('/home')
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -30,15 +32,59 @@ const Index = () => {
 };
 
 const RootComponent = () => {
+    const [theme, setTheme] = useState<ThemeMode>('system')
+
+    const changeTheme = (theme: ThemeMode, cursorX?: number, cursorY?: number) => {
+        const change = () => {
+            setTheme(theme)
+            window.api.setTheme(theme)
+        }
+
+        if (document.startViewTransition) {
+            const transition = document.startViewTransition(change)
+            if(cursorX && cursorY) {
+                const html = document.querySelector('html')!
+                if(theme !== 'system') html.setAttribute('data-mask-animation', 'true')
+
+                const pageWidth = html.clientWidth
+                const pageHeight = html.clientHeight
+                const circleRadius = Math.hypot(Math.max(cursorX, pageWidth - cursorX), Math.max(cursorY, pageHeight - cursorY))
+
+                transition.ready.then(() => {
+                    document.documentElement.animate(
+                        {
+                            clipPath: [
+                                `circle(0 at ${cursorX}px ${cursorY}px)`,
+                                `circle(${circleRadius}px at ${cursorX}px ${cursorY}px)`,
+                            ],
+                        },
+                        {
+                            duration: 500,
+                            easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
+                            pseudoElement: "::view-transition-new(root)",
+                        },
+                    )
+                })
+                transition.finished.then(() => {
+                    document.querySelector('html')!.removeAttribute('data-mask-animation')
+                })
+            }
+        } else {
+            change()
+        }
+    }
+
     return (
         <div id="app">
-            <HashRouter>
-                <Routes>
-                    <Route path="/" element={<Index />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/home/:tab?/:workspace?" element={<Home />} />
-                </Routes>
-            </HashRouter>
+            <ThemeContext.Provider value={{ theme: theme, setTheme: changeTheme }}>
+                <HashRouter>
+                    <Routes>
+                        <Route path="/" element={<Index />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/home/:tab?/:workspace?" element={<Home />} />
+                    </Routes>
+                </HashRouter>
+            </ThemeContext.Provider>
         </div >
     )
 };
