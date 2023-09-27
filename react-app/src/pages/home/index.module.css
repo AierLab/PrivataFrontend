@@ -132,6 +132,7 @@ button > .title {
     @apply py-1 px-2;
     @apply transition duration-100;
     @apply hover:bg-neutral-50 dark:hover:bg-neutral-800;
+    @apply dark:text-neutral-500;
 }
 
 .section-workspaces-list button.selected {
@@ -155,10 +156,48 @@ button > .title {
 
 .section-page-content {
     @apply mb-2;
-    @apply flex-1;
+    @apply flex-1 h-0;
     @apply flex flex-row;
-    @apply h-0;
     @apply overflow-hidden;
+}
+
+.drag-drop-area {
+    @apply absolute inset-0;
+    @apply rounded-b-3xl;
+    @apply z-20;
+    @apply bg-neutral-100 dark:bg-neutral-800;
+    @apply flex items-center justify-center space-y-2;
+    @apply before:bg-white dark:before:bg-neutral-900;
+    @apply before:content-normal before:absolute before:inset-x-4 before:inset-y-3;
+    @apply before:border-dashed before:border-2 before:rounded-3xl;
+    @apply before:border-indigo-600 before:dark:border-indigo-300;
+    
+    @apply transition duration-100;
+}
+
+:not([data-filedrop="true"]) .drag-drop-area {
+    @apply opacity-0 pointer-events-none;
+}
+
+[data-filedrop="true"] .drag-drop-area {
+    @apply opacity-100 pointer-events-auto;
+}
+
+.drag-drop-area p {
+    @apply text-sm text-indigo-600 dark:text-indigo-300 z-30;
+}
+
+.upload-button {
+    @apply absolute right-8 bottom-8 rounded-full;
+    @apply w-16 h-16 p-5;
+    @apply bg-indigo-600 text-white dark:bg-indigo-500;
+    @apply shadow-lg;
+    @apply hover:bg-indigo-700 dark:hover:bg-indigo-400;
+    @apply transition duration-200;
+}
+
+[data-filedrop="true"] .upload-button {
+    @apply hidden;
 }
 
 .section-page-content .workspace-card {
@@ -276,6 +315,25 @@ button > .title {
     @apply flex items-center justify-between;
 }
 
+.settings-group-title {
+    @apply px-5 py-2;
+    @apply text-sm text-neutral-600 dark:text-neutral-400;
+}
+
+.settings-item {
+    @apply flex items-center justify-between;
+    @apply px-5 py-3;
+}
+
+.toggle-group-item {
+    @apply w-9 h-9 p-2;
+    @apply bg-neutral-100 dark:bg-neutral-800;
+    @apply first:rounded-l-lg last:rounded-r-lg;
+    @apply data-[state=on]:bg-neutral-200;
+    @apply dark:data-[state=on]:bg-neutral-700;
+    @apply transition duration-100;
+    @apply focus:relative focus:z-10 focus:ring focus:ring-indigo-400 dark:focus:ring-indigo-900;
+}
 
 @keyframes overlayShow {
 from { opacity: 0; }

@@ -32,9 +32,10 @@ const Index = () => {
 };
 
 const RootComponent = () => {
-    const [theme, setTheme] = useState<ThemeMode>('system')
+    const [currentTheme, setTheme] = useState<ThemeMode>('system')
 
     const changeTheme = (theme: ThemeMode, cursorX?: number, cursorY?: number) => {
+        if(theme === currentTheme) return
         const change = () => {
             setTheme(theme)
             window.api.setTheme(theme)
@@ -44,27 +45,28 @@ const RootComponent = () => {
             const transition = document.startViewTransition(change)
             if(cursorX && cursorY) {
                 const html = document.querySelector('html')!
-                if(theme !== 'system') html.setAttribute('data-mask-animation', 'true')
+                if(theme !== 'system') {
+                    html.setAttribute('data-mask-animation', 'true')
+                    const pageWidth = html.clientWidth
+                    const pageHeight = html.clientHeight
+                    const circleRadius = Math.hypot(Math.max(cursorX, pageWidth - cursorX), Math.max(cursorY, pageHeight - cursorY))
 
-                const pageWidth = html.clientWidth
-                const pageHeight = html.clientHeight
-                const circleRadius = Math.hypot(Math.max(cursorX, pageWidth - cursorX), Math.max(cursorY, pageHeight - cursorY))
-
-                transition.ready.then(() => {
-                    document.documentElement.animate(
-                        {
-                            clipPath: [
-                                `circle(0 at ${cursorX}px ${cursorY}px)`,
-                                `circle(${circleRadius}px at ${cursorX}px ${cursorY}px)`,
-                            ],
-                        },
-                        {
-                            duration: 500,
-                            easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
-                            pseudoElement: "::view-transition-new(root)",
-                        },
-                    )
-                })
+                    transition.ready.then(() => {
+                        document.documentElement.animate(
+                            {
+                                clipPath: [
+                                    `circle(0 at ${cursorX}px ${cursorY}px)`,
+                                    `circle(${circleRadius}px at ${cursorX}px ${cursorY}px)`,
+                                ],
+                            },
+                            {
+                                duration: 500,
+                                easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
+                                pseudoElement: "::view-transition-new(root)",
+                            },
+                        )
+                    })
+                }
                 transition.finished.then(() => {
                     document.querySelector('html')!.removeAttribute('data-mask-animation')
                 })
@@ -76,7 +78,7 @@ const RootComponent = () => {
 
     return (
         <div id="app">
-            <ThemeContext.Provider value={{ theme: theme, setTheme: changeTheme }}>
+            <ThemeContext.Provider value={{ theme: currentTheme, setTheme: changeTheme }}>
                 <HashRouter>
                     <Routes>
                         <Route path="/" element={<Index />} />

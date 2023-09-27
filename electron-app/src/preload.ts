@@ -2,6 +2,7 @@
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 import { contextBridge, ipcRenderer } from 'electron'
 import { ThemeMode } from '@privata/types/theme'
+import { OpenFileOptions } from '@privata/types/open-file-dialog'
 
 contextBridge.exposeInMainWorld('api', {
     // node: () => process.versions.node,
@@ -28,5 +29,6 @@ contextBridge.exposeInMainWorld('api', {
     setClipboard:     (text: string) => ipcRenderer.invoke('sys:set-clipboard', text),
 
     setTheme:         (theme: ThemeMode) => ipcRenderer.invoke('app:set-theme', theme),
+    openFile:         (options: OpenFileOptions) => ipcRenderer.invoke("sys:open-file", options),
 })
 
