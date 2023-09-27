@@ -109,12 +109,12 @@ const Home = () => {
     // file select part
     const handleFileSelect = () => {
         const options: OpenFileOptions = {
-            multiSelect: true,
-            title: '选择需要处理的文件',
-            filters: [
-                { name: "文档", extensions: ['pdf', 'doc', 'txt'] },
-            ]
-        }
+          multiSelect: true,
+          title: "选择需要处理的文件",
+          filters: [
+            { name: "文档", extensions: ["pdf", "doc", "docx", "txt", "md"] },
+          ],
+        };
         window.api.openFile(options).then((result: OpenFileResult) => {
             if(result.canceled || result.filePaths.length === 0) return
             const path = result.filePaths[0]
@@ -131,9 +131,9 @@ const Home = () => {
         if(!filename)
             payload.append('file', file as File)
         else
-            payload.append('file', file as Blob, )
-        payload.append('profile_id', 'diana')
-        
+            payload.append('file', file as Blob)
+        payload.append('profile_id', 'media')
+
         GetFileRating(payload)
             .then((response) => {
                 console.log(response)

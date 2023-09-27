@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_ENDPOINT = 'http://localhost:8080'
+const API_ENDPOINT = "http://aidvisor.valmech.net:5000";
 const api = axios.create({
   baseURL: API_ENDPOINT,
   headers: {
@@ -11,4 +11,3 @@ const api = axios.create({
 export const GetFileRating = async (payload: FormData) => {
   return await api.post('/api/file/rating', payload)
 }
-

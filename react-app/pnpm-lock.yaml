@@ -32,6 +32,9 @@ dependencies:
   '@radix-ui/react-tooltip':
     specifier: ^1.0.6
     version: registry.npmmirror.com/@radix-ui/react-tooltip@1.0.7(@types/react-dom@18.0.0)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
+  '@tanstack/react-table':
+    specifier: ^8.10.3
+    version: registry.npmmirror.com/@tanstack/react-table@8.10.3(react-dom@18.2.0)(react@18.2.0)
   '@testing-library/jest-dom':
     specifier: ^5.14.1
     version: registry.npmmirror.com/@testing-library/jest-dom@5.14.1
@@ -3677,6 +3680,28 @@ packages:
       loader-utils: registry.npmmirror.com/loader-utils@2.0.4
     transitivePeerDependencies:
       - supports-color
+
+  registry.npmmirror.com/@tanstack/react-table@8.10.3(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-Qya1cJ+91arAlW7IRDWksRDnYw28O446jJ/ljkRSc663EaftJoBCAU10M+VV1K6MpCBLrXq1BD5IQc1zj/ZEjA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@tanstack/react-table/-/react-table-8.10.3.tgz}
+    id: registry.npmmirror.com/@tanstack/react-table/8.10.3
+    name: '@tanstack/react-table'
+    version: 8.10.3
+    engines: {node: '>=12'}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      '@tanstack/table-core': registry.npmmirror.com/@tanstack/table-core@8.10.3
+      react: registry.npmmirror.com/react@18.2.0
+      react-dom: registry.npmmirror.com/react-dom@18.2.0(react@18.2.0)
+    dev: false
+
+  registry.npmmirror.com/@tanstack/table-core@8.10.3:
+    resolution: {integrity: sha512-hJ55YfJlWbfzRROfcyA/kC1aZr/shsLA8XNAwN8jXylhYWGLnPmiJJISrUfj4dMMWRiFi0xBlnlC7MLH+zSrcw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@tanstack/table-core/-/table-core-8.10.3.tgz}
+    name: '@tanstack/table-core'
+    version: 8.10.3
+    engines: {node: '>=12'}
+    dev: false
 
   registry.npmmirror.com/@testing-library/dom@8.20.1:
     resolution: {integrity: sha512-/DiOQ5xBxgdYRC8LNk7U+RWat0S3qRLeIw3ZIkMQ9kkVlRmwD/Eg8k8CqIpD6GW7u20JIUOfMKbxtiLutpjQ4g==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@testing-library/dom/-/dom-8.20.1.tgz}

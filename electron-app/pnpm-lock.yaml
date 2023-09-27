@@ -54,8 +54,8 @@ devDependencies:
     specifier: 1.7.3
     version: registry.npmmirror.com/@vercel/webpack-asset-relocator-loader@1.7.3
   electron:
-    specifier: 25.2.0
-    version: registry.npmmirror.com/electron@25.2.0
+    specifier: 25.8.1
+    version: registry.npmmirror.com/electron@25.8.1
   electron-squirrel-startup:
     specifier: ^1.0.0
     version: registry.npmmirror.com/electron-squirrel-startup@1.0.0
@@ -3898,10 +3898,10 @@ packages:
     dev: true
     optional: true
 
-  registry.npmmirror.com/electron@25.2.0:
-    resolution: {integrity: sha512-I/rhcW2sV2fyiveVSBr2N7v5ZiCtdGY0UiNCDZgk2fpSC+irQjbeh7JT2b4vWmJ2ogOXBjqesrN9XszTIG6DHg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/electron/-/electron-25.2.0.tgz}
+  registry.npmmirror.com/electron@25.8.1:
+    resolution: {integrity: sha512-GtcP1nMrROZfFg0+mhyj1hamrHvukfF6of2B/pcWxmWkd5FVY1NJib0tlhiorFZRzQN5Z+APLPr7aMolt7i2AQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/electron/-/electron-25.8.1.tgz}
     name: electron
-    version: 25.2.0
+    version: 25.8.1
     engines: {node: '>= 12.20.55'}
     hasBin: true
     requiresBuild: true
