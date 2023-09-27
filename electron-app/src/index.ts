@@ -43,21 +43,21 @@ const createWindow = (): void => {
     mainWindow.webContents.openDevTools({ mode: 'detach' });
   }
 
-  ipcMain.handle('dev:is-debug-mode', async () => debug)
-  ipcMain.handle('dev:toggle-dev-tools', async () => { mainWindow.webContents.openDevTools({ mode: 'detach' }) })
-  ipcMain.handle('dev:load-extension', async (event, path) => await session.defaultSession.loadExtension(path))
+  ipcMain.handle('dev:is-debug-mode',      async () => debug)
+  ipcMain.handle('dev:toggle-dev-tools',   async () => { mainWindow.webContents.openDevTools({ mode: 'detach' }) })
+  ipcMain.handle('dev:load-extension',     async (event, path) => await session.defaultSession.loadExtension(path))
 
-  ipcMain.handle('sys:read-clipboard', () => clipboard.readText())
-  ipcMain.handle('sys:set-clipboard', (event, text: string) => clipboard.writeText(text))
+  ipcMain.handle('sys:read-clipboard',     () => clipboard.readText())
+  ipcMain.handle('sys:set-clipboard',      (event, text: string) => clipboard.writeText(text))
 
-  ipcMain.handle('nav:to-login-page', toLoginPage)
+  ipcMain.handle('nav:to-login-page',      toLoginPage)
 
-  ipcMain.handle('app:set-theme', (event, theme: ThemeMode) => nativeTheme.themeSource = theme)
+  ipcMain.handle('app:set-theme',          (event, theme: ThemeMode) => nativeTheme.themeSource = theme)
 
-  ipcMain.handle('global:open-external', async (event, url) => { await shell.openExternal(url) })
-  ipcMain.handle("window:minimize", async () => { mainWindow.minimize() })
+  ipcMain.handle('global:open-external',   async (event, url) => { await shell.openExternal(url) })
+  ipcMain.handle("window:minimize",        async () => { mainWindow.minimize() })
   ipcMain.handle("window:toggle-maximize", async () => { mainWindow.isMaximized() ? mainWindow.unmaximize() : mainWindow.maximize() })
-  ipcMain.handle("window:close", async () => {
+  ipcMain.handle("window:close",           async () => {
     mainWindow.close()
     app.quit()
   })
