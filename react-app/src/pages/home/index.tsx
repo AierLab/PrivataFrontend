@@ -11,6 +11,7 @@ import Separator from "components/Separator"
 import ThemeContext from "contexts/theme"
 import { OpenFileOptions, OpenFileResult } from '@privata/types/open-file-dialog'
 import { ThemeMode } from "@privata/types/theme"
+import { GetFileRating } from 'api/review'
 
 import {
     BellIcon,
@@ -101,7 +102,8 @@ const Home = () => {
         e.preventDefault()
         e.stopPropagation()
 
-        console.log(e.dataTransfer.files)
+        if(e.dataTransfer.files.length === 0) return
+        processFile(e.dataTransfer.files[0])
     }
 
     // file select part
@@ -114,8 +116,31 @@ const Home = () => {
             ]
         }
         window.api.openFile(options).then((result: OpenFileResult) => {
-            console.log(result)
+            if(result.canceled || result.filePaths.length === 0) return
+            const path = result.filePaths[0]
+            window.api.readFile(path).then(({ buffer, filename }: { buffer: Buffer, filename: string }) => {
+                if(buffer === null) return
+                processFile(buffer, filename)
+            })
         })
+    }
+
+    // file process part
+    const processFile = (file: File | Buffer, filename?: string) => {
+        const payload = new FormData()
+        if(!filename)
+            payload.append('file', file as File)
+        else
+            payload.append('file', file as Blob, )
+        payload.append('profile_id', 'diana')
+        
+        GetFileRating(payload)
+            .then((response) => {
+                console.log(response)
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     // theme part
