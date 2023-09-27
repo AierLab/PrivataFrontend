@@ -1,13 +1,15 @@
-import { ReactElement, useCallback, useContext, useState } from "react"
+import { ReactElement, useCallback, useContext, useRef, useState } from "react"
 import styles from "./index.module.css"
 
 import * as Tabs from '@radix-ui/react-tabs'
 import * as Dialog from '@radix-ui/react-dialog'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
+import * as Table from 'components/Table'
 import Titlebar from 'components/Titlebar'
 import Separator from "components/Separator"
 
 import ThemeContext from "contexts/theme"
+import { OpenFileOptions, OpenFileResult } from '@privata/types/open-file-dialog'
 
 import {
     BellIcon,
@@ -18,7 +20,8 @@ import {
     ChevronDoubleLeftIcon,
     FolderIcon,
     XMarkIcon,
-    EllipsisHorizontalIcon
+    EllipsisHorizontalIcon,
+    ArrowUpTrayIcon
 } from "@heroicons/react/24/outline"
 import { modulize } from "utils/classNames"
 import { humanizeFileSize } from "utils/humanize"
@@ -72,11 +75,52 @@ const Home = () => {
     const [navCollapsed, setNavCollapsedValue] = useQueryItem('navCollapsed')
     const [historyFileOpen, setHistoryFileOpen] = useQueryItem('historyFileOpen')
 
+    // file drag handler part
+    // see https://stackoverflow.com/questions/7110353/html5-dragleave-fired-when-hovering-a-child-element
+    // use ref to prevent frequent re-rendering
+    const fileEnterCount = useRef<number>(0)
+    const fileDragDropDataElement = useRef<HTMLDivElement | null>(null)
+    const addFileDropDataState = () => fileDragDropDataElement.current!.setAttribute('data-filedrop', 'true')
+    const removeFileDropDataState = () => fileDragDropDataElement.current!.setAttribute('data-filedrop', 'false')
+    const dragEnter = () => {
+        fileEnterCount.current += 1
+        if (fileEnterCount.current === 1) addFileDropDataState()
+    }
+    const dragLeave = () => {
+        fileEnterCount.current -= 1
+        if(fileEnterCount.current === 0) removeFileDropDataState()
+    }
+    const dragOver = (e: React.DragEvent<HTMLDivElement>) => { e.preventDefault(); e.stopPropagation() }
+    const handleFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
+        removeFileDropDataState()
+        fileEnterCount.current = 0
+        e.preventDefault()
+        e.stopPropagation()
+
+        console.log(e.dataTransfer.files)
+    }
+
+    // file select part
+    const handleFileSelect = () => {
+        const options: OpenFileOptions = {
+            multiSelect: true,
+            title: '选择需要处理的文件',
+            filters: [
+                { name: "文档", extensions: ['pdf', 'doc', 'txt'] },
+            ]
+        }
+        window.api.openFile(options).then((result: OpenFileResult) => {
+            console.log(result)
+        })
+    }
+
+    // theme part
     const { theme, setTheme } = useContext(ThemeContext)
     const toggleTheme = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         setTheme(theme === 'dark' ? 'light' : 'dark', e.pageX, e.pageY)
     }, [setTheme, theme])
 
+    // tabs and workspaces part
     const goto = useNavigate()
 
     const setTab = (tab: TabIDs) => {
@@ -238,7 +282,14 @@ const Home = () => {
                             </button>
                         </div>
 
-                        <div className={styles['section-page-content']}>
+                        <div
+                            className={styles['section-page-content']}
+                            ref={fileDragDropDataElement}
+                            onDragEnter={dragEnter}
+                            onDragLeave={dragLeave}
+                            onDragOver={dragOver}
+                            onDrop={handleFileDrop}
+                        >
 
                             { /* workspaces */}
                             {currentWorkspace === 'workspace' && currentTab === 'reports-review' &&
@@ -254,7 +305,13 @@ const Home = () => {
                                                 <FolderIcon className="h-5 w-5" />
                                             </button>
                                         </div>
-                                        <ScrollArea.Root className="w-full h-0 flex-1">
+                                        <ScrollArea.Root className="w-full h-0 flex-1 relative">
+                                            <div className={s('drag-drop-area')}>
+                                                <p> 拖拽文件到此处发送 </p>
+                                            </div>
+                                            <button className={s('upload-button')} onClick={handleFileSelect}>
+                                                <ArrowUpTrayIcon />
+                                            </button>
                                             <ScrollArea.Viewport className="h-full px-[5%] lg:px-[15%] 2xl:px-[25%]">
                                                 <FileCard
                                                     className={s('filecard')}
@@ -319,6 +376,29 @@ const Home = () => {
                                         </div>
                                     }
                                 </>
+                            }
+                            {currentWorkspace === 'file-management' && currentTab === 'reports-review' &&
+                                <div className={s('workspace-card w-full')}>
+                                    <div className={s('workspace-header')}>
+                                        <h2> 文件管理 </h2>
+                                    </div>
+                                    <div className="w-full h-full flex flex-col px-6 space-y-4">
+                                        <div className="w-full h-fit relative flex items-center">
+                                            <input placeholder="搜索" className={s('prefix')} />
+                                            <MagnifyingGlassIcon className="h-6 w-6 absolute left-3" />
+                                        </div>
+                                        <Table.Table>
+                                            <Table.TableHeader>
+                                                <Table.TableRow>
+                                                    <Table.TableHead className="w-32rem"> 文件名称 </Table.TableHead>
+                                                    <Table.TableHead> 类型 </Table.TableHead>
+                                                    <Table.TableHead> 时间 </Table.TableHead>
+                                                    <Table.TableHead> { /* 按钮 */ } </Table.TableHead>
+                                                </Table.TableRow>
+                                            </Table.TableHeader>
+                                        </Table.Table>
+                                    </div>
+                                </div>
                             }
                         </div>
                     </div>
