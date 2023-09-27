@@ -76,7 +76,7 @@ const Login = () => {
             <Titlebar />
             <div className={s('feature-slide-container')}>
                 <div className={s('feature-slide')}>
-                    <img rel="preload" src="linabell.png" alt="feature introduction" />
+                    <img rel="preload" src="lock.png" alt="feature introduction" />
                 </div>
             </div>
             <div className={s('login-form-container')}>
