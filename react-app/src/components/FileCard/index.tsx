@@ -11,7 +11,7 @@ import Tooltip from 'components/Tooltip/index'
 // TODO: how to download? by open a link in browser
 // or as background job?
 
-type FileType = 'txt' | 'pdf' | 'doc'
+export type FileType = 'txt' | 'pdf' | 'doc' | 'docx'
 
 export interface FileCardCommonProps {
     type: 'review' | 'rating'
@@ -110,7 +110,7 @@ export function FileCard(props: FileCardProps) {
                         <div className="w-full">
                             <h2> 评分结果 </h2>
                             <span className={s("grade")}>
-                                {props.grade} 分，玩原神玩的(TODO: 分数和评价mapping)
+                                {props.grade} 分
                             </span>
                             <DashedSparator className={s("my-4")} />
                             <p className={s('overview')}>
@@ -179,7 +179,7 @@ function MentionCard({ people, onDelete }: { people: People, onDelete?: (p: Peop
 function DashedSparator({ className }: { className?: string }) {
     return (
         <svg width="2" height="2" fill="none" xmlns="http://www.w4.org/2000/svg" className={`w-full ${className}`}>
-            <line x1="0" y1="0" x2="100%" y2="0" stroke="black" strokeOpacity="0.2" strokeLinecap="round" strokeDasharray="1 3" />
+            <line x1="0" y1="0" x2="100%" y2="0" stroke="currentColor" strokeOpacity="0.2" strokeLinecap="round" strokeDasharray="1 3" />
         </svg>
     )
 }
@@ -189,6 +189,7 @@ export function DocumentIcon({ type, classNames }: { type: FileType, classNames?
         'txt': <TxtIcon className={classNames} />,
         'pdf': <PdfIcon className={classNames} />,
         'doc': <DocIcon className={classNames} />,
+        'docx': <DocIcon className={classNames} />,
     }
 
     return mappings[type]

@@ -33,9 +33,10 @@ import { humanizeFileSize } from "utils/humanize"
 import { motion, Variants } from "framer-motion"
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { useQueryItem } from "hooks/useQueryItem"
-import { FileCard, DocumentIcon } from "components/FileCard/index"
+import { FileCard, DocumentIcon, FileCardProps, FileType } from "components/FileCard/index"
 
-import { mentionables, historyFiles, settingsGroups } from './static-conf'
+import { historyFiles, settingsGroups } from './static-conf'
+import { AxiosProgressEvent } from "axios"
 
 type TabIDs = 'reports-review' | 'quan-eval'
 type DialogIDs = 'notifications' | 'help' | 'settings' | 'search' | null
@@ -79,6 +80,8 @@ const Home = () => {
     const [dialog, setDialog] = useState<DialogIDs>(null)
     const [navCollapsed, setNavCollapsedValue] = useQueryItem('navCollapsed')
     const [historyFileOpen, setHistoryFileOpen] = useQueryItem('historyFileOpen')
+
+    const [files, setFiles] = useState<FileCardProps[]>([])
 
     // file drag handler part
     // see https://stackoverflow.com/questions/7110353/html5-dragleave-fired-when-hovering-a-child-element
@@ -127,15 +130,64 @@ const Home = () => {
 
     // file process part
     const processFile = (file: File | Buffer, filename?: string) => {
+        const trueFilename = filename || (file as File).name
+        const _ext = trueFilename.indexOf('.') !== -1 ? trueFilename.split('.').at(-1)! : ''
+        if (['doc', 'docx', 'txt', 'pdf'].indexOf(_ext) === -1) return
+        const ext = _ext as FileType
+
         const payload = new FormData()
-        if(!filename)
+        let filesize = 0
+        if(!filename) {
             payload.append('file', file as File)
-        else
+            filesize = (file as File).size
+        } else {
             payload.append('file', file as Blob)
+            filesize = (file as Buffer).length
+        }
         payload.append('profile_id', 'media')
 
-        GetFileRating(payload)
+        let fileProps: FileCardProps = {
+            type: 'rating',
+            filetype: 'pdf',
+            filename: trueFilename,
+            filesize: filesize,
+            uploadProgress: 0,
+            done: false,
+            mentioned: [],
+            mentionables: [],
+        }
+
+        let idx = 0
+        setFiles(fs => {
+            idx = fs.length
+            return [...fs, fileProps]
+        })
+
+        const updateProgress = (p: AxiosProgressEvent) => {
+            fileProps.uploadProgress = p.progress || 0
+            updateProps(fileProps)
+        }
+        const updateProps = (fileProps: FileCardProps) => {
+            setFiles(fs => [...fs.slice(0, idx), fileProps, ...fs.slice(idx + 1, -1)])
+        }
+
+        GetFileRating(payload, updateProgress)
             .then((response) => {
+                const matchResult = response.data.match(/(\d+?)\/100/)
+                const rating = Number(matchResult ? matchResult[1] : 0)
+                fileProps = {
+                    type: 'rating',
+                    filetype: ext,
+                    filename: trueFilename,
+                    filesize: filesize,
+                    uploadProgress: 1,
+                    done: true,
+                    mentioned: [],
+                    mentionables: [],
+                    overview: response.data,
+                    grade: rating
+                }
+                updateProps(fileProps)
                 console.log(response)
             })
             .catch(error => {
@@ -342,33 +394,9 @@ const Home = () => {
                                                 <ArrowUpTrayIcon />
                                             </button>
                                             <ScrollArea.Viewport className="h-full px-[5%] lg:px-[15%] 2xl:px-[25%]">
-                                                <FileCard
-                                                    className={s('filecard')}
-                                                    type='review'
-                                                    filetype='txt'
-                                                    filesize={3.1 * 1024 * 1024}
-                                                    filename="dadwadogkjfshgskjfhsdkfjhsddhfskdjfhwop;ireqwolhfnkjdsafhquoerhfkufhbmwafbeugwfiugbwifwefuoiweghwi.txt"
-                                                    uploadProgress={0.7}
-                                                    done={true}
-                                                    mentionables={mentionables}
-                                                    mentioned={mentionables}
-                                                    overview="你说的对，但是《原神》是由米哈游自主研发的一款全新开放世界冒险游戏。游戏发生在一个被称作「提瓦特」的幻想世界，在这里，被神选中的人将被授予"
-                                                    reviewFilename="dfgdfgdf.txt"
-                                                    reviewFilesize={1234}
-                                                />
-                                                <FileCard
-                                                    className={s('filecard')}
-                                                    type='rating'
-                                                    filetype='pdf'
-                                                    filesize={0.91 * 1024}
-                                                    filename="dadwad.pdf"
-                                                    uploadProgress={0.2}
-                                                    done={true}
-                                                    mentionables={mentionables}
-                                                    mentioned={mentionables.slice(0, 3)}
-                                                    grade={80}
-                                                    overview="你说的对，但是《原神》是由米哈游自主研发的一款全新开放世界冒险游戏。游戏发生在一个被称作「提瓦特」的幻想世界，在这里，被神选中的人将被授予"
-                                                />
+                                                { files.map((f, i) =>
+                                                    <FileCard key={i} className={s('filecard')} {...f} />
+                                                )}
                                             </ScrollArea.Viewport>
                                             <ScrollArea.Scrollbar className={s('scrollbar')} orientation="vertical">
                                                 <ScrollArea.Thumb className={s('thumb')} />
