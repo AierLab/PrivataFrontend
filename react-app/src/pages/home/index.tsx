@@ -10,6 +10,7 @@ import Separator from "components/Separator"
 
 import ThemeContext from "contexts/theme"
 import { OpenFileOptions, OpenFileResult } from '@privata/types/open-file-dialog'
+import { ThemeMode } from "@privata/types/theme"
 
 import {
     BellIcon,
@@ -21,7 +22,10 @@ import {
     FolderIcon,
     XMarkIcon,
     EllipsisHorizontalIcon,
-    ArrowUpTrayIcon
+    ArrowUpTrayIcon,
+    SunIcon,
+    MoonIcon,
+    CloudIcon
 } from "@heroicons/react/24/outline"
 import { modulize } from "utils/classNames"
 import { humanizeFileSize } from "utils/humanize"
@@ -116,9 +120,9 @@ const Home = () => {
 
     // theme part
     const { theme, setTheme } = useContext(ThemeContext)
-    const toggleTheme = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        setTheme(theme === 'dark' ? 'light' : 'dark', e.pageX, e.pageY)
-    }, [setTheme, theme])
+    const toggleTheme = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>, theme: ThemeMode) => {
+        setTheme(theme, e.pageX, e.pageY)
+    }, [setTheme])
 
     // tabs and workspaces part
     const goto = useNavigate()
@@ -409,7 +413,7 @@ const Home = () => {
                 <Dialog.Root open={dialog === 'settings'}>
                     <Dialog.Portal>
                         <Dialog.Overlay id={s('dialog-overlay')} />
-                        <Dialog.Content className={s('dialog-content settings-dialog')}>
+                        <Dialog.Content className={s('dialog-content settings-dialog')} onEscapeKeyDown={() => setDialog(null)}>
                             <Tabs.Root orientation="vertical" className="h-full w-full flex">
                                 <Tabs.List className={s('settings-dialog-nav')}>
                                     <Dialog.Title className={s('dialog-title')}> 设置 </Dialog.Title>
@@ -441,9 +445,23 @@ const Home = () => {
                                         </button>
                                     </div>
                                     <Tabs.Content value="app-settings">
-                                        <button onClick={toggleTheme}>
-                                            切换黑暗模式
-                                        </button>
+                                        <span className={s('settings-group-title')}>
+                                            界面设置
+                                        </span>
+                                        <div className={s('settings-item')}>
+                                            <label>颜色主题</label>
+                                            <div>
+                                                <button className={s('toggle-group-item')} onClick={(e) => toggleTheme(e, 'light')} data-state={theme === 'light' ? 'on' : 'off'}>
+                                                    <SunIcon />
+                                                </button>
+                                                <button className={s('toggle-group-item')} onClick={(e) => toggleTheme(e, 'system')} data-state={theme === 'system' ? 'on' : 'off'}>
+                                                    <CloudIcon />
+                                                </button>
+                                                <button className={s('toggle-group-item')} onClick={(e) => toggleTheme(e, 'dark')} data-state={theme === 'dark' ? 'on' : 'off'}>
+                                                    <MoonIcon />
+                                                </button>
+                                            </div>
+                                        </div>
                                     </Tabs.Content>
                                 </div>
                             </Tabs.Root>

@@ -315,6 +315,25 @@ button > .title {
     @apply flex items-center justify-between;
 }
 
+.settings-group-title {
+    @apply px-5 py-2;
+    @apply text-sm text-neutral-600 dark:text-neutral-400;
+}
+
+.settings-item {
+    @apply flex items-center justify-between;
+    @apply px-5 py-3;
+}
+
+.toggle-group-item {
+    @apply w-9 h-9 p-2;
+    @apply bg-neutral-100 dark:bg-neutral-800;
+    @apply first:rounded-l-lg last:rounded-r-lg;
+    @apply data-[state=on]:bg-neutral-200;
+    @apply dark:data-[state=on]:bg-neutral-700;
+    @apply transition duration-100;
+    @apply focus:relative focus:z-10 focus:ring focus:ring-indigo-400 dark:focus:ring-indigo-900;
+}
 
 @keyframes overlayShow {
 from { opacity: 0; }
