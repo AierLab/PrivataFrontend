@@ -19,3 +19,6 @@ export const GetFileRating = async (payload: FormData, onProgressUpdate: (p: Axi
   return await api.post('/api/file/rating', payload, config)
 }
 
+export const GetOpenAIConnectionTest = async () => {
+  return await api.post("/api/conn/test");
+};

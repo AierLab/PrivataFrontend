@@ -1,14 +1,15 @@
+import { ValidFileType } from "@/components/FileCard";
 import { BriefcaseIcon, Cog8ToothIcon, UserIcon, UsersIcon } from "@heroicons/react/24/outline"
 import { People } from "@privata/types/people"
 import { ReactNode } from "react"
 
 interface File {
-    filename: string
-    ext: 'txt' | 'pdf' | 'doc'
-    size: number // number of bytes
-    date: number
-    chatId: number
-    url: string
+  filename: string;
+  ext: ValidFileType;
+  size: number; // number of bytes
+  date: number;
+  chatId: number;
+  url: string;
 }
 
 // debug: data mock
@@ -33,7 +34,7 @@ export const historyFiles: File[] = [
 export type SettingId = 'my-account' | 'org-account' | 'member-management' | 'app-settings'
 export interface SettingCategory {
     id: SettingId
-    title: string 
+    title: string
     icon: ReactNode
 }
 export interface SettingGroup {
@@ -59,4 +60,3 @@ export const settingsGroups: SettingGroup[] = [
         ]
     },
 ]
-

@@ -11,14 +11,20 @@ import Tooltip from 'components/Tooltip/index'
 // TODO: how to download? by open a link in browser
 // or as background job?
 
-export type FileType = 'txt' | 'pdf' | 'doc' | 'docx'
+export type ValidFileType = "txt" | "pdf" | "doc" | "docx" | "md";
+export function GetValidFileTypeList () {
+  return ["txt", "pdf", "doc", "docx", "md"]
+}
+export function IsValidFileType ( ext: string) {
+  return GetValidFileTypeList().includes(ext);
+}
 
 export interface FileCardCommonProps {
     type: 'review' | 'rating'
-    
+
     className?: string
 
-    filetype: FileType
+    filetype: ValidFileType
     filesize: number
     filename: string
     uploadProgress: number // percentage, i.e. 0 - 1
@@ -196,12 +202,13 @@ function DashedSparator({ className }: { className?: string }) {
     )
 }
 
-export function DocumentIcon({ type, classNames }: { type: FileType, classNames?: string }) {
-    const mappings: Record<FileType, ReactElement> = {
+export function DocumentIcon({ type, classNames }: { type: ValidFileType, classNames?: string }) {
+    const mappings: Record<ValidFileType, ReactElement> = {
         'txt': <TxtIcon className={classNames} />,
         'pdf': <PdfIcon className={classNames} />,
         'doc': <DocIcon className={classNames} />,
         'docx': <DocIcon className={classNames} />,
+        'md': <DocIcon className={classNames} />,
     }
 
     return mappings[type]

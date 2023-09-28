@@ -33,7 +33,7 @@ import { humanizeFileSize } from "utils/humanize"
 import { motion, Variants } from "framer-motion"
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { useQueryItem } from "hooks/useQueryItem"
-import { FileCard, DocumentIcon, FileCardProps, FileType } from "components/FileCard/index"
+import { FileCard, DocumentIcon, FileCardProps, ValidFileType, GetValidFileTypeList, IsValidFileType } from "components/FileCard/index"
 
 import { historyFiles, settingsGroups } from './static-conf'
 import { AxiosProgressEvent } from "axios"
@@ -114,9 +114,7 @@ const Home = () => {
         const options: OpenFileOptions = {
           multiSelect: true,
           title: "选择需要处理的文件",
-          filters: [
-            { name: "文档", extensions: ["pdf", "doc", "docx", "txt", "md"] },
-          ],
+          filters: [{ name: "文档", extensions: GetValidFileTypeList() }],
         };
         window.api.openFile(options).then((result: OpenFileResult) => {
             if(result.canceled || result.filePaths.length === 0) return
@@ -132,8 +130,8 @@ const Home = () => {
     const processFile = (file: File | Buffer, filename?: string) => {
         const trueFilename = filename || (file as File).name
         const _ext = trueFilename.indexOf('.') !== -1 ? trueFilename.split('.').at(-1)! : ''
-        if (['doc', 'docx', 'txt', 'pdf'].indexOf(_ext) === -1) return
-        const ext = _ext as FileType
+        if (!IsValidFileType(_ext)) return;
+        const ext = _ext as ValidFileType
 
         const payload = new FormData()
         let filesize = 0
