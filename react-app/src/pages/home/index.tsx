@@ -141,14 +141,14 @@ const Home = () => {
             payload.append('file', file as File)
             filesize = (file as File).size
         } else {
-            payload.append('file', file as Blob)
+            payload.append('file', new Blob([file]), trueFilename)
             filesize = (file as Buffer).length
         }
         payload.append('profile_id', 'media')
 
         let fileProps: FileCardProps = {
             type: 'rating',
-            filetype: 'pdf',
+            filetype: ext,
             filename: trueFilename,
             filesize: filesize,
             uploadProgress: 0,
@@ -175,6 +175,7 @@ const Home = () => {
             .then((response) => {
                 const matchResult = response.data.match(/(\d+?)\/100/)
                 const rating = Number(matchResult ? matchResult[1] : 0)
+                const overview = response.data.replace(/\s*评分：\d+\/100/g, '')
                 fileProps = {
                     type: 'rating',
                     filetype: ext,
@@ -184,11 +185,10 @@ const Home = () => {
                     done: true,
                     mentioned: [],
                     mentionables: [],
-                    overview: response.data,
+                    overview: overview,
                     grade: rating
                 }
                 updateProps(fileProps)
-                console.log(response)
             })
             .catch(error => {
                 console.log(error)
@@ -501,16 +501,16 @@ const Home = () => {
                                         <span className={s('settings-group-title')}>
                                             界面设置
                                         </span>
-                                        <div className={s('settings-item')}>
+                                        <div className={s('settings-item color-scheme')}>
                                             <label>颜色主题</label>
                                             <div>
-                                                <button className={s('toggle-group-item')} onClick={(e) => toggleTheme(e, 'light')} data-state={theme === 'light' ? 'on' : 'off'}>
+                                                <button onClick={(e) => toggleTheme(e, 'light')} data-state={theme === 'light' ? 'on' : 'off'}>
                                                     <SunIcon />
                                                 </button>
-                                                <button className={s('toggle-group-item')} onClick={(e) => toggleTheme(e, 'system')} data-state={theme === 'system' ? 'on' : 'off'}>
+                                                <button onClick={(e) => toggleTheme(e, 'system')} data-state={theme === 'system' ? 'on' : 'off'}>
                                                     <CloudIcon />
                                                 </button>
-                                                <button className={s('toggle-group-item')} onClick={(e) => toggleTheme(e, 'dark')} data-state={theme === 'dark' ? 'on' : 'off'}>
+                                                <button onClick={(e) => toggleTheme(e, 'dark')} data-state={theme === 'dark' ? 'on' : 'off'}>
                                                     <MoonIcon />
                                                 </button>
                                             </div>

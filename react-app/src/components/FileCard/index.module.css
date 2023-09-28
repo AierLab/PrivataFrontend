@@ -48,10 +48,6 @@
     @apply text-sm text-neutral-400;
 }
 
-.upload-progress {
-    @apply -rotate-90;
-}
-
 .overview {
     @apply select-text;
     @apply text-sm;

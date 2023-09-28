@@ -2,7 +2,7 @@ import { modulize } from 'utils/classNames'
 import { People } from '@privata/types/people'
 import { forwardRef, ReactElement } from 'react'
 import styles from './index.module.css'
-import { ArrowDownTrayIcon, AtSymbolIcon, ClipboardDocumentIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { ArrowDownTrayIcon, AtSymbolIcon, CheckCircleIcon, ClipboardDocumentIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
 import { humanizeFileSize } from 'utils/humanize'
 
@@ -74,10 +74,22 @@ export function FileCard(props: FileCardProps) {
                     </div>
                 </div>
 
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className={s('upload-progress')}>
-                    <circle cx="8" cy="8" r="6" stroke="#5855FF" strokeWidth="4" strokeDasharray={2 * Math.PI * 6} strokeDashoffset={strokeEnd} />
-                    <circle cx="8" cy="8" r="6" stroke="#5855FF" strokeOpacity="0.08" strokeWidth="4" />
-                </svg>
+                { !props.done &&
+                    (props.uploadProgress !== 1 ?
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className="-rotate-90">
+                            <circle cx="8" cy="8" r="6" stroke="#5855FF" strokeWidth="4" strokeDasharray={2 * Math.PI * 6} strokeDashoffset={strokeEnd} />
+                            <circle cx="8" cy="8" r="6" stroke="#5855FF" strokeOpacity="0.08" strokeWidth="4" />
+                        </svg>
+                        :
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className="animate-spin">
+                            <circle cx="8" cy="8" r="6" stroke="#5855FF" strokeWidth="4" strokeDasharray={2 * Math.PI * 6} strokeDashoffset={(1 - 0.25) * 2 * Math.PI * 6} />
+                            <circle cx="8" cy="8" r="6" stroke="#5855FF" strokeOpacity="0.08" strokeWidth="4" />
+                        </svg>
+                    )
+                }
+                { props.done &&
+                    <CheckCircleIcon className="w-4 h-4 text-green-500 dark:text-green-400"/>
+                }
             </div>
             {props.done &&
                 <div className={s('card vertical shadow')}>
@@ -85,7 +97,7 @@ export function FileCard(props: FileCardProps) {
                         <div className="w-full">
                             <h2> 审核概述 </h2>
                             <DashedSparator className={s("my-4")} />
-                            <p className={s('overview')}>
+                            <p className={s('overview')} draggable="false">
                                 {props.overview}
                             </p>
                             <DashedSparator className={s("my-4")} />
@@ -113,7 +125,7 @@ export function FileCard(props: FileCardProps) {
                                 {props.grade} 分
                             </span>
                             <DashedSparator className={s("my-4")} />
-                            <p className={s('overview')}>
+                            <p className={s('overview')} draggable="false">
                                 {props.overview}
                             </p>
                             <DashedSparator className="my-4" />

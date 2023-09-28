@@ -21,6 +21,10 @@
     @apply text-black;
 }
 
+[data-os="darwin"] .titlebar {
+    @apply hidden;
+}
+
 .titlebar > * + button {
     @apply ml-4;
 }

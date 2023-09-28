@@ -8,6 +8,7 @@ import Home from 'pages/home'
 import { useEffect, useState } from 'react';
 import ThemeContext from 'contexts/theme'
 import { ThemeMode } from '@privata/types/theme';
+import { OS } from '@privata/types/os'
 
 const Index = () => {
     const goto = useNavigate();
@@ -75,6 +76,13 @@ const RootComponent = () => {
             change()
         }
     }
+
+    useEffect(() => {
+        window.api.currentPlatform()
+            .then((os: OS) => {
+                document.querySelector('html')!.setAttribute('data-os', os)
+            })
+    })
 
     return (
         <div id="app">
