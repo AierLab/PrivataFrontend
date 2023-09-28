@@ -161,6 +161,29 @@ button > .title {
     @apply object-cover;
 }
 
+.user-avatar-setting {  
+    @apply flex items-center;  /* 添加 flex 和 items-center */
+    @apply relative bottom-3 left-5; 
+    @apply rounded-lg;
+    /* @apply cursor-pointer; */
+    @apply no-drag;
+}
+
+
+.user-avatar-setting > img {
+    @apply h-20 w-20;
+    @apply object-cover;
+    @apply rounded-3xl
+}
+
+.username {
+    @apply mt-4 ml-4;
+}
+
+.login-account, .corporate-identity{
+    @apply mt-4;
+}
+
 .section-page-content {
     @apply mb-2;
     @apply flex-1 h-0;
@@ -340,6 +363,15 @@ button > .title {
     @apply dark:data-[state=on]:bg-neutral-700;
     @apply transition duration-100;
     @apply focus:relative focus:z-10 focus:ring focus:ring-indigo-400 dark:focus:ring-indigo-900;
+}
+
+.input-item {
+    @apply rounded px-28 py-1.5 bg-gray-50 text-left pl-2 w-80;
+    @apply absolute right-80;
+}
+
+.save-item {
+    @apply bg-white text-black px-11 py-1.5 rounded border border-gray-200 ml-auto mr-1;
 }
 
 @keyframes overlayShow {

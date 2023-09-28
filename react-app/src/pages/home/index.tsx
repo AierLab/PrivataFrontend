@@ -26,7 +26,8 @@ import {
     ArrowUpTrayIcon,
     SunIcon,
     MoonIcon,
-    CloudIcon
+    CloudIcon,
+    PencilSquareIcon
 } from "@heroicons/react/24/outline"
 import { modulize } from "utils/classNames"
 import { humanizeFileSize } from "utils/humanize"
@@ -497,6 +498,52 @@ const Home = () => {
                                             <XMarkIcon className="h-5 w-5" />
                                         </button>
                                     </div>
+
+                                    <Tabs.Content value="my-account">
+                                        <div className={s('account-section')}>
+                                                <div className={styles['user-avatar-setting']}>
+                                                    <img src="default-avatar.png" alt="User Avatar" className={s('user-avatar')} />
+                                                    <span className={s('username')}>{"UserID"}</span>
+                                                    <button className={s('toggle-group-item')}><PencilSquareIcon /></button>
+                                                </div>
+
+                                            <div className={s('login-account')}>
+                                                <span className={s('settings-group-title')}>登录账号</span>
+                                                <div className={s('settings-item')}>
+                                                    <label>邮箱</label>
+                                                    <input className={s('input-item')} type="email" value="test123@veltech.com" readOnly />
+                                                    <button className={s('save-item')}>修改</button>
+                                                </div>
+                                                <div className={s('settings-item')}>
+                                                    <label>手机</label>
+                                                    <input className={s('input-item')}type="tel" value="1234567890" readOnly />
+                                                    <button className={s('save-item')}>绑定</button>
+                                                </div>
+                                                <div className={s('settings-item')}>
+                                                    <label>密码</label>
+                                                    <input className={s('input-item')} type="password" value="*********" readOnly />
+                                                    <button className={s('save-item')}>修改</button>
+                                                </div>
+                                            </div>
+
+                                            <div className={s('corporate-identity')}>
+                                                <span className={s('settings-group-title')}>企业身份</span>
+                                                <div className={s('settings-item')}>
+                                                    <label>企业组织</label>
+                                                    <input className={s('input-item')}type="text" value="Valmech" readOnly />
+                                                    <button className={s('save-item')}>修改</button>
+                                                </div>
+                                                <div className={s('settings-item')}>
+                                                    <label>职位</label>
+                                                        <select className={s('input-item')}>
+                                                            <option value="CEO">CEO</option>
+                                                            <option value="产品经理">产品经理</option>
+                                                        </select>
+                                                    <button className={s('save-item')}>保存</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Tabs.Content>
                                     <Tabs.Content value="app-settings">
                                         <span className={s('settings-group-title')}>
                                             界面设置
