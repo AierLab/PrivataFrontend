@@ -97,7 +97,7 @@ export function FileCard(props: FileCardProps) {
                         <div className="w-full">
                             <h2> 审核概述 </h2>
                             <DashedSparator className={s("my-4")} />
-                            <p className={s('overview')} draggable="false">
+                            <p className={s('overview')}>
                                 {props.overview}
                             </p>
                             <DashedSparator className={s("my-4")} />
@@ -125,7 +125,7 @@ export function FileCard(props: FileCardProps) {
                                 {props.grade} 分
                             </span>
                             <DashedSparator className={s("my-4")} />
-                            <p className={s('overview')} draggable="false">
+                            <p className={s('overview')}>
                                 {props.overview}
                             </p>
                             <DashedSparator className="my-4" />

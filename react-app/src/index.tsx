@@ -82,7 +82,7 @@ const RootComponent = () => {
             .then((os: OS) => {
                 document.querySelector('html')!.setAttribute('data-os', os)
             })
-    })
+    }, [])
 
     return (
         <div id="app">

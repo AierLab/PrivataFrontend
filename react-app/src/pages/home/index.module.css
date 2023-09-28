@@ -8,7 +8,7 @@ body {
     @apply no-drag;
 }
 
-.content-wrapper{
+.content-wrapper {
     @apply flex flex-row;
     @apply h-full w-full;
     @apply no-drag;
