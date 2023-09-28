@@ -357,3 +357,45 @@ to {
     transform: translate(-50%, -50%) scale(1);
 }
 }
+
+.select-trigger {
+    @apply w-32;
+    @apply pl-4 pr-3 py-1;
+    @apply bg-white dark:bg-neutral-950 rounded-md;
+    @apply border-2 border-neutral-200 dark:border-neutral-800;
+    @apply justify-end items-center gap-2.5;
+
+    @apply focus:outline-none focus:border-neutral-700 dark:focus:border-neutral-500;
+    @apply transition duration-100;
+
+    @apply relative;
+    
+    @apply flex items-center justify-between;
+}
+
+.select-trigger[data-placeholder] {
+    @apply text-neutral-400 dark:text-gray-400;
+}
+
+.select-icon {
+    @apply w-4 h-4;
+    @apply absolute right-4;
+    @apply text-neutral-400 dark:text-neutral-600;
+}
+
+.select-content {
+    @apply overflow-hidden;
+    @apply bg-white dark:bg-black rounded-xl;
+    @apply shadow-lg;
+    @apply border border-neutral-200 dark:border-neutral-800;
+    @apply no-drag;
+}
+
+.select-label {
+    @apply text-sm text-neutral-400 dark:text-neutral-500 mx-2;
+}
+
+.select-separator {
+    @apply h-[1px] bg-neutral-100 dark:bg-neutral-700 my-4;
+}
+
