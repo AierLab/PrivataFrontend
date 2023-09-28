@@ -84,6 +84,7 @@ const Home = () => {
     const [navCollapsed, setNavCollapsedValue] = useQueryItem('navCollapsed')
     const [historyFileOpen, setHistoryFileOpen] = useQueryItem('historyFileOpen')
 
+    const [profileId, setProfileId] = useState<string>('media')
     const [files, setFiles] = useState<FileCardProps[]>([])
 
     // file drag handler part
@@ -147,7 +148,7 @@ const Home = () => {
             payload.append('file', new Blob([file]), trueFilename)
             filesize = (file as Buffer).length
         }
-        payload.append('profile_id', 'media')
+        payload.append('profile_id', profileId)
 
         let fileProps: FileCardProps = {
             type: 'rating',
@@ -382,7 +383,7 @@ const Home = () => {
                                         <div className={s('workspace-header')}>
                                             <div className="flex flex-row space-x-4 items-center">
                                                 <h2> 文件审核 </h2>
-                                                <Select.Root defaultValue="media">
+                                                <Select.Root defaultValue="media" value={profileId} onValueChange={setProfileId}>
                                                     <Select.Trigger className={s('select-trigger')}>
                                                         <Select.Value placeholder="场景" className="text-left" />
                                                         <Select.Icon className={s('select-icon')}>
@@ -394,8 +395,8 @@ const Home = () => {
                                                             <Select.ScrollUpButton />
                                                             <Select.Viewport className="p-2">
                                                                 <SelectItem value='media'> 媒体 </SelectItem>
-                                                                <SelectItem value='education'> 教育 </SelectItem>
-                                                                <SelectItem value='consultation'> 咨询 </SelectItem>
+                                                                <SelectItem value='academic'> 学术 </SelectItem>
+                                                                <SelectItem disabled={true} value='consultation'> 咨询 </SelectItem>
                                                             </Select.Viewport>
                                                         </Select.Content>
                                                     </Select.Portal>
@@ -557,6 +558,7 @@ const SelectItem = React.forwardRef<HTMLDivElement, Select.SelectItemProps>(({ c
             className={classNames(
                 'leading-none rounded-lg flex items-center py-2 px-8 my-1 relative',
                 'focus:bg-neutral-100 dark:focus:bg-neutral-900',
+                props.disabled ? 'text-neutral-400 dark:text-neutral-600' : '',
                 className
             )}
             {...props}
