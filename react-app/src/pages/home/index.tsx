@@ -1,10 +1,11 @@
-import { ReactElement, useCallback, useContext, useRef, useState } from "react"
+import React, { ReactElement, useCallback, useContext, useRef, useState } from "react"
 import styles from "./index.module.css"
 
 import * as Tabs from '@radix-ui/react-tabs'
 import * as Dialog from '@radix-ui/react-dialog'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
 import * as Table from 'components/Table'
+import * as Select from '@radix-ui/react-select'
 import Titlebar from 'components/Titlebar'
 import Separator from "components/Separator"
 
@@ -26,9 +27,11 @@ import {
     ArrowUpTrayIcon,
     SunIcon,
     MoonIcon,
-    CloudIcon
+    CloudIcon,
+    ChevronDownIcon,
+    CheckIcon
 } from "@heroicons/react/24/outline"
-import { modulize } from "utils/classNames"
+import { classNames, modulize } from "utils/classNames"
 import { humanizeFileSize } from "utils/humanize"
 import { motion, Variants } from "framer-motion"
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
@@ -81,6 +84,7 @@ const Home = () => {
     const [navCollapsed, setNavCollapsedValue] = useQueryItem('navCollapsed')
     const [historyFileOpen, setHistoryFileOpen] = useQueryItem('historyFileOpen')
 
+    const [profileId, setProfileId] = useState<string>('media')
     const [files, setFiles] = useState<FileCardProps[]>([])
 
     // file drag handler part
@@ -142,7 +146,7 @@ const Home = () => {
             payload.append('file', new Blob([file]), trueFilename)
             filesize = (file as Buffer).length
         }
-        payload.append('profile_id', 'media')
+        payload.append('profile_id', profileId)
 
         let fileProps: FileCardProps = {
             type: 'rating',
@@ -375,7 +379,27 @@ const Home = () => {
                                 <>
                                     <div className={s('workspace-card w-full')}>
                                         <div className={s('workspace-header')}>
-                                            <h2> 文件审核 </h2>
+                                            <div className="flex flex-row space-x-4 items-center">
+                                                <h2> 文件审核 </h2>
+                                                <Select.Root defaultValue="media" value={profileId} onValueChange={setProfileId}>
+                                                    <Select.Trigger className={s('select-trigger')}>
+                                                        <Select.Value placeholder="场景" className="text-left" />
+                                                        <Select.Icon className={s('select-icon')}>
+                                                            <ChevronDownIcon />
+                                                        </Select.Icon>
+                                                    </Select.Trigger>
+                                                    <Select.Portal>
+                                                        <Select.Content className={s('select-content')}>
+                                                            <Select.ScrollUpButton />
+                                                            <Select.Viewport className="p-2">
+                                                                <SelectItem value='media'> 媒体 </SelectItem>
+                                                                <SelectItem value='academic'> 学术 </SelectItem>
+                                                                <SelectItem disabled={true} value='consultation'> 咨询 </SelectItem>
+                                                            </Select.Viewport>
+                                                        </Select.Content>
+                                                    </Select.Portal>
+                                                </Select.Root>
+                                            </div>
                                             <button
                                                 className="rounded-full p-2 -m-2 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition duration-100 data-[open]:bg-neutral-200 dark:data-[open]:bg-neutral-700"
                                                 onClick={() => setHistoryFileOpen(!historyFileOpen ? 'true' : null)}
@@ -525,3 +549,23 @@ const Home = () => {
 }
 
 export default Home
+
+const SelectItem = React.forwardRef<HTMLDivElement, Select.SelectItemProps>(({ children, className, ...props }, forwardedRef) => {
+    return (
+        <Select.Item
+            className={classNames(
+                'leading-none rounded-lg flex items-center py-2 px-8 my-1 relative',
+                'focus:bg-neutral-100 dark:focus:bg-neutral-900',
+                props.disabled ? 'text-neutral-400 dark:text-neutral-600' : '',
+                className
+            )}
+            {...props}
+            ref={forwardedRef}
+        >
+            <Select.ItemText>{children}</Select.ItemText>
+            <Select.ItemIndicator className="absolute left-2 h-4 w-4 inline-flex items-center justify-center">
+                <CheckIcon />
+            </Select.ItemIndicator>
+        </Select.Item>
+    );
+});
