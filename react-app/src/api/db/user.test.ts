@@ -3,8 +3,6 @@ import {
   getUser,
   updateUser,
   deleteUser,
-  createPost,
-  getPost,
 } from "./user";
 
 describe("Prisma CRUD", () => {
@@ -30,7 +28,11 @@ describe("Prisma CRUD", () => {
   it("gets the created user", async () => {
     const user = await getUser(testUser.id);
 
-    expect(user.email).toBe("test@example.com");
+    if (user) {
+      expect(user.email).toBe("test@example.com");
+    } else {
+      fail("User is null");
+    }
   });
 
   it("updates the user", async () => {
@@ -41,7 +43,11 @@ describe("Prisma CRUD", () => {
     });
 
     const user = await getUser(testUser.id);
-    expect(user.name).toBe("Updated Name");
+    if (user) {
+      expect(user.name).toBe("Updated Name");
+    } else {
+      fail("User is null");
+    }
   });
 
   it("deletes the user", async () => {
