@@ -17,12 +17,6 @@ This is Privata Client using electron, typescript & react, and bundled by Electr
    > 为什么不用 `@types`? 因为 `@types` 是个保留，会去找 `node_modules/@types`。
 3. 如果你遇到了引用出问题的情况，可以运行 `tsc --traceResolution`，然后搜索你引用的包名即可。
 
-### For Chinese developers
-
-- Windows: Recommand using [Proxifier](https://www.proxifier.com/) as proxy.
-- Linux: Use [proxychains-ng](https://github.com/rofl0r/proxychains-ng).
-- macOS: Either `proxychains-ng` or Clash Tunneling mode.
-
 ### Run in development
 
 1. Navigate to `react-app` and `electron-app`, in both folder, run `npm install`.
@@ -39,3 +33,13 @@ This is Privata Client using electron, typescript & react, and bundled by Electr
 
 1. Run `npm run build` at `react-app` folder to build react pages.
 2. Run `npm run make` at `electorn` folder to bundle react app & electron into one package.
+
+---
+
+## Git
+
+新的功能在主分支上新建分支 (还是不要在功能分支上再建分支了，不然不好合并)
+
+做完后在 github 上 new `pull request` -> master, 看下没问题的话自己 merge 了就 OK, 顺手 `Delete branch` 把分支删掉
+
+当然时间久了, 本地难免会出现很多在 github 上早已被删的冗余分支, 清理: `git fetch -p`
