@@ -85,6 +85,22 @@ const createWindow = (): void => {
     return { buffer: fs.readFileSync(pathname), filename }
   })
 
+  ipcMain.handle("sys:save-file", (event, pathname: string) => {
+    if(!fs.existsSync(pathname)) return null 
+    const filename = path.basename(pathname)
+    const store_dir = "";  // TODO
+    if(!fs.existsSync(store_dir)) {
+      fs.mkdirSync(store_dir);
+    }
+    const dest_path = store_dir + filename;
+    if(fs.existsSync(dest_path)) {
+      // TODO: exist same name file
+    }
+    
+    fs.copyFileSync(pathname, dest_path);
+    return dest_path;
+  })
+
   ipcMain.handle('sys:get-os', () => {
     return os.platform()
   })

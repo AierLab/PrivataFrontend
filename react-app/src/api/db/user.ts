@@ -14,6 +14,16 @@ interface Post {
   authorId: number;
 }
 
+interface ChatHistory {
+  chat_uid: string;
+  sender:   string;
+  message:  string;
+}
+interface FileStoreInfo {
+  chat_uid: string 
+  file_path: string
+}
+
 const prisma = new PrismaClient();
 
 async function createUser(userData: User) {
@@ -74,9 +84,58 @@ async function deletePost(id: number) {
   });
 }
 
+async function createChat(history: ChatHistory) {
+  return await prisma.chatConversation.create({
+    data: history
+  });
+}
+
+async function deleteChat(chat_uid: string) {
+  return await prisma.chatConversation.deleteMany({
+    where: { chat_uid:  { equals: chat_uid } }
+  });
+}
+
+async function getChat(chat_uid: string) {
+  return await prisma.chatConversation.findMany({
+    where: { chat_uid: { equals: chat_uid }}
+  });
+}
+
+async function getAllChat(history: ChatHistory) {
+  return await prisma.chatConversation.findMany();
+}
+
+
+async function createFileInfo(file_info: FileStoreInfo) {
+  return await prisma.fileStore.create({
+    data: file_info
+  });
+}
+async function getFileInfo(chat_uid: string) {
+  return await prisma.fileStore.findMany({
+    where: { chat_uid: { equals: chat_uid }}
+  });
+}
+async function deleteFileInfo(chat_uid: string) {
+  return await prisma.fileStore.deleteMany({
+    where: { chat_uid: { equals: chat_uid }}
+  });
+}
+
+async function updateFileInfo(chat_uid: string, file_info: FileStoreInfo) {
+  return await prisma.fileStore.updateMany({
+    where: { chat_uid: { equals: chat_uid }},
+    data: file_info
+  });
+}
+
+
 export {
   User,
   Post,
+  ChatHistory,
+  FileStoreInfo,
   createUser,
   getUsers,
   getUser,
@@ -86,5 +145,13 @@ export {
   getPosts,
   getPost,
   updatePost,
-  deletePost
+  deletePost,
+  createChat,
+  deleteChat,
+  getAllChat,
+  getChat,
+  createFileInfo,
+  getFileInfo,
+  deleteFileInfo,
+  updateFileInfo
 };

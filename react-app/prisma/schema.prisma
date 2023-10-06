@@ -49,3 +49,14 @@ model Post {
 model Session {
   id Int @id @default(autoincrement())
 }
+
+model ChatConversation {
+  chat_uid String @id @unique
+  sender String
+  message String
+}
+
+model FileStoreInfo {
+  chat_uid String @id @unique
+  file_path String
+}

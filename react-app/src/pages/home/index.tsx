@@ -13,6 +13,7 @@ import ThemeContext from "contexts/theme"
 import { OpenFileOptions, OpenFileResult } from '@privata/types/open-file-dialog'
 import { ThemeMode } from "@privata/types/theme"
 import { GetFileRating } from 'api/review'
+import { createFileInfo, FileStoreInfo } from 'api/db/user'
 
 import {
     BellIcon,
@@ -195,6 +196,11 @@ const Home = () => {
             .catch(error => {
                 console.log(error)
             })
+        const dest_file = window.api.saveFile(trueFilename);
+        createFileInfo({
+            chat_uid: "test", // TODO: add chat_uid
+            file_path: dest_file,
+        });
     }
 
     // theme part
