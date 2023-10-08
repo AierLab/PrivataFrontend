@@ -50,13 +50,26 @@ model Session {
   id Int @id @default(autoincrement())
 }
 
-model ChatConversation {
-  chat_uid String @id @unique
-  sender String
-  message String
+// ============================== Review ================================= //
+
+model ReviewConversationStorage {
+  id Int @id @unique
+
+  profile_id     String @default("")
+  RequestUserID  String
+  RequestMessage String
+
+  fileInfoId Int
+  fileInfo   FileInfo @relation(fields: [fileInfoId], references: [id])
 }
 
-model FileStoreInfo {
-  chat_uid String @id @unique
-  file_path String
+model FileInfo {
+  id                        Int                         @id @unique @default(autoincrement())
+  hash                      String                      @unique
+  filePath                  String
+  filename                  String
+  filesize                  Int
+  filetype                  String
+  deleted                   Boolean                     @default(false)
+  ReviewConversationStorage ReviewConversationStorage[]
 }
