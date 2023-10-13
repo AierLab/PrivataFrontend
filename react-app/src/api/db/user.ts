@@ -1,32 +1,24 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "../prisma";
+import { ReviewConversationStorage } from "./review";
 
 interface User {
-  id: number;
-  email: string;
+  phone: string;
   name?: string;
-}
+  avatar?: string;
 
-interface Post {
-  id: number;
-  title: string;
-  content?: string;
-  published: boolean;
-  authorId: number;
-}
+  // ReviewConversationStorage?: ReviewConversationStorage;
+  // reviewConversationStorageId?: number;
 
-interface ChatHistory {
-  chat_uid: string;
-  sender: string;
-  message: string;
+  deleted?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
-interface FileStoreInfo {
-  chat_uid: string;
-  file_path: string;
-}
-
-const prisma = new PrismaClient();
 
 async function createUser(userData: User) {
+  // const { ReviewConversationStorage, ...rest } = userData;
+  // return await prisma.user.create({
+  //   data: rest,
+  // });
   return await prisma.user.create({
     data: userData,
   });
@@ -36,67 +28,23 @@ async function getUsers() {
   return await prisma.user.findMany();
 }
 
-async function getUser(id: number) {
+async function getUser(phone: string) {
   return await prisma.user.findUnique({
-    where: { id },
+    where: { phone },
   });
 }
 
-async function updateUser(id: number, userData: User) {
+async function updateUser(phone: string, userData: User) {
   return await prisma.user.update({
-    where: { id },
+    where: { phone },
     data: userData,
   });
 }
 
-async function deleteUser(id: number) {
+async function deleteUser(phone: string) {
   return await prisma.user.delete({
-    where: { id },
+    where: { phone },
   });
 }
 
-async function createPost(postData: Post) {
-  return await prisma.post.create({
-    data: postData,
-  });
-}
-
-async function getPosts() {
-  return await prisma.post.findMany();
-}
-
-async function getPost(id: number) {
-  return await prisma.post.findUnique({
-    where: { id },
-  });
-}
-
-async function updatePost(id: number, postData: Post) {
-  return await prisma.post.update({
-    where: { id },
-    data: postData,
-  });
-}
-
-async function deletePost(id: number) {
-  return await prisma.post.delete({
-    where: { id },
-  });
-}
-
-export {
-  User,
-  Post,
-  ChatHistory,
-  FileStoreInfo,
-  createUser,
-  getUsers,
-  getUser,
-  updateUser,
-  deleteUser,
-  createPost,
-  getPosts,
-  getPost,
-  updatePost,
-  deletePost,
-};
+export { User, createUser, getUsers, getUser, updateUser, deleteUser };

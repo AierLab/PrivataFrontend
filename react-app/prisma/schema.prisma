@@ -28,22 +28,20 @@ datasource db {
 //   authorId  Int
 // }
 
-model User {
-  id      Int     @id @unique @default(autoincrement())
-  email   String  @unique
-  name    String?
-  avatar  String?
-  deleted Boolean @default(false)
-  posts   Post[]
-}
+// ============================== User ================================= //
 
-model Post {
-  id        Int     @id @unique @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  Int
+model User {
+  phone  String  @id @unique
+  name   String?
+  avatar String?
+
+  // auto-generated
+  ReviewConversationStorage   ReviewConversationStorage? @relation(fields: [reviewConversationStorageId], references: [id])
+  reviewConversationStorageId Int?
+
+  deleted   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Session {
@@ -53,23 +51,32 @@ model Session {
 // ============================== Review ================================= //
 
 model ReviewConversationStorage {
-  id Int @id @unique
+  id         Int    @id @unique @default(autoincrement())
+  profile_id String @default("")
 
-  profile_id     String @default("")
-  RequestUserID  String
-  RequestMessage String
+  // TODO
+  RequestMessage String?
+  RequestUser    String
+  mentioned      User[]
 
+  fileInfo   ReviewFileInfo @relation(fields: [fileInfoId], references: [id])
   fileInfoId Int
-  fileInfo   FileInfo @relation(fields: [fileInfoId], references: [id])
+
+  deleted   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model FileInfo {
+model ReviewFileInfo {
   id                        Int                         @id @unique @default(autoincrement())
-  hash                      String                      @unique
+  hash                      String
   filePath                  String
   filename                  String
   filesize                  Int
   filetype                  String
-  deleted                   Boolean                     @default(false)
   ReviewConversationStorage ReviewConversationStorage[]
+
+  deleted   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

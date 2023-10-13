@@ -7,42 +7,33 @@ import {
 
 describe("Prisma CRUD", () => {
   let testUser = {
-    id: 1,
-    email: "test@example.com",
+    phone: "1",
     name: "Test User",
-  };
-
-  let testPost = {
-    id: 1,
-    title: "Test Post",
-    authorId: testUser.id,
-    published: true,
   };
 
   it("creates a user", async () => {
     const user = await createUser(testUser);
 
-    expect(user.id).toBeDefined();
+    expect(user.phone).toBeDefined();
   });
 
   it("gets the created user", async () => {
-    const user = await getUser(testUser.id);
+    const user = await getUser(testUser.phone);
 
     if (user) {
-      expect(user.email).toBe("test@example.com");
+      expect(user.name).toBe("Test User");
     } else {
       fail("User is null");
     }
   });
 
   it("updates the user", async () => {
-    await updateUser(testUser.id, {
-      id: testUser.id,
-      email: "test2@example.com",
+    await updateUser(testUser.phone, {
+      phone: testUser.phone,
       name: "Updated Name",
     });
 
-    const user = await getUser(testUser.id);
+    const user = await getUser(testUser.phone);
     if (user) {
       expect(user.name).toBe("Updated Name");
     } else {
@@ -51,10 +42,10 @@ describe("Prisma CRUD", () => {
   });
 
   it("deletes the user", async () => {
-    await deleteUser(testUser.id);
+    await deleteUser(testUser.phone);
 
     try {
-      await getUser(testUser.id);
+      await getUser(testUser.phone);
       fail("User was not deleted");
     } catch (error) {
       // User was deleted
