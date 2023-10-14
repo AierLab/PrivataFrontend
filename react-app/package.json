@@ -36,7 +36,8 @@
     "prisma-generate": "prisma generate",
     "prisma-migrate": "prisma migrate dev --name init",
     "prisma-db-push": "prisma db push",
-    "jest-test": "jest"
+    "jest-test": "jest",
+    "npm-check-update": "npm-check --skip-unused -u"
   },
   "eslintConfig": {
     "extends": [
@@ -66,5 +67,8 @@
     "tailwindcss": "^3.3.3",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1"
+  },
+  "prisma": {
+    "schema": "src/api/db/prisma/schema.prisma"
   }
 }

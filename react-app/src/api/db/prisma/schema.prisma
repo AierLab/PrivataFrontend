@@ -8,6 +8,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
+  // provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
@@ -35,10 +36,6 @@ model User {
   name   String?
   avatar String?
 
-  // auto-generated
-  ReviewConversationStorage   ReviewConversationStorage? @relation(fields: [reviewConversationStorageId], references: [id])
-  reviewConversationStorageId Int?
-
   deleted   Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -50,31 +47,20 @@ model Session {
 
 // ============================== Review ================================= //
 
-model ReviewConversationStorage {
-  id         Int    @id @unique @default(autoincrement())
-  profile_id String @default("")
+model ReviewStorage {
+  id Int @id @unique @default(autoincrement())
 
   // TODO
+  profile_id     String  @default("")
   RequestMessage String?
   RequestUser    String
-  mentioned      User[]
+  mentioned      String  @default("")
 
-  fileInfo   ReviewFileInfo @relation(fields: [fileInfoId], references: [id])
-  fileInfoId Int
-
-  deleted   Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model ReviewFileInfo {
-  id                        Int                         @id @unique @default(autoincrement())
-  hash                      String
-  filePath                  String
-  filename                  String
-  filesize                  Int
-  filetype                  String
-  ReviewConversationStorage ReviewConversationStorage[]
+  hash     String?
+  filePath String?
+  filename String?
+  filesize Int?
+  filetype String?
 
   deleted   Boolean  @default(false)
   createdAt DateTime @default(now())

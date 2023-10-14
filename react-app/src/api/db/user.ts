@@ -1,27 +1,27 @@
 import prisma from "../prisma";
-import { ReviewConversationStorage } from "./review";
+import { ReviewStorage } from "./review";
 
 interface User {
   phone: string;
   name?: string;
   avatar?: string;
 
-  // ReviewConversationStorage?: ReviewConversationStorage;
-  // reviewConversationStorageId?: number;
+  ReviewStorage?: ReviewStorage;
+  reviewStorageId?: number;
 
   deleted?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-async function createUser(userData: User) {
-  // const { ReviewConversationStorage, ...rest } = userData;
-  // return await prisma.user.create({
-  //   data: rest,
-  // });
+async function createUser(data: User) {
+  const { ReviewStorage, ...rest } = data;
   return await prisma.user.create({
-    data: userData,
+    data: rest,
   });
+  // return await prisma.user.create({
+  //   data: data,
+  // });
 }
 
 async function getUsers() {
@@ -34,10 +34,10 @@ async function getUser(phone: string) {
   });
 }
 
-async function updateUser(phone: string, userData: User) {
+async function updateUser(phone: string, data: User) {
   return await prisma.user.update({
     where: { phone },
-    data: userData,
+    data: data,
   });
 }
 
