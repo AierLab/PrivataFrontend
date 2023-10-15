@@ -26,7 +26,6 @@ describe("Prisma CRUD", () => {
       fail("User is null");
     }
   });
-
   it("updates the user", async () => {
     await updateUser(testUser.phone, {
       phone: testUser.phone,

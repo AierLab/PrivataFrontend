@@ -8,15 +8,15 @@ const api = axios.create({
   }
 })
 
-export interface GetFileRatingResponse {
+export interface GetFileReviewResponse {
   data: string
 }
 
-export const GetFileRating = async (payload: FormData, onProgressUpdate: (p: AxiosProgressEvent) => void) => {
+export const GetFileReview = async (payload: FormData, onProgressUpdate: (p: AxiosProgressEvent) => void) => {
   const config: AxiosRequestConfig = {
     onUploadProgress: onProgressUpdate
   }
-  return await api.post('/api/file/rating', payload, config)
+  return await api.post('/api/file/review', payload, config)
 }
 
 export const GetOpenAIConnectionTest = async () => {

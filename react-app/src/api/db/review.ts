@@ -1,18 +1,18 @@
 import prisma from "../prisma";
 
 interface ReviewStorage {
-  id: number;
+  id?: number;
   profile_id: string;
 
   RequestMessage?: string;
   RequestUser: string;
   mentioned: string;
 
-  hash: string;
-  filePath: string;
-  filename: string;
-  filesize: number;
-  filetype: string;
+  hash?: string;
+  filePath?: string;
+  filename?: string;
+  filesize?: number;
+  filetype?: string;
 
   deleted?: boolean;
   createdAt?: Date;

@@ -12,8 +12,7 @@ import Separator from "components/Separator"
 import ThemeContext from "contexts/theme"
 import { OpenFileOptions, OpenFileResult } from '@privata/types/open-file-dialog'
 import { ThemeMode } from "@privata/types/theme"
-import { GetFileRating } from 'api/review'
-import { createFileInfo, FileStoreInfo } from 'api/db/user'
+import { GetFileReview } from 'api/review'
 
 import {
     BellIcon,
@@ -41,6 +40,7 @@ import { FileCard, DocumentIcon, FileCardProps, ValidFileType, GetValidFileTypeL
 
 import { historyFiles, settingsGroups } from './static-conf'
 import { AxiosProgressEvent } from "axios"
+import { createReviewStorage } from "@/api/db/review"
 
 type TabIDs = 'reports-review' | 'quan-eval'
 type DialogIDs = 'notifications' | 'help' | 'settings' | 'search' | null
@@ -150,7 +150,7 @@ const Home = () => {
         payload.append('profile_id', profileId)
 
         let fileProps: FileCardProps = {
-            type: 'rating',
+            type: 'review',
             filetype: ext,
             filename: trueFilename,
             filesize: filesize,
@@ -174,13 +174,14 @@ const Home = () => {
             setFiles(fs => [...fs.slice(0, idx), fileProps, ...fs.slice(idx + 1, -1)])
         }
 
-        GetFileRating(payload, updateProgress)
+        GetFileReview(payload, updateProgress)
             .then((response) => {
                 const matchResult = response.data.match(/(\d+?)\/100/)
-                const rating = Number(matchResult ? matchResult[1] : 0)
+                const review = Number(matchResult ? matchResult[1] : 0)
                 const overview = response.data.replace(/\s*评分：\d+\/100/g, '')
-                fileProps = {
-                    type: 'rating',
+              fileProps = {
+                    ...fileProps,
+                    type: 'review',
                     filetype: ext,
                     filename: trueFilename,
                     filesize: filesize,
@@ -189,18 +190,26 @@ const Home = () => {
                     mentioned: [],
                     mentionables: [],
                     overview: overview,
-                    grade: rating
+                    grade: review
                 }
                 updateProps(fileProps)
             })
             .catch(error => {
                 console.log(error)
             })
-        const dest_file = window.api.saveFile(trueFilename);
-        createFileInfo({
-            chat_uid: "test", // TODO: add chat_uid
-            file_path: dest_file,
+
+        createReviewStorage({
+          profile_id: "",
+
+          RequestMessage: "",
+          RequestUser: "",
+          mentioned: ""
         });
+        // const dest_file = window.api.saveFile(trueFilename);
+        // createFileInfo({
+        //     chat_uid: "test", // TODO: add chat_uid
+        //     file_path: dest_file,
+        // });
     }
 
     // theme part

@@ -20,7 +20,7 @@ export function IsValidFileType ( ext: string) {
 }
 
 export interface FileCardCommonProps {
-    type: 'review' | 'rating'
+    type: 'review'
 
     className?: string
 
@@ -51,15 +51,15 @@ export interface FileCardReviewProps {
     reviewFilesize: number
 }
 
-export interface FileCardRatingProps {
-    type: 'rating'
+export interface FileCardreviewProps {
+    type: 'review'
 
     done: true
     grade: number
     overview: string
 }
 
-export type FileCardProps = FileCardCommonProps & (FileCardNotDoneProps | FileCardReviewProps | FileCardRatingProps)
+export type FileCardProps = FileCardCommonProps & (FileCardNotDoneProps | FileCardReviewProps | FileCardreviewProps)
 
 export function FileCard(props: FileCardProps) {
     const s = modulize(styles)
@@ -124,7 +124,7 @@ export function FileCard(props: FileCardProps) {
                             <Mention mentioned={props.mentioned} mentionables={props.mentionables} onCopyOverview={handleOverviewCopy}/>
                         </div>
                     }
-                    { props.type === 'rating' &&
+                    { props.type === 'review' &&
                         <div className="w-full">
                             <h2> 评分结果 </h2>
                             <span className={s("grade")}>
