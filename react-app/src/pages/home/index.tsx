@@ -44,6 +44,14 @@ import { AxiosProgressEvent } from "axios"
 type TabIDs = 'reports-review' | 'quan-eval'
 type DialogIDs = 'notifications' | 'help' | 'settings' | 'search' | null
 type WorkspaceIDs = 'workspace' | 'file-management'
+type Mention = {
+    user: string;
+    fileName: string;
+    time: string;
+    fileType: ValidFileType;
+    fileSize: number;
+    overview: string;
+};
 
 interface Feature {
     id: TabIDs,
@@ -62,6 +70,8 @@ interface URLParams {
     tab: TabIDs,
     workspace: WorkspaceIDs
 }
+
+
 
 const Home = () => {
     const features: Feature[] = [
@@ -86,6 +96,21 @@ const Home = () => {
 
     const [profileId, setProfileId] = useState<string>('media')
     const [files, setFiles] = useState<FileCardProps[]>([])
+    const [notificationDialogOpen, setNotificationDialogOpen] = useState(false);
+    const [selectedMention, setSelectedMention] = useState<Mention | null>(null);
+
+    const handleMentionClick = (mention: Mention) => {
+        setSelectedMention(mention);
+        setNotificationDialogOpen(true);
+    };
+
+    // notification example
+    const [mentionsList, setMentionsList] = useState<Mention[]>([
+        { user: '玲娜贝儿', fileName: 'text.pdf', time: '2023/10/22 18:02', fileType: "pdf", fileSize: 322, overview: 'overview showed in here'},
+        { user: '针皮沙发', fileName: '马氏回旋踢.txt', time: '2023/10/22 18:03', fileType: "txt", fileSize: 4222, overview: '我将一次不死，并且超神:)'},
+        { user: 'Elon Mask', fileName: 'cash.pdf', time: '2023/10/22 18:04', fileType: "pdf", fileSize: 522, overview: 'I give you 10 billions dollors'},
+    ]);
+    
 
     // file drag handler part
     // see https://stackoverflow.com/questions/7110353/html5-dragleave-fired-when-hovering-a-child-element
@@ -484,6 +509,73 @@ const Home = () => {
                 </main>
 
                 { /* dialogs */}
+
+                { /* notifications dialog */}
+                <Dialog.Root open={dialog === 'notifications'}>
+                    <Dialog.Portal>
+                        <Dialog.Content className={s('notifications-dialog')} onEscapeKeyDown={() => setDialog(null)}>
+                            <Tabs.Root className={s('notifications-tabs-root')} defaultValue="mentions">
+                                <Tabs.List className={s('notifications-tabs-list')}>
+                                    <Tabs.Trigger className={s('notifications-tabs-trigger')} value="tasks">
+                                        任务
+                                    </Tabs.Trigger>
+                                    <Tabs.Trigger className={s('notifications-tabs-trigger')}  value="mentions">
+                                        提及
+                                    </Tabs.Trigger>
+                                </Tabs.List>
+                                <Tabs.Content className={s('notifications-tabs-content')} value="tasks">
+                                    <p>这是任务页面，需要完善</p>
+                                </Tabs.Content>
+                                <Tabs.Content className={s('notifications-tabs-content')} value="mentions">
+                                    {mentionsList.map((mention, index) => (
+                                        <div key={index} className={s('mention-item')} onClick={() => handleMentionClick(mention)}>
+                                            <div className={s('mention-content')}>
+                                                {/* <img src="path_to_userA_avatar.jpg" alt="User A Avatar" className={s('mention-avatar')} /> */}
+                                                <span>@{mention.user}提醒你查看文件 @{mention.fileName}</span>
+                                                <span className={s('mention-time')}>@{mention.time}</span>
+                                            </div>
+                                        </div>
+                                    ))}
+
+                                {/* Dialog for file details */}
+                                <Dialog.Root open={notificationDialogOpen}>
+                                    <Dialog.Overlay id={s('dialog-overlay')} />
+                                    <Dialog.Portal>
+                                        <Dialog.Content className={s('mentions-detail-dialog')} onEscapeKeyDown={() => setNotificationDialogOpen(false)}>
+                                            <Dialog.Title className="flex items-center justify-between p-5"> 
+                                                @{selectedMention?.user} 提醒你查看 {selectedMention?.fileName}
+                                                <button
+                                                className="rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                                                onClick={() => setNotificationDialogOpen(false)}
+                                                >
+                                                <XMarkIcon className="h-5 w-5" />
+                                                </button>
+                                            </Dialog.Title>
+
+                                            <FileCard
+                                            type="review"
+                                            filetype={selectedMention?.fileType || "txt"}
+                                            filename={selectedMention?.fileName || ""}
+                                            filesize={selectedMention?.fileSize || 0}
+                                            uploadProgress={1}
+                                            done={true}
+                                            showMention={false}
+                                            mentioned={[]}
+                                            mentionables={[]}
+                                            overview={selectedMention?.overview || ""}
+                                            reviewFilename={selectedMention?.fileName || ""}
+                                            reviewFilesize={selectedMention?.fileSize || 0}
+                                            />
+
+                                        </Dialog.Content>
+                                    </Dialog.Portal>
+                                </Dialog.Root>
+                                </Tabs.Content>
+                            </Tabs.Root>
+                        </Dialog.Content>
+                    </Dialog.Portal>
+                </Dialog.Root>
+
                 { /* settings dialog */}
                 <Dialog.Root open={dialog === 'settings'}>
                     <Dialog.Portal>

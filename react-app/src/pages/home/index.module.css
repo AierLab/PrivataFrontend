@@ -276,6 +276,82 @@ button > .title {
     animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.notifications-dialog {
+    @apply z-30;
+    @apply fixed left-[2%] bottom-[16%];  
+    @apply max-h-[60vh] max-w-[30vw];  
+    @apply shadow-lg bg-white dark:bg-neutral-900;
+    @apply dark:shadow dark:border-neutral-700;
+    @apply rounded-2xl overflow-hidden;
+    @apply no-drag;
+    @apply sm:h-[310px] lg:h-[420px];   
+    @apply sm:w-[300px] lg:w-[400px];   
+}
+
+.notifications-tabs-root {
+    @apply flex flex-col;
+    @apply h-full w-full;
+}
+
+.notifications-tabs-list {
+    @apply w-full h-16;
+    @apply bg-neutral-100 dark:bg-neutral-800;
+    @apply flex flex-row justify-center items-center;
+}
+
+.notifications-tabs-content {
+    height: 400px;
+    overflow-y: auto;
+}
+
+.notifications-tabs-trigger {
+    @apply mt-1 px-2 py-1 w-32 h-16;
+    @apply flex items-center justify-center; 
+}
+
+.notifications-contents-trigger {
+    @apply flex flex-row;
+}
+
+.mentions-detail-dialog {
+    @apply z-30;
+    @apply fixed top-1/2 left-1/2;  
+    @apply transform -translate-x-1/2 -translate-y-1/2; 
+    @apply shadow-lg bg-white dark:bg-neutral-900;
+    @apply dark:shadow dark:border-neutral-700;
+    @apply rounded-2xl overflow-hidden;
+    @apply no-drag;
+    @apply sm:h-[410px] lg:h-[400px];
+    @apply sm:w-[960px] lg:w-[500px];
+}
+
+
+.mention-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+.mention-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.mention-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.mention-time {
+    color: #888;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
 .settings-dialog {
     @apply sm:h-[410px] lg:h-[620px];
     @apply sm:w-[960px] lg:w-[1040px];

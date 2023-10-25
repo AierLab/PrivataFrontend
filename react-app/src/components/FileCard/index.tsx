@@ -20,22 +20,24 @@ export function IsValidFileType ( ext: string) {
 }
 
 export interface FileCardCommonProps {
-    type: 'review' | 'rating'
+    type: 'review' | 'rating';
 
-    className?: string
+    className?: string;
 
-    filetype: ValidFileType
-    filesize: number
-    filename: string
-    uploadProgress: number // percentage, i.e. 0 - 1
+    filetype: ValidFileType;
+    filesize: number;
+    filename: string;
+    uploadProgress: number; // percentage, i.e. 0 - 1
 
-    done: boolean
+    done: boolean;
 
-    mentionables: People[]
-    mentioned: People[]
+    mentionables: People[];
+    mentioned: People[];
 
-    onMentionAppend?: (p: People) => void
-    onMentionDelete?: (p: People) => void
+    onMentionAppend?: (p: People) => void;
+    onMentionDelete?: (p: People) => void;
+
+    showMention?: boolean;
 }
 
 export interface FileCardNotDoneProps {
@@ -61,7 +63,7 @@ export interface FileCardRatingProps {
 
 export type FileCardProps = FileCardCommonProps & (FileCardNotDoneProps | FileCardReviewProps | FileCardRatingProps)
 
-export function FileCard(props: FileCardProps) {
+export function FileCard({ showMention = true, ...props }: FileCardProps) {
     const s = modulize(styles)
     const strokeEnd = (1 - props.uploadProgress) * 2 * Math.PI * 6
 
@@ -121,7 +123,9 @@ export function FileCard(props: FileCardProps) {
                                     <ArrowDownTrayIcon className="h-full w-full" />
                                 </button>
                             </div>
-                            <Mention mentioned={props.mentioned} mentionables={props.mentionables} onCopyOverview={handleOverviewCopy}/>
+                            {showMention && 
+                                <Mention mentioned={props.mentioned} mentionables={props.mentionables} onCopyOverview={handleOverviewCopy}/>
+                            }
                         </div>
                     }
                     { props.type === 'rating' &&
