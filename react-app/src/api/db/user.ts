@@ -1,90 +1,50 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from "../prisma";
+import { ReviewStorage } from "./review";
 
 interface User {
-  id: number;
-  email: string;
+  phone: string;
   name?: string;
+  avatar?: string;
+
+  ReviewStorage?: ReviewStorage;
+  reviewStorageId?: number;
+
+  deleted?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-interface Post {
-  id: number;
-  title: string;
-  content?: string;
-  published: boolean;
-  authorId: number;
-}
-
-const prisma = new PrismaClient();
-
-async function createUser(userData: User) {
+async function createUser(data: User) {
+  const { ReviewStorage, ...rest } = data;
   return await prisma.user.create({
-    data: userData
+    data: rest,
   });
+  // return await prisma.user.create({
+  //   data: data,
+  // });
 }
 
 async function getUsers() {
   return await prisma.user.findMany();
 }
 
-async function getUser(id: number) {
+async function getUser(phone: string) {
   return await prisma.user.findUnique({
-    where: { id }
+    where: { phone },
   });
 }
 
-async function updateUser(id: number, userData: User) {
+async function updateUser(phone: string, data: User) {
   return await prisma.user.update({
-    where: { id },
-    data: userData
+    where: { phone },
+    data: data,
   });
 }
 
-async function deleteUser(id: number) {
+async function deleteUser(phone: string) {
   return await prisma.user.delete({
-    where: { id }
+    where: { phone },
   });
 }
 
-async function createPost(postData: Post) {
-  return await prisma.post.create({
-    data: postData
-  });
-}
-
-async function getPosts() {
-  return await prisma.post.findMany();
-}
-
-async function getPost(id: number) {
-  return await prisma.post.findUnique({
-    where: { id }
-  });
-}
-
-async function updatePost(id: number, postData: Post) {
-  return await prisma.post.update({
-    where: { id },
-    data: postData
-  });
-}
-
-async function deletePost(id: number) {
-  return await prisma.post.delete({
-    where: { id }
-  });
-}
-
-export {
-  User,
-  Post,
-  createUser,
-  getUsers,
-  getUser,
-  updateUser,
-  deleteUser,
-  createPost,
-  getPosts,
-  getPost,
-  updatePost,
-  deletePost
-};
+export { User, createUser, getUsers, getUser, updateUser, deleteUser };
