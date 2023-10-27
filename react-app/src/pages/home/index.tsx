@@ -50,6 +50,7 @@ import { humanizeFileSize } from "utils/humanize";
 
 import { AxiosProgressEvent } from "axios";
 import { historyFiles, settingsGroups } from "./static-conf";
+import { GetFileReview } from "@/api/review";
 
 type TabIDs = "reports-review" | "quan-eval";
 type DialogIDs = "notifications" | "help" | "settings" | "search" | null;
@@ -192,26 +193,26 @@ const Home = () => {
         webkitRelativePath: "";
       }
     */
-    console.log(payload.get("file"));
+    // console.log(payload.get("file"));
 
-    // GetFileReview(payload, updateProgress)
-    //   .then((response) => {
-    //     const matchResult = response.data.match(/(\d+?)\/100/);
-    //     updateProps({
-    //       ...fileProps,
-    //       uploadProgress: 1,
-    //       done: true,
-    //       mentioned: [],
-    //       mentionables: [],
-    //       overview: response.data.replace(/\s*评分：\d+\/100/g, ""),
-    //       grade: Number(matchResult ? matchResult[1] : 0),
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
+    GetFileReview(payload, updateProgress)
+      .then((response) => {
+        const matchResult = response.data.match(/(\d+?)\/100/);
+        updateProps({
+          ...fileProps,
+          uploadProgress: 1,
+          done: true,
+          mentioned: [],
+          mentionables: [],
+          overview: response.data.replace(/\s*评分：\d+\/100/g, ""),
+          grade: Number(matchResult ? matchResult[1] : 0),
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
-    // TODO:
+    // TODO
     // createReviewStorage();
   };
 

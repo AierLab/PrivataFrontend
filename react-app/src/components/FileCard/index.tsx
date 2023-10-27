@@ -37,13 +37,13 @@ export interface FileCardCommonProps {
   filename: string;
   uploadProgress: number; // percentage, i.e. 0 - 1
 
-    done: boolean
+  done: boolean;
 
-    mentionables: People[]
-    mentioned: People[]
+  mentionables: People[];
+  mentioned: People[];
 
-    onMentionAppend?: (p: People) => void
-    onMentionDelete?: (p: People) => void
+  onMentionAppend?: (p: People) => void;
+  onMentionDelete?: (p: People) => void;
 }
 
 export interface FileCardNotDoneProps {
@@ -56,8 +56,6 @@ export interface FileCardReviewProps {
   done: true;
   overview: string;
   grade: number;
-  reviewFilename: string;
-  reviewFilesize: number;
 }
 
 export type FileCardProps = FileCardCommonProps &
@@ -163,11 +161,11 @@ export function FileCard(props: FileCardProps) {
                       )}
                     >
                       {" "}
-                      {props.reviewFilename}{" "}
+                      {props.filename}{" "}
                     </span>
                     <span className={s("file-size")}>
                       {" "}
-                      {humanizeFileSize(props.reviewFilesize)}{" "}
+                      {humanizeFileSize(props.filesize)}{" "}
                     </span>
                   </div>
                 </div>
@@ -292,11 +290,11 @@ export function DocumentIcon({
   classNames?: string;
 }) {
   const mappings: Record<ValidFileType, ReactElement> = {
-    txt: <TxtIcon className={classNames} />,
-    pdf: <PdfIcon className={classNames} />,
-    doc: <DocIcon className={classNames} />,
-    docx: <DocIcon className={classNames} />,
-    md: <DocIcon className={classNames} />,
+    ".txt": <TxtIcon className={classNames} />,
+    ".pdf": <PdfIcon className={classNames} />,
+    ".doc": <DocIcon className={classNames} />,
+    ".docx": <DocIcon className={classNames} />,
+    ".md": <DocIcon className={classNames} />,
   };
 
   return mappings[type];
