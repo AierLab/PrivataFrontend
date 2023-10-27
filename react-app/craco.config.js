@@ -44,6 +44,12 @@ module.exports = {
           // stream: false,
           // crypto: false,
         },
+        extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],
+        // https://blog.csdn.net/peter_hzq/article/details/120656880
+        alias: {
+          "@": path.resolve(__dirname, "src"),
+        },
+        // modules: [webpackPaths.srcPath, "node_modules"],
       },
     }),
   },

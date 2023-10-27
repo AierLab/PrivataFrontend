@@ -16,7 +16,8 @@ export const GetFileReview = async (payload: FormData, onProgressUpdate: (p: Axi
   const config: AxiosRequestConfig = {
     onUploadProgress: onProgressUpdate
   }
-  return await api.post('/api/file/review', payload, config)
+  // return await api.post('/api/file/review', payload, config)
+  return await api.post('/api/file/rating', payload, config)
 }
 
 export const GetOpenAIConnectionTest = async () => {
