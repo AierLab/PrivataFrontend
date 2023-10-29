@@ -55,13 +55,17 @@ const Login = () => {
             if(rememberMe) setPathway('registered')
             else if(email === '') setPathway('unregistered')
             else setPathway('invited')
-            
+
             setPathwayIndex(i => i + 1)
         } else if(pathwayIndex === pathways[pathway].length - 1) {
-            goto('/home')
+            goto('/home');
         } else {
             setPathwayIndex(i => i + 1)
         }
+    }, [email, goto, pathway, pathwayIndex, rememberMe])
+
+    const handlePrevStepClick = useCallback(() => {
+        if (pathwayIndex >  0) setPathwayIndex(i => i - 1)
     }, [email, goto, pathway, pathwayIndex, rememberMe])
 
     const handleLinkClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -69,7 +73,14 @@ const Login = () => {
         const url = (event.target as any).href;
         window.api.openExternal(url); // Use the api preloaded by the preload.js
 
-    }; //Check whether the url is clicked. If so, open an external browser (system's default browser) to enter the website 
+    }; //Check whether the url is clicked. If so, open an external browser (system's default browser) to enter the website
+
+    const HasBackTabContent = useCallback(({ value, children, hasBack = false, className }: { className?: string, value: string, children?: React.ReactElement | React.ReactElement[], hasBack?: boolean }) => {
+        return <Tabs.Content value={value} className={className}>
+            {hasBack && <div className='cursor-pointer text-2xl -translate-x-8 -translate-y-4' onClick={() => handlePrevStepClick()}>&lt;</div>}
+            {children}
+        </Tabs.Content>
+    }, [goto, pathway, pathwayIndex]);
 
     return (
         <div className={s('login-page')}>
@@ -83,7 +94,7 @@ const Login = () => {
                 <form className={s('login-form')}>
                     <AnimatePresence mode="wait" initial={false}>
                         <Tabs.Root className={s("login-form-content-tabs")} value={pathways[pathway][pathwayIndex]}>
-                            <Tabs.Content value="login-method">
+                            <HasBackTabContent value="login-method">
                                 <motion.div {...tabTransitionConfig}>
                                     <h1> 欢迎使用 </h1>
                                     <Tabs.Root className={s("login-method-tab")} defaultValue="email">
@@ -96,7 +107,7 @@ const Login = () => {
                                             </Tabs.Trigger>
                                         </Tabs.List>
                                         <div className="mt-3 w-full">
-                                            <Tabs.Content value="email">
+                                            <HasBackTabContent value="email">
                                                 <input
                                                     spellCheck="false"
                                                     className={s("email-input")}
@@ -105,8 +116,8 @@ const Login = () => {
                                                     value={email}
                                                     onChange={(e) => setEmail(e.target.value)}
                                                 />
-                                            </Tabs.Content>
-                                            <Tabs.Content value="phone-number" className="relative flex items-center">
+                                            </HasBackTabContent>
+                                            <HasBackTabContent value="phone-number" className="relative flex items-center">
                                                 <span className={s('call-code')}> +86 </span>
                                                 <input
                                                     spellCheck="false"
@@ -117,7 +128,7 @@ const Login = () => {
                                                     value={phoneNumber}
                                                     onChange={handlePhoneNumberChange}
                                                 />
-                                            </Tabs.Content>
+                                            </HasBackTabContent>
                                         </div>
                                     </Tabs.Root>
 
@@ -130,9 +141,9 @@ const Login = () => {
                                         <label htmlFor={s("remember-me")}> 30 天内自动登录 </label>
                                     </div>
                                 </motion.div>
-                            </Tabs.Content>
+                            </HasBackTabContent>
 
-                            <Tabs.Content value="email-verification-code">
+                            <HasBackTabContent value="email-verification-code" hasBack>
                                 <motion.div {...tabTransitionConfig}>
                                     <h1> 输入邮箱验证码 </h1>
                                     <p className={s('tips', 'mt-2')}>
@@ -153,9 +164,9 @@ const Login = () => {
                                         </a>
                                     </p>
                                 </motion.div>
-                            </Tabs.Content>
+                            </HasBackTabContent>
 
-                            <Tabs.Content value='create-organization'>
+                            <HasBackTabContent value='create-organization' hasBack>
                                 <motion.div {...tabTransitionConfig}>
                                     <h1> 创建你的组织 </h1>
                                     <h2> 你的资料 </h2>
@@ -164,7 +175,7 @@ const Login = () => {
                                         <input className={s('half-width-input')} type="text" placeholder="名字" />
                                     </div>
                                     <Select.Root>
-                                        <Select.Trigger className={s('select-trigger', 'mt-4')}>
+                                        <Select.Trigger className={s('select-trigger', 'mt-2')}>
                                             <Select.Value placeholder="职位" className="text-left" />
                                             <Select.Icon className={s('select-icon')}>
                                                 <ChevronDownIcon />
@@ -201,9 +212,9 @@ const Login = () => {
                                     <h2> 你的组织 </h2>
                                     <input className='w-full mt-3' type="text" placeholder="输入企业或组织名称" />
                                 </motion.div>
-                            </Tabs.Content>
+                            </HasBackTabContent>
 
-                            <Tabs.Content value="set-password">
+                            <HasBackTabContent value="set-password" hasBack>
                                 <motion.div {...tabTransitionConfig}>
                                     <h1> 设置密码 </h1>
                                     <p className={s('tips', 'mt-2')}>
@@ -212,9 +223,9 @@ const Login = () => {
                                     <input className='w-full mt-8' type="password" placeholder="输入密码" />
                                     <input className='w-full mt-3' type="password" placeholder="再次输入密码" />
                                 </motion.div>
-                            </Tabs.Content>
+                            </HasBackTabContent>
 
-                            <Tabs.Content value="select-organization">
+                            <HasBackTabContent value="select-organization" hasBack>
                                 <motion.div {...tabTransitionConfig}>
                                     <h1> 你可加入以下企业 </h1>
                                     <p className={s('tips', 'mt-2')}>
@@ -227,9 +238,9 @@ const Login = () => {
                                         </button>
                                     </div>
                                 </motion.div>
-                            </Tabs.Content>
+                            </HasBackTabContent>
 
-                            <Tabs.Content value='create-account'>
+                            <HasBackTabContent value='create-account' hasBack>
                                 <motion.div {...tabTransitionConfig}>
                                     <h1> 创建你的账号 </h1>
                                     <h2> 你的资料 </h2>
@@ -273,9 +284,9 @@ const Login = () => {
                                         </Select.Portal>
                                     </Select.Root>
                                 </motion.div>
-                            </Tabs.Content>
-                            
-                            <Tabs.Content value="login">
+                            </HasBackTabContent>
+
+                            <HasBackTabContent value="login" hasBack>
                                 <motion.div {...tabTransitionConfig}>
                                     <h1> 输入密码 </h1>
                                     <input className='w-full mt-8' type="password" placeholder="输入密码" />
@@ -288,7 +299,7 @@ const Login = () => {
                                         忘记密码
                                     </a>
                                 </motion.div>
-                            </Tabs.Content>
+                            </HasBackTabContent>
                         </Tabs.Root>
                     </AnimatePresence>
                     <button type="button" className={s('next-step')} onClick={() => handleNextStepClick()}>
