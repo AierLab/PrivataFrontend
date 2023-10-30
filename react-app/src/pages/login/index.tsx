@@ -7,8 +7,9 @@ import * as Tabs from '@radix-ui/react-tabs'
 import * as Checkbox from '@radix-ui/react-checkbox'
 import * as Select from '@radix-ui/react-select'
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/24/outline"
-import { motion, AnimatePresence, MotionProps } from "framer-motion"
+import { motion, AnimatePresence, MotionProps, LayoutGroup } from "framer-motion"
 import OTPInput from "components/OTPInput"
+import { UserLogin } from '@/api/user'
 
 type Pathway = 'unregistered' | 'invited' | 'registered'
 const pathways: Record<Pathway, Array<string>> = {
@@ -23,6 +24,8 @@ const Login = () => {
     const [email, setEmail] = useState<string>('')
     const [phoneNumber, setPhoneNumber] = useState<string>('')
     const [rememberMe, setRemeberMe] = useState<boolean>(false)
+
+    const [loginPassword, setLoginPassword] = useState<string>('');
 
     const goto = useNavigate()
 
@@ -58,11 +61,23 @@ const Login = () => {
 
             setPathwayIndex(i => i + 1)
         } else if(pathwayIndex === pathways[pathway].length - 1) {
-            goto('/home');
+            // goto('/home');
+
+            if (pathway === 'registered') {
+                UserLogin({ username: email ?? phoneNumber, password: loginPassword }).then(res => {
+                    // console.log(res);
+                    goto('/home');
+                    return;
+                }).catch(err => {
+                    console.log(err);
+                })
+            }
+
+
         } else {
             setPathwayIndex(i => i + 1)
         }
-    }, [email, goto, pathway, pathwayIndex, rememberMe])
+    }, [email, goto, pathway, pathwayIndex, rememberMe, loginPassword])
 
     const handlePrevStepClick = useCallback(() => {
         if (pathwayIndex >  0) setPathwayIndex(i => i - 1)
@@ -87,6 +102,7 @@ const Login = () => {
             <Titlebar />
             <div className={s('feature-slide-container')}>
                 <div className={s('feature-slide')}>
+                    {/** @ts-ignore */}
                     <img rel="preload" src="lock.png" alt="feature introduction" />
                 </div>
             </div>
@@ -289,7 +305,7 @@ const Login = () => {
                             <HasBackTabContent value="login" hasBack>
                                 <motion.div {...tabTransitionConfig}>
                                     <h1> 输入密码 </h1>
-                                    <input className='w-full mt-8' type="password" placeholder="输入密码" />
+                                    <input value={loginPassword} className='w-full mt-8' type="password" placeholder="输入密码" onChange={(e) => setLoginPassword(e.target.value)} />
                                     <p className={s('tips', 'mt-4')}>
                                         密码仅可由数字、英文字母或英文符号组成，且需包含其中至少两种类型，长度不少于 8 个字符
                                     </p>

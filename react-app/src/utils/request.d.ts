@@ -22,5 +22,5 @@ export interface Interceptors<K, V> {
 
 export type R<K, V = any> =
   K extends { data: infer S }
-    ? Omit<K, 'data'> & { data: S }
-    : K & { data: V };
+    ? V
+    : K;

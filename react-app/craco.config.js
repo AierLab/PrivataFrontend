@@ -3,7 +3,7 @@
 // making it load *.ts file.
 const path = require("path");
 
-/** @type {{ webpack: { configure: <T extends ReturnType<typeof import('@craco/craco')['createWebpackDevConfig']>(webpackConfig: T) => T; } }} */
+/** @type {{ webpack: { configure: <T extends ReturnType<typeof import('@craco/craco')['createWebpackDevConfig']>(webpackConfig: T) => T; }, devServer: ReturnType<typeof import('@craco/craco')['createWebpackDevConfig']>['devServer'] }} */
 module.exports = {
   webpack: {
     configure: (webpackConfig) => ({
@@ -52,15 +52,17 @@ module.exports = {
         },
         // modules: [webpackPaths.srcPath, "node_modules"],
       },
-      devServer: {
-        proxy: {
-          '/kyapi': {
-            target: 'http://43.198.199.58:8888/api/',
-            pathRewrite: { '/kyapi': '' },
-            changeOrigin: true
-          },
-        }
-      },
     }),
+  },
+  devServer: {
+    open: false,
+    proxy: {
+      '/kyapi': {
+        target: 'http://43.198.199.58:8888/api/',
+        pathRewrite: { '^/kyapi': '' },
+        changeOrigin: true,
+        secure: false
+      },
+    }
   },
 };

@@ -96,7 +96,7 @@ export const { apiGet, apiPost, createApi, request } = createApiRequest<{
 }, {
   data: string;
   f: string;
-}>('http://43.198.199.58:8888/api/', {
+}>('/kyapi', {
   headers: {
     'X-API-Key': 'secret_api_key',
     "Content-Type": 'application/json'
