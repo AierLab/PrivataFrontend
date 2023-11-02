@@ -33,9 +33,10 @@ const createWindow = (): void => {
   const toLoginPage = () => {
     if (!debug) {
       // mainWindow.loadFile(MAIN_WINDOW_WEBPACK_ENTRY);
-      mainWindow.loadFile('index.html');
+      mainWindow.loadFile('index.html')
     } else {
-      mainWindow.loadURL('http://localhost:3001/');
+      mainWindow.loadURL('http://localhost:3001/')
+      session.defaultSession.loadExtension(path.join(__dirname, '../../react-dev-tools'))
     }
   }
 
