@@ -18,6 +18,12 @@ import Tooltip from "components/Tooltip/index";
 // or as background job?
 
 export type ValidFileType = ".txt" | ".pdf" | ".doc" | ".docx" | ".md";
+export type TabIDs = "reports-review" | "study-abroad-planning";
+export enum TabIDsEnum {
+  ReportsReview = "reports-review",
+  StudyAbroadPlanning = "study-abroad-planning",
+}
+
 export function GetValidFileTypeList() {
   return [".txt", ".pdf", ".doc", ".docx", ".md"];
 }
@@ -28,7 +34,7 @@ export function IsValidFileType(ext: string) {
 }
 
 export interface FileCardCommonProps {
-  type: "review";
+  tab: TabIDsEnum;
 
   className?: string;
 
@@ -51,8 +57,6 @@ export interface FileCardNotDoneProps {
 }
 
 export interface FileCardReviewProps {
-  type: "review";
-
   done: true;
   overview: string;
   grade: number;
@@ -77,8 +81,7 @@ export function FileCard(props: FileCardProps) {
           <div className={s("file-info-wrap")}>
             <span className={s("file-name")}> {props.filename} </span>
             <span className={s("file-size")}>
-              {" "}
-              {humanizeFileSize(props.filesize)}{" "}
+              {humanizeFileSize(props.filesize)}
             </span>
           </div>
         </div>
@@ -145,7 +148,7 @@ export function FileCard(props: FileCardProps) {
       </div>
       {props.done && (
         <div className={s("card vertical shadow")}>
-          {props.type === "review" && (
+          {props.tab === TabIDsEnum.ReportsReview && (
             <div className="w-full">
               <h2> 审核概述 </h2>
               <DashedSparator className={s("my-4")} />
@@ -160,12 +163,10 @@ export function FileCard(props: FileCardProps) {
                         "file-name text-indigo-500 dark:text-indigo-300"
                       )}
                     >
-                      {" "}
-                      {props.filename}{" "}
+                      {props.filename}
                     </span>
                     <span className={s("file-size")}>
-                      {" "}
-                      {humanizeFileSize(props.filesize)}{" "}
+                      {humanizeFileSize(props.filesize)}
                     </span>
                   </div>
                 </div>
@@ -180,7 +181,7 @@ export function FileCard(props: FileCardProps) {
               />
             </div>
           )}
-          {props.type === "review" && (
+          {props.tab === TabIDsEnum.ReportsReview && (
             <div className="w-full">
               <h2> 评分结果 </h2>
               <span className={s("grade")}>{props.grade} 分</span>
