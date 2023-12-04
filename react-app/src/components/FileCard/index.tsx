@@ -13,24 +13,24 @@ import styles from "./index.module.css";
 import { humanizeFileSize } from "utils/humanize";
 
 import Tooltip from "components/Tooltip/index";
+import { TableCellsIcon } from "@heroicons/react/24/solid";
 
 // TODO: how to download? by open a link in browser
 // or as background job?
 
-export type ValidFileType = ".txt" | ".pdf" | ".doc" | ".docx" | ".md";
-export type TabIDs = "reports-review" | "study-abroad-planning";
+export enum ValidFileTypeEnum {
+  TXT = ".txt",
+  PDF = ".pdf",
+  DOC = ".doc",
+  DOCX = ".docx",
+  MD = ".md",
+  XLS = ".xls",
+}
+export type ValidFileType = keyof ValidFileTypeEnum;
+
 export enum TabIDsEnum {
   ReportsReview = "reports-review",
   StudyAbroadPlanning = "study-abroad-planning",
-}
-
-export function GetValidFileTypeList() {
-  return [".txt", ".pdf", ".doc", ".docx", ".md"];
-}
-export function IsValidFileType(ext: string) {
-  if (!ext) return false;
-  ext = ext.toLowerCase();
-  return GetValidFileTypeList().includes(ext);
 }
 
 export interface FileCardCommonProps {
@@ -38,7 +38,7 @@ export interface FileCardCommonProps {
 
   className?: string;
 
-  filetype: ValidFileType;
+  filetype: ValidFileTypeEnum;
   filesize: number;
   filename: string;
   uploadProgress: number; // percentage, i.e. 0 - 1
@@ -287,15 +287,16 @@ export function DocumentIcon({
   type,
   classNames,
 }: {
-  type: ValidFileType;
+  type: ValidFileTypeEnum;
   classNames?: string;
 }) {
-  const mappings: Record<ValidFileType, ReactElement> = {
+  const mappings: Record<ValidFileTypeEnum, ReactElement> = {
     ".txt": <TxtIcon className={classNames} />,
     ".pdf": <PdfIcon className={classNames} />,
     ".doc": <DocIcon className={classNames} />,
     ".docx": <DocIcon className={classNames} />,
-    ".md": <DocIcon className={classNames} />,
+    ".md": <TxtIcon className={classNames} />,
+    ".xls": <TableCellsIcon className={classNames} />,
   };
 
   return mappings[type];

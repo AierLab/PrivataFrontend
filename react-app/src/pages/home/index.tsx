@@ -23,9 +23,8 @@ import {
   DocumentIcon,
   FileCard,
   FileCardProps,
-  IsValidFileType,
   TabIDsEnum,
-  ValidFileType,
+  ValidFileTypeEnum
 } from "components/FileCard/index";
 import { Variants, motion } from "framer-motion";
 import { useQueryItem } from "hooks/useQueryItem";
@@ -33,9 +32,9 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { classNames, modulize } from "utils/classNames";
 import { humanizeFileSize } from "utils/humanize";
 
+import { GetFileReview } from "@/api/review";
 import { AxiosProgressEvent } from "axios";
 import { historyFiles, settingsGroups } from "./static-conf";
-import { GetFileReview } from "@/api/review";
 
 type DialogIDs = "notifications" | "help" | "settings" | "search" | null;
 type WorkspaceIDs = "workspace" | "file-management";
@@ -152,11 +151,11 @@ const Home = () => {
   // 处理文件拖拽/点击上传后的操作
   const processFile = (file: File) => {
     const ext = path.extname(file.name);
-    if (!IsValidFileType(ext)) return;
+    if (!(ext.slice(1).toUpperCase() in ValidFileTypeEnum)) return;
 
     let fileProps: FileCardProps = {
       tab: currentTab,
-      filetype: ext as ValidFileType,
+      filetype: ext as ValidFileTypeEnum,
       filename: file.name,
       filesize: file.size,
       uploadProgress: 0,
@@ -199,7 +198,7 @@ const Home = () => {
         webkitRelativePath: "";
       }
     */
-    console.log(fileProps);
+    // console.log(fileProps);
 
     GetFileReview(payload, updateProgress)
       .then((response) => {
