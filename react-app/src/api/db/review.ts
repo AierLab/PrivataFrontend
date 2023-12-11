@@ -1,4 +1,6 @@
+import { FileCardProps } from "@/components/FileCard";
 import prisma from "../prisma";
+import { FileLocalStorage } from "./file/storage";
 
 interface ReviewStorage {
   id?: number;
@@ -19,10 +21,15 @@ interface ReviewStorage {
   updatedAt?: Date;
 }
 
-// ReviewStorage CRUD
-async function createReviewStorage(data: ReviewStorage) {
+async function createReviewStorage(
+  payload: FormData,
+  fileProps: FileCardProps
+) {
+  FileLocalStorage(payload,fileProps);
   return await prisma.reviewStorage.create({
-    data: data,
+    data: {
+      profile_id: "",
+    },
   });
 }
 
@@ -62,7 +69,7 @@ async function deleteReviewStorage(id: number) {
 
 export {
   ReviewStorage as ReviewStorage,
-  createReviewStorage,
+  // createReviewStorage,
   getReviewStorages,
   getReviewStoragesDesc,
   getReviewStorage,

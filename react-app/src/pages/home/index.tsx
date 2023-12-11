@@ -24,7 +24,7 @@ import {
   FileCard,
   FileCardProps,
   TabIDsEnum,
-  ValidFileTypeEnum
+  ValidFileTypeEnum,
 } from "components/FileCard/index";
 import { Variants, motion } from "framer-motion";
 import { useQueryItem } from "hooks/useQueryItem";
@@ -32,7 +32,7 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { classNames, modulize } from "utils/classNames";
 import { humanizeFileSize } from "utils/humanize";
 
-import { GetFileReview } from "@/api/review";
+import { GetFileReview, GetStudyAboardPlanning } from "@/api/review";
 import { AxiosProgressEvent } from "axios";
 import { historyFiles, settingsGroups } from "./static-conf";
 
@@ -200,22 +200,45 @@ const Home = () => {
     */
     // console.log(fileProps);
 
-    GetFileReview(payload, updateProgress)
-      .then((response) => {
-        const matchResult = response.data.match(/(\d+?)\/100/);
-        updateProps({
-          ...fileProps,
-          uploadProgress: 1,
-          done: true,
-          mentioned: [],
-          mentionables: [],
-          overview: response.data.replace(/\s*评分：\d+\/100/g, ""),
-          grade: Number(matchResult ? matchResult[1] : 0),
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    switch (currentTab) {
+      case TabIDsEnum.ReportsReview:
+        GetFileReview(payload, updateProgress)
+          .then((response) => {
+            const matchResult = response.data.match(/(\d+?)\/100/);
+            updateProps({
+              ...fileProps,
+              uploadProgress: 1,
+              done: true,
+              mentioned: [],
+              mentionables: [],
+              overview: response.data.replace(/\s*评分：\d+\/100/g, ""),
+              grade: Number(matchResult ? matchResult[1] : 0),
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        break;
+      case TabIDsEnum.StudyAbroadPlanning:
+        GetStudyAboardPlanning(payload)
+          .then((response) => {
+            updateProps({
+              ...fileProps,
+              uploadProgress: 1,
+              done: true,
+              mentioned: [],
+              mentionables: [],
+              overview: JSON.stringify(response.data, undefined, 2),
+              grade: 0,
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        break;
+      default:
+        break;
+    }
 
     // TODO
     // createReviewStorage();
