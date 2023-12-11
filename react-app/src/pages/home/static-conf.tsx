@@ -1,11 +1,11 @@
-import { ValidFileType } from "@/components/FileCard";
+import { ValidFileTypeEnum } from "@/components/FileCard";
 import { BriefcaseIcon, Cog8ToothIcon, UserIcon, UsersIcon } from "@heroicons/react/24/outline"
 import { People } from "@privata/types/people"
 import { ReactNode } from "react"
 
 interface File {
   filename: string;
-  ext: ValidFileType;
+  ext: ValidFileTypeEnum;
   size: number; // number of bytes
   date: number;
   chatId: number;

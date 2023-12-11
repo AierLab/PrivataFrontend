@@ -1,3 +1,11 @@
+import * as Dialog from "@radix-ui/react-dialog";
+import * as ScrollArea from "@radix-ui/react-scroll-area";
+import * as Select from "@radix-ui/react-select";
+import * as Tabs from "@radix-ui/react-tabs";
+import Separator from "components/Separator";
+import * as Table from "components/Table";
+import Titlebar from "components/Titlebar";
+import * as path from "path";
 import React, {
   ReactElement,
   useCallback,
@@ -6,41 +14,17 @@ import React, {
   useState,
 } from "react";
 import styles from "./index.module.css";
-import * as path from "path";
-import * as Dialog from "@radix-ui/react-dialog";
-import * as ScrollArea from "@radix-ui/react-scroll-area";
-import * as Select from "@radix-ui/react-select";
-import * as Tabs from "@radix-ui/react-tabs";
-import Separator from "components/Separator";
-import * as Table from "components/Table";
-import Titlebar from "components/Titlebar";
 
 import { ThemeMode } from "@privata/types/theme";
 import ThemeContext from "contexts/theme";
 
-import {
-  ArrowUpTrayIcon,
-  BellIcon,
-  ChatBubbleLeftRightIcon,
-  CheckIcon,
-  ChevronDoubleLeftIcon,
-  ChevronDownIcon,
-  CloudIcon,
-  Cog8ToothIcon,
-  EllipsisHorizontalIcon,
-  FolderIcon,
-  MagnifyingGlassIcon,
-  MoonIcon,
-  MusicalNoteIcon,
-  SunIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import * as outline from "@heroicons/react/24/outline";
 import {
   DocumentIcon,
   FileCard,
   FileCardProps,
-  IsValidFileType,
-  ValidFileType,
+  TabIDsEnum,
+  ValidFileTypeEnum,
 } from "components/FileCard/index";
 import { Variants, motion } from "framer-motion";
 import { useQueryItem } from "hooks/useQueryItem";
@@ -48,60 +32,75 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { classNames, modulize } from "utils/classNames";
 import { humanizeFileSize } from "utils/humanize";
 
+import { GetFileReview, GetStudyAboardPlanning } from "@/api/review";
 import { AxiosProgressEvent } from "axios";
 import { historyFiles, settingsGroups } from "./static-conf";
-import { GetFileReview } from "@/api/review";
 
-type TabIDs = "reports-review" | "quan-eval";
 type DialogIDs = "notifications" | "help" | "settings" | "search" | null;
 type WorkspaceIDs = "workspace" | "file-management";
 
-interface Feature {
-  id: TabIDs;
+interface Tab {
+  id: TabIDsEnum;
   name: string;
   icon: ReactElement;
   element?: ReactElement;
 }
 
 interface Workspace {
-  affiniate: TabIDs;
+  affiniate: TabIDsEnum;
   id: WorkspaceIDs;
   name: string;
 }
 
+// React 会根据 /index.tsx 中的 "/home/:tabID?/:workspaceID?" 来按名字更新变量
 interface URLParams {
-  tab: TabIDs;
-  workspace: WorkspaceIDs;
+  tabID: TabIDsEnum;
+  workspaceID: WorkspaceIDs;
 }
 
 const Home = () => {
-  const features: Feature[] = [
+  const tabs: Tab[] = [
     {
-      id: "reports-review",
+      id: TabIDsEnum.ReportsReview,
       name: "文件审核",
-      icon: <ChatBubbleLeftRightIcon />,
+      icon: <outline.ChatBubbleLeftRightIcon />,
     },
-    { id: "quan-eval", name: "自动评分", icon: <MusicalNoteIcon /> },
+    // { id: "quan-eval", name: "自动评分", icon: <MusicalNoteIcon /> },
+    {
+      id: TabIDsEnum.StudyAbroadPlanning,
+      name: "留学规划",
+      icon: <outline.FunnelIcon />,
+    },
   ];
   const workspaces: Workspace[] = [
-    { affiniate: "reports-review", id: "workspace", name: "工作区" },
-    { affiniate: "reports-review", id: "file-management", name: "文件管理" },
+    { affiniate: TabIDsEnum.ReportsReview, id: "workspace", name: "工作区" },
+    {
+      affiniate: TabIDsEnum.ReportsReview,
+      id: "file-management",
+      name: "文件管理",
+    },
   ];
 
   const s = modulize(styles);
 
-  let { tab: currentTab, workspace: currentWorkspace } =
-    useParams() as any as URLParams;
-  if (!currentTab) currentTab = "reports-review";
-  if (!currentWorkspace) currentWorkspace = "workspace";
+  // let { tabID: currentTab, workspaceID: currentWorkspace } =
+  //   useParams() as any as URLParams;
+  // if (!currentTab) currentTab = TabIDsEnum.ReportsReview;
+  // if (!currentWorkspace) currentWorkspace = "workspace";
+  let {
+    tabID: currentTab = TabIDsEnum.ReportsReview,
+    workspaceID: currentWorkspace = "workspace",
+  } = useParams() as any as URLParams;
 
   const [query] = useSearchParams();
   const [dialog, setDialog] = useState<DialogIDs>(null);
   const [navCollapsed, setNavCollapsedValue] = useQueryItem("navCollapsed");
   const [historyFileOpen, setHistoryFileOpen] = useQueryItem("historyFileOpen");
-
+  const tabFiles = {
+    [TabIDsEnum.ReportsReview]: useState<FileCardProps[]>([]),
+    [TabIDsEnum.StudyAbroadPlanning]: useState<FileCardProps[]>([]),
+  };
   const [profileId, setProfileId] = useState<string>("media");
-  const [files, setFiles] = useState<FileCardProps[]>([]);
 
   // file drag handler part
   // see https://stackoverflow.com/questions/7110353/html5-dragleave-fired-when-hovering-a-child-element
@@ -124,35 +123,39 @@ const Home = () => {
     e.preventDefault();
     e.stopPropagation();
   };
+
   const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
     removeFileDropDataState();
     fileEnterCount.current = 0;
     event.preventDefault();
     event.stopPropagation();
 
-    if (event.dataTransfer.files.length === 0) return;
-    processFile(event.dataTransfer.files[0]);
+    const files = event.dataTransfer.files;
+    if (files.length === 0) return;
+
+    for (let i = 0; i < files.length; i++) {
+      processFile(files[i]);
+    }
   };
 
-  // file select part
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // TODO 组件还是单选状态
     const files = event.target.files;
     if (!files) return;
 
     for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      processFile(file);
+      processFile(files[i]);
     }
   };
 
-  // file process part
+  // 处理文件拖拽/点击上传后的操作
   const processFile = (file: File) => {
     const ext = path.extname(file.name);
-    if (!IsValidFileType(ext)) return;
+    if (!(ext.slice(1).toUpperCase() in ValidFileTypeEnum)) return;
 
     let fileProps: FileCardProps = {
-      type: "review",
-      filetype: ext as ValidFileType,
+      tab: currentTab,
+      filetype: ext as ValidFileTypeEnum,
       filename: file.name,
       filesize: file.size,
       uploadProgress: 0,
@@ -162,7 +165,8 @@ const Home = () => {
     };
 
     let idx = 0;
-    setFiles((fs) => {
+    // 更新界面显示文件
+    tabFiles[currentTab][1]((fs) => {
       idx = fs.length;
       return [...fs, fileProps];
     });
@@ -171,8 +175,9 @@ const Home = () => {
       fileProps.uploadProgress = p.progress || 0;
       updateProps(fileProps);
     };
+
     const updateProps = (fileProps: FileCardProps) => {
-      setFiles((fs) => [
+      tabFiles[currentTab][1]((fs) => [
         ...fs.slice(0, idx),
         fileProps,
         ...fs.slice(idx + 1, -1),
@@ -193,24 +198,47 @@ const Home = () => {
         webkitRelativePath: "";
       }
     */
-    // console.log(payload.get("file"));
+    // console.log(fileProps);
 
-    GetFileReview(payload, updateProgress)
-      .then((response) => {
-        const matchResult = response.data.match(/(\d+?)\/100/);
-        updateProps({
-          ...fileProps,
-          uploadProgress: 1,
-          done: true,
-          mentioned: [],
-          mentionables: [],
-          overview: response.data.replace(/\s*评分：\d+\/100/g, ""),
-          grade: Number(matchResult ? matchResult[1] : 0),
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    switch (currentTab) {
+      case TabIDsEnum.ReportsReview:
+        GetFileReview(payload, updateProgress)
+          .then((response) => {
+            const matchResult = response.data.match(/(\d+?)\/100/);
+            updateProps({
+              ...fileProps,
+              uploadProgress: 1,
+              done: true,
+              mentioned: [],
+              mentionables: [],
+              overview: response.data.replace(/\s*评分：\d+\/100/g, ""),
+              grade: Number(matchResult ? matchResult[1] : 0),
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        break;
+      case TabIDsEnum.StudyAbroadPlanning:
+        GetStudyAboardPlanning(payload)
+          .then((response) => {
+            updateProps({
+              ...fileProps,
+              uploadProgress: 1,
+              done: true,
+              mentioned: [],
+              mentionables: [],
+              overview: JSON.stringify(response.data, undefined, 2),
+              grade: 0,
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        break;
+      default:
+        break;
+    }
 
     // TODO
     // createReviewStorage();
@@ -228,8 +256,11 @@ const Home = () => {
   // tabs and workspaces part
   const goto = useNavigate();
 
-  const setTab = (tab: TabIDs) => {
-    goto({ pathname: `/home/${tab}`, search: query.toString() });
+  const setTab = (tab: TabIDsEnum) => {
+    goto({
+      pathname: `/home/${tab}`,
+      search: query.toString(),
+    });
   };
   const setWorkspace = useCallback(
     (workspace: WorkspaceIDs) => {
@@ -309,14 +340,14 @@ const Home = () => {
                     className="block"
                     variants={collapseButtonVariants}
                   >
-                    <ChevronDoubleLeftIcon />
+                    <outline.ChevronDoubleLeftIcon />
                   </motion.span>
                 </button>
               </div>
 
               <Separator />
               <ul className={s("feature-list nav-list")}>
-                {features.map((f) => (
+                {tabs.map((f) => (
                   <li key={f.id} className={styles["item"]}>
                     <motion.button
                       onClick={() => setTab(f.id)}
@@ -348,7 +379,7 @@ const Home = () => {
                   variants={navListItemVariants}
                 >
                   <span className={styles["icon"]}>
-                    <BellIcon />
+                    <outline.BellIcon />
                   </span>
                   <motion.span
                     className={s("title")}
@@ -365,7 +396,7 @@ const Home = () => {
                   variants={navListItemVariants}
                 >
                   <span className={styles["icon"]}>
-                    <Cog8ToothIcon />
+                    <outline.Cog8ToothIcon />
                   </span>
                   <motion.span
                     onClick={() => setDialog("help")}
@@ -383,7 +414,7 @@ const Home = () => {
                   variants={navListItemVariants}
                 >
                   <span className={styles["icon"]}>
-                    <Cog8ToothIcon />
+                    <outline.Cog8ToothIcon />
                   </span>
                   <motion.span
                     onClick={() => setDialog("settings")}
@@ -411,7 +442,7 @@ const Home = () => {
                 ))}
                 <Separator vertical={true} />
                 <button className={s("search-button")}>
-                  <MagnifyingGlassIcon className="h-6 w-6" />
+                  <outline.MagnifyingGlassIcon className="h-6 w-6" />
                 </button>
               </div>
               <button className={styles["user-avatar"]}>
@@ -433,7 +464,7 @@ const Home = () => {
             >
               {/* workspaces */}
               {currentWorkspace === "workspace" &&
-                currentTab === "reports-review" && (
+                currentTab === TabIDsEnum.ReportsReview && (
                   <>
                     <div className={s("workspace-card w-full")}>
                       <div className={s("workspace-header")}>
@@ -450,24 +481,20 @@ const Home = () => {
                                 className="text-left"
                               />
                               <Select.Icon className={s("select-icon")}>
-                                <ChevronDownIcon />
+                                <outline.ChevronDownIcon />
                               </Select.Icon>
                             </Select.Trigger>
                             <Select.Portal>
                               <Select.Content className={s("select-content")}>
                                 <Select.ScrollUpButton />
                                 <Select.Viewport className="p-2">
-                                  <SelectItem value="media"> 媒体 </SelectItem>
-                                  <SelectItem value="academic">
-                                    {" "}
-                                    学术{" "}
-                                  </SelectItem>
+                                  <SelectItem value="media">媒体</SelectItem>
+                                  <SelectItem value="academic">学术</SelectItem>
                                   <SelectItem
                                     disabled={true}
                                     value="consultation"
                                   >
-                                    {" "}
-                                    咨询{" "}
+                                    咨询
                                   </SelectItem>
                                 </Select.Viewport>
                               </Select.Content>
@@ -481,7 +508,7 @@ const Home = () => {
                           }
                           data-open={historyFileOpen}
                         >
-                          <FolderIcon className="h-5 w-5" />
+                          <outline.FolderIcon className="h-5 w-5" />
                         </button>
                       </div>
                       <ScrollArea.Root className="w-full h-0 flex-1 relative">
@@ -490,20 +517,22 @@ const Home = () => {
                         </div>
                         <div
                           onClick={() =>
-                            document.getElementById("file-upload")?.click()
+                            document
+                              .getElementById("reports-review-file-upload")
+                              ?.click()
                           }
                           className={s("upload-button")}
                         >
                           <input
-                            id="file-upload"
+                            id="reports-review-file-upload"
                             type="file"
                             onChange={handleFileSelect}
                             style={{ display: "none" }}
                           />
-                          <ArrowUpTrayIcon />
+                          <outline.ArrowUpTrayIcon />
                         </div>
                         <ScrollArea.Viewport className="h-full px-[5%] lg:px-[15%] 2xl:px-[25%]">
-                          {files.map((f, i) => (
+                          {tabFiles[TabIDsEnum.ReportsReview][0].map((f, i) => (
                             <FileCard
                               key={i}
                               className={s("filecard")}
@@ -527,7 +556,7 @@ const Home = () => {
                         <ScrollArea.Root className="w-full h-0 flex-1">
                           <div className="px-6 w-full relative flex items-center">
                             <input placeholder="搜索" className={s("prefix")} />
-                            <MagnifyingGlassIcon className="h-6 w-6 absolute left-9" />
+                            <outline.MagnifyingGlassIcon className="h-6 w-6 absolute left-9" />
                           </div>
                           <ScrollArea.Viewport className="h-full px-6 mt-4">
                             {historyFiles.map((f) => (
@@ -539,18 +568,16 @@ const Home = () => {
                                   <DocumentIcon type={f.ext} />
                                   <div className="flex flex-col items-start flex-1 w-0">
                                     <span className="w-full text-ellipsis overflow-hidden">
-                                      {" "}
-                                      {f.filename}{" "}
+                                      {f.filename}
                                     </span>
                                     <span className="text-sm text-neutral-500">
-                                      {" "}
-                                      {humanizeFileSize(f.size)}{" "}
+                                      {humanizeFileSize(f.size)}
                                       {new Date(f.date).toLocaleDateString()}
                                     </span>
                                   </div>
                                 </div>
                                 <button className="w-6 h-6 p-1 rounded hover:bg-neutral-300 dark:hover:bg-neutral-600">
-                                  <EllipsisHorizontalIcon />
+                                  <outline.EllipsisHorizontalIcon />
                                 </button>
                               </div>
                             ))}
@@ -560,33 +587,84 @@ const Home = () => {
                     )}
                   </>
                 )}
-              {currentWorkspace === "file-management" &&
-                currentTab === "reports-review" && (
-                  <div className={s("workspace-card w-full")}>
-                    <div className={s("workspace-header")}>
-                      <h2> 文件管理 </h2>
-                    </div>
-                    <div className="w-full h-full flex flex-col px-6 space-y-4">
-                      <div className="w-full h-fit relative flex items-center">
-                        <input placeholder="搜索" className={s("prefix")} />
-                        <MagnifyingGlassIcon className="h-6 w-6 absolute left-3" />
+              {currentWorkspace === "workspace" &&
+                currentTab === TabIDsEnum.StudyAbroadPlanning && (
+                  <>
+                    <div className={s("workspace-card w-full")}>
+                      <div className={s("workspace-header")}>
+                        <div className="flex flex-row space-x-4 items-center">
+                          <h2> 拖拽文件到此处发送 </h2>
+                        </div>
                       </div>
-                      <Table.Table>
-                        <Table.TableHeader>
-                          <Table.TableRow>
-                            <Table.TableHead className="w-32rem">
-                              {" "}
-                              文件名称{" "}
-                            </Table.TableHead>
-                            <Table.TableHead> 类型 </Table.TableHead>
-                            <Table.TableHead> 时间 </Table.TableHead>
-                            <Table.TableHead> {/* 按钮 */} </Table.TableHead>
-                          </Table.TableRow>
-                        </Table.TableHeader>
-                      </Table.Table>
+                      <ScrollArea.Root className="w-full h-0 flex-1 relative">
+                        <div className={s("drag-drop-area")}>
+                          <p> 拖拽文件到此处发送 </p>
+                        </div>
+                        <div
+                          className={s("upload-button")}
+                          onClick={() =>
+                            document
+                              .getElementById(
+                                "study-abroad-planning-file-upload"
+                              )
+                              ?.click()
+                          }
+                        >
+                          <input
+                            id="study-abroad-planning-file-upload"
+                            type="file"
+                            onChange={handleFileSelect}
+                            style={{ display: "none" }}
+                          />
+                          <outline.ArrowUpTrayIcon />
+                        </div>
+                        <ScrollArea.Viewport className="h-full px-[5%] lg:px-[15%] 2xl:px-[25%]">
+                          {tabFiles[TabIDsEnum.StudyAbroadPlanning][0].map(
+                            (f, i) => (
+                              <FileCard
+                                key={i}
+                                className={s("filecard")}
+                                {...f}
+                              />
+                            )
+                          )}
+                        </ScrollArea.Viewport>
+                        <ScrollArea.Scrollbar
+                          className={s("scrollbar")}
+                          orientation="vertical"
+                        >
+                          <ScrollArea.Thumb className={s("thumb")} />
+                        </ScrollArea.Scrollbar>
+                      </ScrollArea.Root>
                     </div>
-                  </div>
+                  </>
                 )}
+              {currentWorkspace === "file-management" && (
+                // currentTab === "reports-review" && (
+                <div className={s("workspace-card w-full")}>
+                  <div className={s("workspace-header")}>
+                    <h2> 文件管理 </h2>
+                  </div>
+                  <div className="w-full h-full flex flex-col px-6 space-y-4">
+                    <div className="w-full h-fit relative flex items-center">
+                      <input placeholder="搜索" className={s("prefix")} />
+                      <outline.MagnifyingGlassIcon className="h-6 w-6 absolute left-3" />
+                    </div>
+                    <Table.Table>
+                      <Table.TableHeader>
+                        <Table.TableRow>
+                          <Table.TableHead className="w-32rem">
+                            文件名称
+                          </Table.TableHead>
+                          <Table.TableHead> 类型 </Table.TableHead>
+                          <Table.TableHead> 时间 </Table.TableHead>
+                          <Table.TableHead> {/* 按钮 */} </Table.TableHead>
+                        </Table.TableRow>
+                      </Table.TableHeader>
+                    </Table.Table>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </main>
@@ -603,8 +681,7 @@ const Home = () => {
               <Tabs.Root orientation="vertical" className="h-full w-full flex">
                 <Tabs.List className={s("settings-dialog-nav")}>
                   <Dialog.Title className={s("dialog-title")}>
-                    {" "}
-                    设置{" "}
+                    设置
                   </Dialog.Title>
 
                   {settingsGroups.map((g) => (
@@ -633,7 +710,7 @@ const Home = () => {
                       className="rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 p-1 -m-1"
                       onClick={() => setDialog(null)}
                     >
-                      <XMarkIcon className="h-5 w-5" />
+                      <outline.XMarkIcon className="h-5 w-5" />
                     </button>
                   </div>
                   <Tabs.Content value="app-settings">
@@ -645,19 +722,19 @@ const Home = () => {
                           onClick={(e) => toggleTheme(e, "light")}
                           data-state={theme === "light" ? "on" : "off"}
                         >
-                          <SunIcon />
+                          <outline.SunIcon />
                         </button>
                         <button
                           onClick={(e) => toggleTheme(e, "system")}
                           data-state={theme === "system" ? "on" : "off"}
                         >
-                          <CloudIcon />
+                          <outline.CloudIcon />
                         </button>
                         <button
                           onClick={(e) => toggleTheme(e, "dark")}
                           data-state={theme === "dark" ? "on" : "off"}
                         >
-                          <MoonIcon />
+                          <outline.MoonIcon />
                         </button>
                       </div>
                     </div>
@@ -689,7 +766,7 @@ const SelectItem = React.forwardRef<HTMLDivElement, Select.SelectItemProps>(
       >
         <Select.ItemText>{children}</Select.ItemText>
         <Select.ItemIndicator className="absolute left-2 h-4 w-4 inline-flex items-center justify-center">
-          <CheckIcon />
+          <outline.CheckIcon />
         </Select.ItemIndicator>
       </Select.Item>
     );

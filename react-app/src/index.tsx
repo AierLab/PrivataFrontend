@@ -85,18 +85,20 @@ const RootComponent = () => {
     }, [])
 
     return (
-        <div id="app">
-            <ThemeContext.Provider value={{ theme: currentTheme, setTheme: changeTheme }}>
-                <HashRouter>
-                    <Routes>
-                        <Route path="/" element={<Index />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/home/:tab?/:workspace?" element={<Home />} />
-                    </Routes>
-                </HashRouter>
-            </ThemeContext.Provider>
-        </div >
-    )
+      <div id="app">
+        <ThemeContext.Provider
+          value={{ theme: currentTheme, setTheme: changeTheme }}
+        >
+          <HashRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/home/:tabID?/:workspaceID?" element={<Home />} />
+            </Routes>
+          </HashRouter>
+        </ThemeContext.Provider>
+      </div>
+    );
 };
 
 /**
