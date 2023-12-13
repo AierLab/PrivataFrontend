@@ -160,6 +160,7 @@ const Home = () => {
       filesize: file.size,
       uploadProgress: 0,
       done: false,
+      overview: "",
       mentioned: [],
       mentionables: [],
     };
@@ -220,6 +221,10 @@ const Home = () => {
           });
         break;
       case TabIDsEnum.StudyAbroadPlanning:
+        updateProps({
+          ...fileProps,
+          overview: "处理中, 请稍候...",
+        });
         GetStudyAboardPlanning(payload)
           .then((response) => {
             updateProps({
