@@ -21,17 +21,17 @@ interface ReviewStorage {
   updatedAt?: Date;
 }
 
-async function createReviewStorage(
-  payload: FormData,
-  fileProps: FileCardProps
-) {
-  FileLocalStorage(payload,fileProps);
-  return await prisma.reviewStorage.create({
-    data: {
-      profile_id: "",
-    },
-  });
-}
+// async function createReviewStorage(
+//   payload: FormData,
+//   fileProps: FileCardProps
+// ) {
+//   FileLocalStorage(payload,fileProps);
+//   return await prisma.reviewStorage.create({
+//     data: {
+//       profile_id: "",
+//     },
+//   });
+// }
 
 async function getReviewStorages() {
   return await prisma.reviewStorage.findMany({
