@@ -45,7 +45,7 @@ export interface FileCardCommonProps {
 
   done: boolean;
   // TODO
-  overview: string;
+  overview: any;
 
   mentionables: People[];
   mentioned: People[];
@@ -154,9 +154,26 @@ export function FileCard(props: FileCardProps) {
             <div className="w-full">
               <h2> 处理结果 </h2>
               <DashedSparator className={s("my-4")} />
-              <pre className={s("overview white-space:pre")}>
-                {props.overview}
-              </pre>
+              {props.overview && (
+                <div className={s("overview")}>
+                  {Object.entries(props.overview).map(([key, value]) => (
+                    <div key={key}>
+                      <h3 className={s("university-recommends")}>{key}</h3>
+
+                      {Object.entries(value as any).map(([key, value]) => (
+                        <div key={key}>
+                          <div className={s("university-info")}>
+                            <p>
+                              {key}: {value as string}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                      <br></br>
+                    </div>
+                  ))}
+                </div>
+              )}
               <DashedSparator className={s("my-4")} />
               {/* <div className={s("card horizontal bordered")}>
                 <div className="flex flex-row space-x-4 items-center flex-1 w-0">
