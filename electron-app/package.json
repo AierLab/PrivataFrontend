@@ -6,8 +6,9 @@
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
-    "package": "electron-forge package",
     "make": "electron-forge make",
+    "upload": "scp -r -i ~/.ssh/liuwei_rsa \"out/make/squirrel.windows/x64/PrivataClient-1.0.0 Setup.exe\" ubuntu@18.166.84.66:/home/ubuntu/FM-APIs/statics/PrivataClient-1.0.0.Setup.exe",
+    "package": "electron-forge package",
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts,.tsx ."
   },

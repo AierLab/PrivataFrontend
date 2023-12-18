@@ -34,8 +34,8 @@ module.exports = {
         //         resolve.fallback: { "path": false }
         fallback: {
           ...webpackConfig.resolve.fallback,
-          path: require.resolve("path-browserify"),
-          fs: require.resolve("fs"),
+          // path: require.resolve("path-browserify"),
+          // fs: require.resolve("fs"),
           // tls: false,
           // net: false,
           // zlib: false,
