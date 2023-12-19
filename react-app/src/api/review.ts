@@ -1,7 +1,8 @@
 import axios, { AxiosProgressEvent, AxiosRequestConfig } from "axios";
 
+const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 // const API_ENDPOINT = "http://localhost:8000";
-const API_ENDPOINT = "http://aidvisor.valmech.net";
+// const API_ENDPOINT = "http://aidvisor.valmech.net";
 const api = axios.create({
   baseURL: API_ENDPOINT,
   headers: {

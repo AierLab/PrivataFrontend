@@ -1,9 +1,8 @@
 import {
-  ArrowDownTrayIcon,
   AtSymbolIcon,
   CheckCircleIcon,
   ClipboardDocumentIcon,
-  XMarkIcon,
+  XMarkIcon
 } from "@heroicons/react/24/outline";
 import { People } from "@privata/types/people";
 import { forwardRef, ReactElement } from "react";
@@ -13,7 +12,6 @@ import styles from "./index.module.css";
 import { humanizeFileSize } from "utils/humanize";
 
 import Tooltip from "components/Tooltip/index";
-import { TableCellsIcon } from "@heroicons/react/24/solid";
 
 // TODO: how to download? by open a link in browser
 // or as background job?
