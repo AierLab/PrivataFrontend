@@ -6,7 +6,7 @@ import './index.css';
 import Login from 'pages/login';
 import Home from 'pages/home'
 import { useEffect, useState } from 'react';
-import ThemeContext from 'contexts/theme'
+import ThemeContext from '@/contexts/theme'
 import { ThemeMode } from '@privata/types/theme';
 import { OS } from '@privata/types/os'
 

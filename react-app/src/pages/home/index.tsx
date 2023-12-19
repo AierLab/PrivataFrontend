@@ -15,7 +15,7 @@ import React, {
 import styles from "./index.module.css";
 
 import { ThemeMode } from "@privata/types/theme";
-import ThemeContext from "contexts/theme";
+import ThemeContext from "@/contexts/theme";
 
 import * as outline from "@heroicons/react/24/outline";
 import {
@@ -31,9 +31,11 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { classNames, modulize } from "utils/classNames";
 import { humanizeFileSize } from "utils/humanize";
 
-import { GetFileReview, GetStudyAboardPlanning } from "api/review";
+import { GetFileReview, GetStudyAboardPlanning } from "@/api/review";
 import { AxiosProgressEvent } from "axios";
 import { historyFiles, settingsGroups } from "./static-conf";
+
+// do not change this !
 import path from "path";
 
 type DialogIDs = "notifications" | "help" | "settings" | "search" | null;
