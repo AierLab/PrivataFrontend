@@ -1,7 +1,8 @@
 import axios, { AxiosProgressEvent, AxiosRequestConfig } from "axios";
 
+const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 // const API_ENDPOINT = "http://localhost:8000";
-const API_ENDPOINT = "http://aidvisor.valmech.net";
+// const API_ENDPOINT = "http://aidvisor.valmech.net";
 const api = axios.create({
   baseURL: API_ENDPOINT,
   headers: {
@@ -28,43 +29,19 @@ export const GetFileReview = async (
   return await api.post("/api/tabs/reports-review/", payload, config);
 };
 
-interface GetStudyAboardPlanningResponse {
-  data: {
-    冲刺院校1: {
-      学校名称: string;
-      推荐专业: string;
-      推荐原因: string;
-    };
-    冲刺院校2: {
-      学校名称: string;
-      推荐专业: string;
-      推荐原因: string;
-    };
-    适中院校1: {
-      学校名称: string;
-      推荐专业: string;
-      推荐原因: string;
-    };
-    适中院校2: {
-      学校名称: string;
-      推荐专业: string;
-      推荐原因: string;
-    };
-    保底院校1: {
-      学校名称: string;
-      推荐专业: string;
-      推荐原因: string;
-    };
-    保底院校2: {
-      学校名称: string;
-      推荐专业: string;
-      推荐原因: string;
-    };
-  };
-}
+// export interface GetStudyAboardPlanningResponse {
+//   data: {
+//     冲刺院校1: {
+//       学校名称: string;
+//       推荐专业: string;
+//       推荐原因: string;
+//     };
+//   };
+// }
 
 export const GetStudyAboardPlanning = async (
   payload: FormData
-): Promise<GetStudyAboardPlanningResponse> => {
+  // ): Promise<GetStudyAboardPlanningResponse> => {
+) => {
   return await api.post("/api/tabs/study-aboard-planning/", payload);
 };

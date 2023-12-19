@@ -1,6 +1,6 @@
-const path = require("path");
 import fs from "fs";
-import { FileCardProps } from "@/components/FileCard";
+import { FileCardProps } from "components/FileCard";
+import path from "path";
 
 const savePath = ".";
 

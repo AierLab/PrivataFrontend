@@ -5,7 +5,6 @@ import * as Tabs from "@radix-ui/react-tabs";
 import Separator from "components/Separator";
 import * as Table from "components/Table";
 import Titlebar from "components/Titlebar";
-import * as path from "path";
 import React, {
   ReactElement,
   useCallback,
@@ -16,7 +15,7 @@ import React, {
 import styles from "./index.module.css";
 
 import { ThemeMode } from "@privata/types/theme";
-import ThemeContext from "contexts/theme";
+import ThemeContext from "@/contexts/theme";
 
 import * as outline from "@heroicons/react/24/outline";
 import {
@@ -35,6 +34,9 @@ import { humanizeFileSize } from "utils/humanize";
 import { GetFileReview, GetStudyAboardPlanning } from "@/api/review";
 import { AxiosProgressEvent } from "axios";
 import { historyFiles, settingsGroups } from "./static-conf";
+
+// do not change this !
+import path from "path";
 
 type DialogIDs = "notifications" | "help" | "settings" | "search" | null;
 type WorkspaceIDs = "workspace" | "file-management";
@@ -142,10 +144,12 @@ const Home = () => {
     // TODO 组件还是单选状态
     const files = event.target.files;
     if (!files) return;
-
     for (let i = 0; i < files.length; i++) {
       processFile(files[i]);
     }
+
+    // 置空, 否则重复点同一个文件不触发
+    event.target.value = "";
   };
 
   // 处理文件拖拽/点击上传后的操作
@@ -160,6 +164,7 @@ const Home = () => {
       filesize: file.size,
       uploadProgress: 0,
       done: false,
+      overview: {},
       mentioned: [],
       mentionables: [],
     };
@@ -220,6 +225,12 @@ const Home = () => {
           });
         break;
       case TabIDsEnum.StudyAbroadPlanning:
+        updateProps({
+          ...fileProps,
+          overview: {
+            提示: { "1": "处理中, 请稍候...", "2": "预计时长1~2分钟" },
+          },
+        });
         GetStudyAboardPlanning(payload)
           .then((response) => {
             updateProps({
@@ -228,7 +239,7 @@ const Home = () => {
               done: true,
               mentioned: [],
               mentionables: [],
-              overview: JSON.stringify(response.data, undefined, 2),
+              overview: response.data,
               grade: 0,
             });
           })
@@ -516,15 +527,13 @@ const Home = () => {
                           <p> 拖拽文件到此处发送 </p>
                         </div>
                         <div
-                          onClick={() =>
-                            document
-                              .getElementById("reports-review-file-upload")
-                              ?.click()
-                          }
                           className={s("upload-button")}
+                          onClick={() =>
+                            document.getElementById("file-input")?.click()
+                          }
                         >
                           <input
-                            id="reports-review-file-upload"
+                            id="file-input"
                             type="file"
                             onChange={handleFileSelect}
                             style={{ display: "none" }}
@@ -603,15 +612,11 @@ const Home = () => {
                         <div
                           className={s("upload-button")}
                           onClick={() =>
-                            document
-                              .getElementById(
-                                "study-abroad-planning-file-upload"
-                              )
-                              ?.click()
+                            document.getElementById("file-input")?.click()
                           }
                         >
                           <input
-                            id="study-abroad-planning-file-upload"
+                            id="file-input"
                             type="file"
                             onChange={handleFileSelect}
                             style={{ display: "none" }}

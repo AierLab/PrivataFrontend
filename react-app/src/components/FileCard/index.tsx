@@ -1,9 +1,8 @@
 import {
-  ArrowDownTrayIcon,
   AtSymbolIcon,
   CheckCircleIcon,
   ClipboardDocumentIcon,
-  XMarkIcon,
+  XMarkIcon
 } from "@heroicons/react/24/outline";
 import { People } from "@privata/types/people";
 import { forwardRef, ReactElement } from "react";
@@ -13,7 +12,6 @@ import styles from "./index.module.css";
 import { humanizeFileSize } from "utils/humanize";
 
 import Tooltip from "components/Tooltip/index";
-import { TableCellsIcon } from "@heroicons/react/24/solid";
 
 // TODO: how to download? by open a link in browser
 // or as background job?
@@ -44,6 +42,8 @@ export interface FileCardCommonProps {
   uploadProgress: number; // percentage, i.e. 0 - 1
 
   done: boolean;
+  // TODO
+  overview: any;
 
   mentionables: People[];
   mentioned: People[];
@@ -52,25 +52,24 @@ export interface FileCardCommonProps {
   onMentionDelete?: (p: People) => void;
 }
 
-export interface FileCardNotDoneProps {
-  done: false;
-}
-
 export interface FileCardReviewProps {
-  done: true;
-  overview: string;
   grade: number;
 }
 
+export interface FileCardPlanningProps {
+  // result: string;
+}
+
 export type FileCardProps = FileCardCommonProps &
-  (FileCardNotDoneProps | FileCardReviewProps);
+  (FileCardReviewProps | FileCardPlanningProps);
 
 export function FileCard(props: FileCardProps) {
   const s = modulize(styles);
   const strokeEnd = (1 - props.uploadProgress) * 2 * Math.PI * 6;
 
   const handleOverviewCopy = () => {
-    if (props.done) window.api.setClipboard(props.overview);
+    if (!props.done) return;
+    window.api.setClipboard(props.overview);
   };
 
   return (
@@ -146,13 +145,33 @@ export function FileCard(props: FileCardProps) {
           <CheckCircleIcon className="w-4 h-4 text-green-500 dark:text-green-400" />
         )}
       </div>
-      {props.done && (
+      {/* {props.done && ( */}
+      {
         <div className={s("card vertical shadow")}>
           {props.tab && (
             <div className="w-full">
               <h2> 处理结果 </h2>
               <DashedSparator className={s("my-4")} />
-              <p className={s("overview")}>{props.overview}</p>
+              {props.overview && (
+                <div className={s("overview")}>
+                  {Object.entries(props.overview).map(([key, value]) => (
+                    <div key={key}>
+                      <h3 className={s("university-recommends")}>{key}</h3>
+
+                      {Object.entries(value as any).map(([key, value]) => (
+                        <div key={key}>
+                          <div className={s("university-info")}>
+                            <p>
+                              {key}: {value as string}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                      <br></br>
+                    </div>
+                  ))}
+                </div>
+              )}
               <DashedSparator className={s("my-4")} />
               {/* <div className={s("card horizontal bordered")}>
                 <div className="flex flex-row space-x-4 items-center flex-1 w-0">
@@ -181,7 +200,7 @@ export function FileCard(props: FileCardProps) {
               /> */}
             </div>
           )}
-          {props.tab === TabIDsEnum.ReportsReview && (
+          {props.tab === TabIDsEnum.ReportsReview && "grade" in props && (
             <div className="w-full">
               <h2> 评分结果 </h2>
               <span className={s("grade")}>{props.grade} 分</span>
@@ -196,7 +215,7 @@ export function FileCard(props: FileCardProps) {
             </div>
           )}
         </div>
-      )}
+      }
     </div>
   );
 }
@@ -414,8 +433,8 @@ const ExcelIcon = forwardRef<SVGSVGElement, React.HTMLProps<SVGSVGElement>>(
           fill="white"
         /> */}
         <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          // stroke-linecap="round"
+          // stroke-linejoin="round"
           d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-7.5A1.125 1.125 0 0112 18.375m9.75-12.75c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125m19.5 0v1.5c0 .621-.504 1.125-1.125 1.125M2.25 5.625v1.5c0 .621.504 1.125 1.125 1.125m0 0h17.25m-17.25 0h7.5c.621 0 1.125.504 1.125 1.125M3.375 8.25c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m17.25-3.75h-7.5c-.621 0-1.125.504-1.125 1.125m8.625-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M12 10.875v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125M13.125 12h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125M20.625 12c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5M12 14.625v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 14.625c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m0 1.5v-1.5m0 0c0-.621.504-1.125 1.125-1.125m0 0h7.5"
           fill="#9ECC65"
         />
