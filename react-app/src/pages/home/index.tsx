@@ -5,7 +5,6 @@ import * as Tabs from "@radix-ui/react-tabs";
 import Separator from "components/Separator";
 import * as Table from "components/Table";
 import Titlebar from "components/Titlebar";
-import * as path from "path";
 import React, {
   ReactElement,
   useCallback,
@@ -32,9 +31,10 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { classNames, modulize } from "utils/classNames";
 import { humanizeFileSize } from "utils/humanize";
 
-import { GetFileReview, GetStudyAboardPlanning } from "@/api/review";
+import { GetFileReview, GetStudyAboardPlanning } from "api/review";
 import { AxiosProgressEvent } from "axios";
 import { historyFiles, settingsGroups } from "./static-conf";
+import path from "path";
 
 type DialogIDs = "notifications" | "help" | "settings" | "search" | null;
 type WorkspaceIDs = "workspace" | "file-management";

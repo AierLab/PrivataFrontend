@@ -1,8 +1,9 @@
 // We have .ts file in node_modules/, but react won't load any .ts
 // file other than those in src/, so we extend react's configuration,
 // making it load *.ts file.
-const path = require("path");
+// const { CracoAliasPlugin } = require("react-app-alias");
 
+// https://craco.js.org/docs/configuration/
 module.exports = {
   webpack: {
     configure: (webpackConfig) => ({
@@ -35,7 +36,7 @@ module.exports = {
         fallback: {
           ...webpackConfig.resolve.fallback,
           path: require.resolve("path-browserify"),
-          // fs: require.resolve("fs"),
+          fs: require.resolve("fs"),
           // tls: false,
           // net: false,
           // zlib: false,
@@ -46,15 +47,22 @@ module.exports = {
         },
         extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],
         // https://blog.csdn.net/peter_hzq/article/details/120656880
-        alias: {
-          "@": path.resolve(__dirname, "src"),
-        },
+        // alias: {
+        // path 在 src 外很难导入
+        //   "@": path.resolve(__dirname, "src"),
+        // },
         // modules: [webpackPaths.srcPath, "node_modules"],
       },
     }),
-    plugins: {
-      add: [
-      ],
-    },
   },
+  plugins: [
+    {
+      plugin: CracoAliasPlugin,
+      options: {
+        source: "tsconfig",
+        baseUrl: ".",
+        tsConfigPath: "./tsconfig.path.json",
+      },
+    },
+  ],
 };

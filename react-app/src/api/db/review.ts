@@ -1,4 +1,4 @@
-import { FileCardProps } from "@/components/FileCard";
+import { FileCardProps } from "components/FileCard";
 import prisma from "../prisma";
 import { FileLocalStorage } from "./file/storage";
 
