@@ -34,7 +34,7 @@ module.exports = {
         //         resolve.fallback: { "path": false }
         fallback: {
           ...webpackConfig.resolve.fallback,
-          // path: require.resolve("path-browserify"),
+          path: require.resolve("path-browserify"),
           // fs: require.resolve("fs"),
           // tls: false,
           // net: false,
@@ -52,5 +52,9 @@ module.exports = {
         // modules: [webpackPaths.srcPath, "node_modules"],
       },
     }),
+    plugins: {
+      add: [
+      ],
+    },
   },
 };
