@@ -6,8 +6,21 @@
 // https://craco.js.org/docs/configuration/
 module.exports = {
   webpack: {
+    // 去掉 ModuleScopePluginc 插件, 解决如下报错:
+    // Module not found: Error: You attempted to import /Users/weidows/Desktop/PrivataFrontend/react-app/node_modules/.pnpm/registry.npmmirror.com+path-browserify@1.0.1/node_modules/path-browserify/index.js which falls outside of the project src/ directory. Relative imports outside of src/ are not supported.
+    // You can either move it inside src/, or add a symlink to it from project's node_modules/.
+    // macos 无效
+    configure: (webpackConfig) => {
+      const scopePluginIndex = webpackConfig.resolve.plugins.findIndex(
+        ({ constructor }) =>
+          constructor && constructor.name === "ModuleScopePlugin"
+      );
+      webpackConfig.resolve.plugins.splice(scopePluginIndex, 1);
+      return webpackConfig;
+    },
     configure: (webpackConfig) => ({
       ...webpackConfig,
+
       module: {
         ...webpackConfig.module,
         rules: webpackConfig.module.rules.map((rule) => {
@@ -35,7 +48,9 @@ module.exports = {
         //         resolve.fallback: { "path": false }
         fallback: {
           ...webpackConfig.resolve.fallback,
-          path: require.resolve("path-browserify"),
+          // macos 无效
+          // path: require.resolve("path-browserify"),
+          path: false,
           fs: require.resolve("fs"),
           // tls: false,
           // net: false,
@@ -55,14 +70,14 @@ module.exports = {
       },
     }),
   },
-  plugins: [
-    {
-      plugin: CracoAliasPlugin,
-      options: {
-        source: "tsconfig",
-        baseUrl: ".",
-        tsConfigPath: "./tsconfig.path.json",
-      },
-    },
-  ],
+  // plugins: [
+  //   {
+  //     plugin: CracoAliasPlugin,
+  //     options: {
+  //       source: "tsconfig",
+  //       baseUrl: ".",
+  //       tsConfigPath: "./tsconfig.path.json",
+  //     },
+  //   },
+  // ],
 };
