@@ -1,11 +1,11 @@
-import { ValidFileType } from "@/components/FileCard";
+import { ValidFileTypeEnum } from "@/components/FileCard";
 import { BriefcaseIcon, Cog8ToothIcon, UserIcon, UsersIcon } from "@heroicons/react/24/outline"
 import { People } from "@privata/types/people"
 import { ReactNode } from "react"
 
 interface File {
   filename: string;
-  ext: ValidFileType;
+  ext: ValidFileTypeEnum;
   size: number; // number of bytes
   date: number;
   chatId: number;
@@ -26,9 +26,9 @@ export const mentionables: People[] = [
 
 // debug: data mock
 export const historyFiles: File[] = [
-    { filename: "dawwadawdawdawdlfghjsfgklsdhgdfkjghwjeyriwuef.txt", ext: 'txt', size: 114514, date: 114514, chatId: 1919810, url: '' },
-    { filename: "123.pdf", ext: 'pdf', size: 114.514 * 1024, date: 114514, chatId: 1919810, url: '' },
-    { filename: "123.doc", ext: 'doc', size: 114514, date: 114514, chatId: 1919810, url: '' },
+    { filename: "dawwadawdawdawdlfghjsfgklsdhgdfkjghwjeyriwuef.txt", ext: ValidFileTypeEnum.TXT, size: 114514, date: 114514, chatId: 1919810, url: '' },
+    { filename: "123.pdf", ext: ValidFileTypeEnum.PDF, size: 114.514 * 1024, date: 114514, chatId: 1919810, url: '' },
+    { filename: "123.doc", ext: ValidFileTypeEnum.DOC, size: 114514, date: 114514, chatId: 1919810, url: '' },
 ]
 
 export type SettingId = 'my-account' | 'org-account' | 'member-management' | 'app-settings'

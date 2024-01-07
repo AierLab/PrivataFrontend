@@ -31,7 +31,5 @@ contextBridge.exposeInMainWorld('api', {
     setTheme:         (theme: ThemeMode) => ipcRenderer.invoke('app:set-theme', theme),
     openFile:         (options: OpenFileOptions) => ipcRenderer.invoke("sys:open-file", options),
     readFile:         (path: string) => ipcRenderer.invoke("sys:read-file", path),
-
     currentPlatform:  () => ipcRenderer.invoke('sys:get-os')
 })
-
