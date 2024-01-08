@@ -6,7 +6,7 @@ import Titlebar from "components/Titlebar"
 import * as Tabs from '@radix-ui/react-tabs'
 import * as Checkbox from '@radix-ui/react-checkbox'
 import * as Select from '@radix-ui/react-select'
-import { CheckIcon, ChevronDownIcon } from "@heroicons/react/24/outline"
+import { ArrowLeftIcon, CheckIcon, ChevronDownIcon } from "@heroicons/react/24/outline"
 import { motion, AnimatePresence, MotionProps } from "framer-motion"
 import OTPInput from "components/OTPInput"
 
@@ -64,6 +64,10 @@ const Login = () => {
         }
     }, [email, goto, pathway, pathwayIndex, rememberMe])
 
+    const handlePreviousStepClick = useCallback(() => {
+        setPathwayIndex(i => Math.max(0, i - 1))
+    }, [setPathwayIndex])
+
     const handleLinkClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
         event.preventDefault();
         const url = (event.target as any).href;
@@ -83,6 +87,7 @@ const Login = () => {
                 <form className={s('login-form')}>
                     <AnimatePresence mode="wait" initial={false}>
                         <Tabs.Root className={s("login-form-content-tabs")} value={pathways[pathway][pathwayIndex]}>
+                            { pathwayIndex !== 0 && <PreviousTabButton onClick={handlePreviousStepClick}/> }
                             <Tabs.Content value="login-method">
                                 <motion.div {...tabTransitionConfig}>
                                     <h1> 欢迎使用 </h1>
@@ -318,5 +323,31 @@ const SelectItem = React.forwardRef<HTMLDivElement, Select.SelectItemProps>(({ c
         </Select.Item>
     );
 });
+
+type PreviousTabButtonProps = {
+    onClick: () => void,
+};
+
+const PreviousTabButton = function({ onClick }: PreviousTabButtonProps) {
+    return (
+        <motion.button
+            className="absolute top-4 left-4 p-2 transition text-neutral-400 hover:text-black" onClick={onClick}
+            initial={{
+                filter: 'blur(2px)',
+                opacity: 0,
+            }}
+            animate={{
+                filter: 'blur(0px)',
+                opacity: 1,
+                transition: {
+                    duration: 0.3,
+                    ease: 'easeOut'
+                }
+            }}
+        >
+            <ArrowLeftIcon className="relative h-4 w-4"/>
+        </motion.button>
+    )
+};
 
 export default Login
