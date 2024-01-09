@@ -285,7 +285,7 @@ const Login = () => {
                             <Tabs.Content value="login">
                                 <motion.div {...tabTransitionConfig}>
                                     <h1> 输入密码 </h1>
-                                    <input className='w-full mt-8' type="password" placeholder="输入密码" />
+                                    <PasswordInput className='w-full mt-8' placeholder="输入密码" />
                                     <p className={s('tips', 'mt-4')}>
                                         密码仅可由数字、英文字母或英文符号组成，且需包含其中至少两种类型，长度不少于 8 个字符
                                     </p>
