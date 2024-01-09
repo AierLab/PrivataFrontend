@@ -47,7 +47,7 @@ interface Tab {
 }
 
 interface Workspace {
-  affiniate: TabIDsEnum;
+  affiliate: TabIDsEnum;
   id: WorkspaceIDs;
   name: string;
 }
@@ -73,9 +73,9 @@ const Home = () => {
     },
   ];
   const workspaces: Workspace[] = [
-    { affiniate: TabIDsEnum.ReportsReview, id: "workspace", name: "工作区" },
+    { affiliate: TabIDsEnum.ReportsReview, id: "workspace", name: "工作区" },
     {
-      affiniate: TabIDsEnum.ReportsReview,
+      affiliate: TabIDsEnum.ReportsReview,
       id: "file-management",
       name: "文件管理",
     },
