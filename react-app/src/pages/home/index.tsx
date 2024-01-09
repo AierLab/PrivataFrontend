@@ -83,11 +83,7 @@ const Home = () => {
 
   const s = modulize(styles);
 
-  // let { tabID: currentTab, workspaceID: currentWorkspace } =
-  //   useParams() as any as URLParams;
-  // if (!currentTab) currentTab = TabIDsEnum.ReportsReview;
-  // if (!currentWorkspace) currentWorkspace = "workspace";
-  let {
+  const {
     tabID: currentTab = TabIDsEnum.ReportsReview,
     workspaceID: currentWorkspace = "workspace",
   } = useParams() as any as URLParams;
@@ -143,9 +139,8 @@ const Home = () => {
     const files = event.target.files;
     if (!files) return;
 
-    for (let i = 0; i < files.length; i++) {
-      processFile(files[i]);
-    }
+    for(let file of files)
+      processFile(file)
   };
 
   // 处理文件拖拽/点击上传后的操作
@@ -315,8 +310,8 @@ const Home = () => {
 
   return (
     <>
-      <div className={styles["container"]}>
-        <main className={styles["content-wrapper"]}>
+      <div className={s("container")}>
+        <main className={s("content-wrapper")}>
           <motion.aside
             className={s("nav")}
             variants={navCollapseVariants}
@@ -324,13 +319,13 @@ const Home = () => {
             animate={navCollapsed ? "collapsed" : "normal"}
           >
             <div>
-              <div className={styles["org-info-wrapper"]}>
+              <div className={s("org-info-wrapper")}>
                 <motion.div
-                  className={styles["org-title-wrapper"]}
+                  className={s("org-title-wrapper")}
                   variants={orgNameVariants}
                 >
-                  <span className={styles["org-avatar"]}> </span>
-                  <h2 className={styles["org-name"]}> Valmech </h2>
+                  <span className={s("org-avatar")}> </span>
+                  <h2 className={s("org-name")}> Valmech </h2>
                 </motion.div>
                 <button
                   className={s("aside-collapse")}
@@ -348,19 +343,19 @@ const Home = () => {
               <Separator />
               <ul className={s("feature-list nav-list")}>
                 {tabs.map((f) => (
-                  <li key={f.id} className={styles["item"]}>
+                  <li key={f.id} className={s("item")}>
                     <motion.button
                       onClick={() => setTab(f.id)}
                       className={
                         currentTab && currentTab === f.id
-                          ? styles["selected"]
+                          ? s("selected")
                           : ""
                       }
                       variants={navListItemVariants}
                     >
-                      <span className={styles["icon"]}> {f.icon} </span>
+                      <span className={s("icon")}> {f.icon} </span>
                       <motion.span
-                        className={styles["title"]}
+                        className={s("title")}
                         variants={navListTitleVariants}
                       >
                         {f.name}
@@ -378,7 +373,7 @@ const Home = () => {
                   onClick={() => setDialog("notifications")}
                   variants={navListItemVariants}
                 >
-                  <span className={styles["icon"]}>
+                  <span className={s("icon")}>
                     <outline.BellIcon />
                   </span>
                   <motion.span
@@ -395,7 +390,7 @@ const Home = () => {
                   onClick={() => setDialog("help")}
                   variants={navListItemVariants}
                 >
-                  <span className={styles["icon"]}>
+                  <span className={s("icon")}>
                     <outline.Cog8ToothIcon />
                   </span>
                   <motion.span
@@ -413,7 +408,7 @@ const Home = () => {
                   onClick={() => setDialog("settings")}
                   variants={navListItemVariants}
                 >
-                  <span className={styles["icon"]}>
+                  <span className={s("icon")}>
                     <outline.Cog8ToothIcon />
                   </span>
                   <motion.span
@@ -427,8 +422,8 @@ const Home = () => {
               </li>
             </ul>
           </motion.aside>
-          <div className={styles["section-page"]}>
-            <div className={styles["section-page-header"]}>
+          <div className={s("section-page")}>
+            <div className={s("section-page-header")}>
               <Titlebar />
               <div className={s("section-workspaces-list")}>
                 {workspaces.map((w) => (
@@ -445,7 +440,7 @@ const Home = () => {
                   <outline.MagnifyingGlassIcon className="h-6 w-6" />
                 </button>
               </div>
-              <button className={styles["user-avatar"]}>
+              <button className={s("user-avatar")}>
                 <img
                   draggable="false"
                   alt="User Avatar"
@@ -455,7 +450,7 @@ const Home = () => {
             </div>
 
             <div
-              className={styles["section-page-content"]}
+              className={s("section-page-content")}
               ref={fileDragDropDataElement}
               onDragEnter={dragEnter}
               onDragLeave={dragLeave}
