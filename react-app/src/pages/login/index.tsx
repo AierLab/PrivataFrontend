@@ -9,6 +9,7 @@ import * as Select from '@radix-ui/react-select'
 import { ArrowLeftIcon, CheckIcon, ChevronDownIcon } from "@heroicons/react/24/outline"
 import { motion, AnimatePresence, MotionProps } from "framer-motion"
 import OTPInput from "components/OTPInput"
+import PasswordInput from "components/PasswordInput/index"
 
 type Pathway = 'unregistered' | 'invited' | 'registered'
 const pathways: Record<Pathway, Array<string>> = {
@@ -214,8 +215,9 @@ const Login = () => {
                                     <p className={s('tips', 'mt-2')}>
                                         密码仅可由数字、英文字母或英文符号组成，且需包含其中至少两种类型，长度不少于 8 个字符
                                     </p>
-                                    <input className='w-full mt-8' type="password" placeholder="输入密码" />
-                                    <input className='w-full mt-3' type="password" placeholder="再次输入密码" />
+                                    { /* <input className='w-full mt-8' type="password" placeholder="输入密码" /> */ }
+                                    <PasswordInput className='w-full mt-8' placeholder="输入密码" />
+                                    <PasswordInput className='w-full mt-3' placeholder="再次输入密码" />
                                 </motion.div>
                             </Tabs.Content>
 
@@ -331,7 +333,8 @@ type PreviousTabButtonProps = {
 const PreviousTabButton = function({ onClick }: PreviousTabButtonProps) {
     return (
         <motion.button
-            className="absolute top-4 left-4 p-2 transition text-neutral-400 hover:text-black" onClick={onClick}
+            className="absolute top-4 left-4 p-2 transition text-neutral-400 dark:text-neutral-500 hover:text-black dark:hover:text-white"
+            onClick={onClick}
             initial={{
                 filter: 'blur(2px)',
                 opacity: 0,

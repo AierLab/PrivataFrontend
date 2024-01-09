@@ -57,13 +57,17 @@
 }
 
 .login-form input {
-    @apply h-12 pl-4 pr-3 py-3;
+    @apply h-12 pl-4 py-3;
     @apply bg-white dark:bg-neutral-950 rounded-md;
     @apply border-2 border-neutral-200 dark:border-neutral-800;
     @apply justify-end items-center gap-2.5;
 
     @apply focus:outline-none focus:border-neutral-700 dark:focus:border-neutral-400;
     @apply transition duration-100;
+}
+
+.login-form input:not([data-password-input]) {
+    @apply pr-3;
 }
 
 .half-width-input {
