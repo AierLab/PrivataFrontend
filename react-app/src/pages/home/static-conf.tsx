@@ -60,3 +60,12 @@ export const settingsGroups: SettingGroup[] = [
         ]
     },
 ]
+
+export const FileTypeExtMapping: Record<string, ValidFileTypeEnum> = {
+    'application/msword': ValidFileTypeEnum.DOC,
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ValidFileTypeEnum.DOCX,
+    'application/vnd.ms-excel': ValidFileTypeEnum.XLS, // xls
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ValidFileTypeEnum.XLS, // xlsx
+    'text/plain': ValidFileTypeEnum.TXT,
+    'application/pdf': ValidFileTypeEnum.PDF,
+};

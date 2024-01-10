@@ -26,7 +26,7 @@ import {
   TabIDsEnum,
   ValidFileTypeEnum,
 } from "components/FileCard/index";
-import { Variants, motion } from "framer-motion";
+import { Variants, motion, useMotionValue, useTransform, AnimatePresence } from "framer-motion";
 import { useQueryItem } from "hooks/useQueryItem";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { classNames, modulize } from "utils/classNames";
@@ -34,7 +34,9 @@ import { humanizeFileSize } from "utils/humanize";
 
 import { GetFileReview, GetStudyAboardPlanning } from "@/api/review";
 import { AxiosProgressEvent } from "axios";
-import { historyFiles, settingsGroups } from "./static-conf";
+import { historyFiles, settingsGroups, FileTypeExtMapping } from "./static-conf";
+import { useSmoothTransform } from "@/hooks/useSmoothTransform";
+import { norm } from "@/utils/math";
 
 type DialogIDs = "notifications" | "help" | "settings" | "search" | null;
 type WorkspaceIDs = "workspace" | "file-management";
@@ -57,6 +59,13 @@ interface URLParams {
   tabID: TabIDsEnum;
   workspaceID: WorkspaceIDs;
 }
+
+interface FilePreviewInfo {
+  fileExt: ValidFileTypeEnum,
+  fileCount: number,
+  initialX: number,
+  initialY: number,
+};
 
 const Home = () => {
   const tabs: Tab[] = [
@@ -103,21 +112,64 @@ const Home = () => {
   // use ref to prevent frequent re-rendering
   const fileEnterCount = useRef<number>(0);
   const fileDragDropDataElement = useRef<HTMLDivElement | null>(null);
-  const addFileDropDataState = () =>
+
+  const fileDragPreviewCardPositionXRaw = useMotionValue(0);
+  const fileDragPreviewCardPositionYRaw = useMotionValue(0);
+
+  const fileDragPreviewCardPositionX = useSmoothTransform(fileDragPreviewCardPositionXRaw, { bounce: 0 }, v => v);
+  const fileDragPreviewCardPositionY = useSmoothTransform(fileDragPreviewCardPositionYRaw, { bounce: 0 }, v => v);
+
+  const fileDragPreviewCardVelocity  = useTransform(() => {
+    // .getVelocity() will not trigger re-calculation of this value
+    // on framer update, use get() - getPrevious() instead
+    const vx = fileDragPreviewCardPositionX.get() - fileDragPreviewCardPositionX.getPrevious()
+    const vy = fileDragPreviewCardPositionY.get() - fileDragPreviewCardPositionY.getPrevious()
+    const sign = vx < 0 ? -1 : 1;
+    return norm([vx, vy], 2) * sign;
+  });
+  const fileDragPreviewCardRotate = useSmoothTransform(fileDragPreviewCardVelocity, { bounce: 0 }, v => v / 175 * 360);
+
+  const [filePreviewInfo, setFilePreviewInfo] = useState<FilePreviewInfo | null>(null);
+
+  const addFileDropDataState = () => {
     fileDragDropDataElement.current!.setAttribute("data-filedrop", "true");
+  }
   const removeFileDropDataState = () =>
     fileDragDropDataElement.current!.setAttribute("data-filedrop", "false");
-  const dragEnter = () => {
+
+  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
     fileEnterCount.current += 1;
-    if (fileEnterCount.current === 1) addFileDropDataState();
+    if (fileEnterCount.current === 1) {
+      const items = e.dataTransfer.items;
+      const files: DataTransferItem[] = [];
+      for(let i = 0; i < items.length; i++)
+      if(items[i].kind === 'file')
+      files.push(items[i])
+
+      if(files.length === 0) return;
+      setFilePreviewInfo({
+        fileExt: FileTypeExtMapping[files[0].type],
+        fileCount: files.length,
+        initialX: e.pageX,
+        initialY: e.pageY,
+      });
+
+      addFileDropDataState();
+    }
   };
-  const dragLeave = () => {
+  const handleDragLeave = () => {
     fileEnterCount.current -= 1;
-    if (fileEnterCount.current === 0) removeFileDropDataState();
+    if (fileEnterCount.current === 0) {
+      setFilePreviewInfo(null);
+      removeFileDropDataState();
+    }
   };
-  const dragOver = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
+
+    fileDragPreviewCardPositionXRaw.set(e.pageX);
+    fileDragPreviewCardPositionYRaw.set(e.pageY);
   };
 
   const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
@@ -140,7 +192,7 @@ const Home = () => {
     if (!files) return;
 
     for(let file of files)
-      processFile(file)
+    processFile(file)
   };
 
   // 处理文件拖拽/点击上传后的操作
@@ -452,11 +504,40 @@ const Home = () => {
             <div
               className={s("section-page-content")}
               ref={fileDragDropDataElement}
-              onDragEnter={dragEnter}
-              onDragLeave={dragLeave}
-              onDragOver={dragOver}
+              onDragEnter={handleDragEnter}
+              onDragLeave={handleDragLeave}
+              onDragOver={handleDragOver}
               onDrop={handleFileDrop}
             >
+              { /* file drag preview card */ }
+              <AnimatePresence>
+                { filePreviewInfo &&
+                  <motion.div
+                    className="absolute z-50"
+                    style={{
+                      left: fileDragPreviewCardPositionX,
+                      top: fileDragPreviewCardPositionY,
+                      rotate: fileDragPreviewCardRotate,
+                      translateY: '20px',
+                    }}
+                    initial={{ left: filePreviewInfo.initialX, top: filePreviewInfo.initialY, filter: 'blur(2px)', opacity: 0 }}
+                    animate={{ filter: 'blur(0px)', opacity: 1 }}
+                    exit={{ filter: 'blur(2px)', opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <div aria-hidden className="p-1 rounded-2xl shadow bg-indigo-100 dark:bg-indigo-900">
+                      <div className="rounded-xl p-4 bg-white dark:bg-neutral-800 dark:text-white flex flex-row items-center space-x-4">
+                        <DocumentIcon type={filePreviewInfo.fileExt} classNames="w-10 h-10"/>
+                        <div className="flex flex-col items-start justify-between">
+                          <span className=""> 共 <span>{filePreviewInfo.fileCount}</span> 个文件 </span>
+                          <span className="text-sm text-neutral-200 dark:text-neutral-600"> 松开鼠标以发送 </span>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                }
+              </AnimatePresence>
+
               {/* workspaces */}
               {currentWorkspace === "workspace" &&
                 currentTab === TabIDsEnum.ReportsReview && (
@@ -592,10 +673,10 @@ const Home = () => {
                           className={s("upload-button")}
                           onClick={() =>
                             document
-                              .getElementById(
-                                "study-abroad-planning-file-upload"
-                              )
-                              ?.click()
+                            .getElementById(
+                              "study-abroad-planning-file-upload"
+                            )
+                            ?.click()
                           }
                         >
                           <input
