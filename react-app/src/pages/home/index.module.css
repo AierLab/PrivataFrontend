@@ -137,6 +137,7 @@ button > .title {
     @apply transition duration-100;
     @apply hover:bg-neutral-50 dark:hover:bg-neutral-800;
     @apply dark:text-neutral-500;
+    @apply focus-visible:ring-1 focus-visible:ring-neutral-600;
 }
 
 .section-workspaces-list button.selected {
@@ -150,6 +151,7 @@ button > .title {
     @apply overflow-hidden;
     @apply cursor-pointer;
     @apply no-drag;
+    @apply focus-visible:ring-1 focus-visible:ring-offset-2 focus-visible:ring-neutral-600;
 }
 
 [data-os='win32'] .user-avatar {

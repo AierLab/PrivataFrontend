@@ -497,7 +497,7 @@ const Home = () => {
                           </Select.Root>
                         </div>
                         <button
-                          className="rounded-full p-2 -m-2 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition duration-100 data-[open]:bg-neutral-200 dark:data-[open]:bg-neutral-700"
+                          className="rounded-full p-2 -m-2 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition duration-100 data-[open]:bg-neutral-200 dark:data-[open]:bg-neutral-700 focus-visible:ring-1 focus-visible:ring-neutral-600"
                           onClick={() =>
                             setHistoryFileOpen(!historyFileOpen ? "true" : null)
                           }
@@ -510,14 +510,7 @@ const Home = () => {
                         <div className={s("drag-drop-area")}>
                           <p> 拖拽文件到此处发送 </p>
                         </div>
-                        <div
-                          onClick={() =>
-                            document
-                              .getElementById("reports-review-file-upload")
-                              ?.click()
-                          }
-                          className={s("upload-button")}
-                        >
+                        <label className={s("upload-button", "cursor-pointer focus-visible:ring focus-visible:ring-indigo-400")}>
                           <input
                             id="reports-review-file-upload"
                             type="file"
@@ -525,7 +518,7 @@ const Home = () => {
                             style={{ display: "none" }}
                           />
                           <outline.ArrowUpTrayIcon />
-                        </div>
+                        </label>
                         <ScrollArea.Viewport className="h-full px-[5%] lg:px-[15%] 2xl:px-[25%]">
                           {tabFiles[TabIDsEnum.ReportsReview][0].map((f, i) => (
                             <FileCard

@@ -37,6 +37,7 @@
 
     @apply p-0 border-none bg-transparent;
     @apply dark:text-white;
+    @apply focus-visible:ring-1 focus-visible:ring-neutral-600;
 } 
 
 .titlebar > #minimize:hover {
