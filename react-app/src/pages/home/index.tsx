@@ -21,12 +21,12 @@ import ThemeContext from "contexts/theme";
 import * as outline from "@heroicons/react/24/outline";
 import {
   DocumentIcon,
-  FileCard,
+  MotionFileCard,
   FileCardProps,
   TabIDsEnum,
   ValidFileTypeEnum,
 } from "components/FileCard/index";
-import { Variants, motion, useMotionValue, useTransform, AnimatePresence } from "framer-motion";
+import { Variants, motion, useMotionValue, useTransform, AnimatePresence, LayoutGroup } from "framer-motion";
 import { useQueryItem } from "hooks/useQueryItem";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { classNames, modulize } from "utils/classNames";
@@ -134,8 +134,9 @@ const Home = () => {
   const addFileDropDataState = () => {
     fileDragDropDataElement.current!.setAttribute("data-filedrop", "true");
   }
-  const removeFileDropDataState = () =>
+  const removeFileDropDataState = () => {
     fileDragDropDataElement.current!.setAttribute("data-filedrop", "false");
+  }
 
   const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
     fileEnterCount.current += 1;
@@ -174,7 +175,9 @@ const Home = () => {
 
   const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
     removeFileDropDataState();
+    setFilePreviewInfo(null);
     fileEnterCount.current = 0;
+
     event.preventDefault();
     event.stopPropagation();
 
@@ -361,7 +364,7 @@ const Home = () => {
   };
 
   return (
-    <>
+    <LayoutGroup>
       <div className={s("container")}>
         <main className={s("content-wrapper")}>
           <motion.aside
@@ -514,6 +517,7 @@ const Home = () => {
                 { filePreviewInfo &&
                   <motion.div
                     className="absolute z-50"
+                    layoutId={"file-drop-card-" + tabFiles[TabIDsEnum.ReportsReview][0].length}
                     style={{
                       left: fileDragPreviewCardPositionX,
                       top: fileDragPreviewCardPositionY,
@@ -602,7 +606,8 @@ const Home = () => {
                         </label>
                         <ScrollArea.Viewport className="h-full px-[5%] lg:px-[15%] 2xl:px-[25%]">
                           {tabFiles[TabIDsEnum.ReportsReview][0].map((f, i) => (
-                            <FileCard
+                            <MotionFileCard
+                              layoutId={"file-drop-card-" + i}
                               key={i}
                               className={s("filecard")}
                               {...f}
@@ -689,11 +694,12 @@ const Home = () => {
                         </div>
                         <ScrollArea.Viewport className="h-full px-[5%] lg:px-[15%] 2xl:px-[25%]">
                           {tabFiles[TabIDsEnum.StudyAbroadPlanning][0].map(
-                            (f, i) => (
-                              <FileCard
+                            (props, i) => (
+                              <MotionFileCard
+                                layoutId={"file-drop-card-" + i}
                                 key={i}
                                 className={s("filecard")}
-                                {...f}
+                                {...props}
                               />
                             )
                           )}
@@ -814,7 +820,7 @@ const Home = () => {
           </Dialog.Portal>
         </Dialog.Root>
       </div>
-    </>
+    </LayoutGroup>
   );
 };
 

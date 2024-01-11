@@ -6,7 +6,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { People } from "@privata/types/people";
-import { forwardRef, ReactElement } from "react";
+import React, { forwardRef, ReactElement } from "react";
 import { modulize } from "utils/classNames";
 import styles from "./index.module.css";
 
@@ -14,6 +14,7 @@ import { humanizeFileSize } from "utils/humanize";
 
 import Tooltip from "components/Tooltip/index";
 import { TableCellsIcon } from "@heroicons/react/24/solid";
+import { motion } from "framer-motion";
 
 // TODO: how to download? by open a link in browser
 // or as background job?
@@ -65,7 +66,7 @@ export interface FileCardReviewProps {
 export type FileCardProps = FileCardCommonProps &
   (FileCardNotDoneProps | FileCardReviewProps);
 
-export function FileCard(props: FileCardProps) {
+export const FileCard = React.forwardRef<HTMLDivElement, FileCardProps>((props: FileCardProps, forwardedRef) => {
   const s = modulize(styles);
   const strokeEnd = (1 - props.uploadProgress) * 2 * Math.PI * 6;
 
@@ -74,7 +75,7 @@ export function FileCard(props: FileCardProps) {
   };
 
   return (
-    <div className={s("container", props.className || "")}>
+    <div className={s("container", props.className || "")} ref={forwardedRef}>
       <div className={s("card horizontal shadow")}>
         <div className="flex flex-row space-x-4 items-center flex-1 w-0">
           <DocumentIcon type={props.filetype} />
@@ -199,7 +200,8 @@ export function FileCard(props: FileCardProps) {
       )}
     </div>
   );
-}
+});
+export const MotionFileCard = motion<FileCardProps>(FileCard)
 
 interface MentionProps {
   mentioned: People[];
