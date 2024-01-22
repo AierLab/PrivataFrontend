@@ -511,6 +511,7 @@ const Home = () => {
               onDragLeave={handleDragLeave}
               onDragOver={handleDragOver}
               onDrop={handleFileDrop}
+              data-show-filedrop-hint={tabFiles[currentTab][0].length === 0}
             >
               { /* file drag preview card */ }
               <AnimatePresence>
@@ -667,23 +668,14 @@ const Home = () => {
                     <div className={s("workspace-card w-full")}>
                       <div className={s("workspace-header")}>
                         <div className="flex flex-row space-x-4 items-center">
-                          <h2> 拖拽文件到此处发送 </h2>
+                          <h2> 留学规划 </h2>
                         </div>
                       </div>
                       <ScrollArea.Root className="w-full h-0 flex-1 relative">
                         <div className={s("drag-drop-area")}>
                           <p> 拖拽文件到此处发送 </p>
                         </div>
-                        <div
-                          className={s("upload-button")}
-                          onClick={() =>
-                            document
-                            .getElementById(
-                              "study-abroad-planning-file-upload"
-                            )
-                            ?.click()
-                          }
-                        >
+                        <label className={s("upload-button cursor-pointer")} >
                           <input
                             id="study-abroad-planning-file-upload"
                             type="file"
@@ -691,7 +683,7 @@ const Home = () => {
                             style={{ display: "none" }}
                           />
                           <outline.ArrowUpTrayIcon />
-                        </div>
+                        </label>
                         <ScrollArea.Viewport className="h-full px-[5%] lg:px-[15%] 2xl:px-[25%]">
                           {tabFiles[TabIDsEnum.StudyAbroadPlanning][0].map(
                             (props, i) => (

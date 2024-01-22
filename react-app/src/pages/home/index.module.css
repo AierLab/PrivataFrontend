@@ -171,9 +171,8 @@ button > .title {
 }
 
 .drag-drop-area {
-    @apply absolute inset-0;
+    @apply absolute;
     @apply rounded-b-3xl;
-    @apply z-20;
     @apply bg-neutral-100 dark:bg-neutral-800;
     @apply flex items-center justify-center space-y-2;
     @apply before:bg-white dark:before:bg-neutral-900;
@@ -181,14 +180,20 @@ button > .title {
     @apply before:border-dashed before:border-2 before:rounded-3xl;
     @apply before:border-indigo-600 before:dark:border-indigo-300;
     
-    @apply transition duration-100;
+    @apply transition-all duration-300 ease-in-out;
 }
 
-:not([data-filedrop="true"]) .drag-drop-area {
+:not([data-filedrop="true"])[data-show-filedrop-hint="true"] .drag-drop-area {
+    @apply top-[70%] bottom-0 left-0 right-0;
+    @apply z-10;
+}
+
+:not([data-filedrop="true"])[data-show-filedrop-hint="false"] .drag-drop-area {
     @apply opacity-0 pointer-events-none;
 }
 
 [data-filedrop="true"] .drag-drop-area {
+    @apply inset-0 z-20;
     @apply opacity-100 pointer-events-auto;
 }
 
@@ -197,7 +202,7 @@ button > .title {
 }
 
 .upload-button {
-    @apply absolute right-8 bottom-8 rounded-full;
+    @apply absolute right-8 bottom-8 rounded-full z-20;
     @apply w-16 h-16 p-5;
     @apply bg-indigo-600 text-white dark:bg-indigo-500;
     @apply shadow-lg;
