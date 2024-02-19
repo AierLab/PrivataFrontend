@@ -468,20 +468,19 @@ const Home = () => {
               <AnimatePresence>
                 { state.filePreviewInfo &&
                   <motion.div
-                    className="fixed z-50"
+                    className="fixed z-50 top-5 left-5"
                     layoutId={"file-drop-card-" + nextUuid.current}
                     style={{
-                      left: fileDragPreviewCardPositionX,
-                      top: fileDragPreviewCardPositionY,
+                      x: fileDragPreviewCardPositionX,
+                      y: fileDragPreviewCardPositionY,
                       rotate: fileDragPreviewCardRotate,
-                      translateY: '20px',
                     }}
-                    initial={{ left: state.filePreviewInfo.initialX, top: state.filePreviewInfo.initialY, filter: 'blur(2px)', opacity: 0 }}
+                    initial={{ filter: 'blur(2px)', opacity: 0 }}
                     animate={{ filter: 'blur(0px)', opacity: 1 }}
                     exit={{ filter: 'blur(2px)', opacity: 0 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <div aria-hidden className="p-1 rounded-2xl shadow bg-indigo-100 dark:bg-indigo-900">
+                    <div aria-hidden className="p-1 rounded-2xl shadow-xl bg-indigo-100 dark:bg-indigo-900">
                       <div className="rounded-xl p-4 bg-white dark:bg-neutral-800 dark:text-white flex flex-row items-center space-x-4">
                         <DocumentIcon type={ state.filePreviewInfo.fileExt } classNames="w-10 h-10"/>
                         <div className="flex flex-col items-start justify-between">

@@ -175,6 +175,8 @@ button > .title {
     @apply rounded-b-3xl;
     @apply bg-neutral-100 dark:bg-neutral-800;
     @apply flex items-center justify-center space-y-2;
+    @apply bottom-0 left-0 right-0 top-0;
+
     @apply before:bg-white dark:before:bg-neutral-900;
     @apply before:content-normal before:absolute before:inset-x-4 before:inset-y-3;
     @apply before:border-dashed before:border-2 before:rounded-3xl;
@@ -184,7 +186,7 @@ button > .title {
 }
 
 :not([data-filedrop="true"])[data-show-filedrop-hint="true"] .drag-drop-area {
-    @apply top-[70%] bottom-0 left-0 right-0;
+    @apply top-[70%];
     @apply z-10;
 }
 
@@ -193,7 +195,7 @@ button > .title {
 }
 
 [data-filedrop="true"] .drag-drop-area {
-    @apply inset-0 z-20;
+    @apply z-20;
     @apply opacity-100 pointer-events-auto;
 }
 
