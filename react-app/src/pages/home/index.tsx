@@ -7,11 +7,9 @@ import * as Table from "components/Table";
 import Titlebar from "components/Titlebar";
 import * as path from "path";
 import React, {
-  ReactElement,
   useCallback,
   useContext,
   useRef,
-  useState,
 } from "react";
 import styles from "./index.module.css";
 
@@ -22,11 +20,10 @@ import * as outline from "@heroicons/react/24/outline";
 import {
   DocumentIcon,
   MotionFileCard,
-  FileCardProps,
   TabIDsEnum,
   ValidFileTypeEnum,
 } from "components/FileCard/index";
-import { Variants, motion, useMotionValue, useTransform, AnimatePresence, LayoutGroup } from "framer-motion";
+import { Variants, motion, useMotionValue, AnimatePresence, LayoutGroup, useVelocity } from "framer-motion";
 import { useQueryItem } from "hooks/useQueryItem";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { classNames, modulize } from "utils/classNames";
@@ -36,36 +33,8 @@ import { GetFileReview, GetStudyAboardPlanning } from "@/api/review";
 import { AxiosProgressEvent } from "axios";
 import { historyFiles, settingsGroups, FileTypeExtMapping } from "./static-conf";
 import { useSmoothTransform } from "@/hooks/useSmoothTransform";
-import { norm } from "@/utils/math";
-
-type DialogIDs = "notifications" | "help" | "settings" | "search" | null;
-type WorkspaceIDs = "workspace" | "file-management";
-
-interface Tab {
-  id: TabIDsEnum;
-  name: string;
-  icon: ReactElement;
-  element?: ReactElement;
-}
-
-interface Workspace {
-  affiliate: TabIDsEnum;
-  id: WorkspaceIDs;
-  name: string;
-}
-
-// React 会根据 /index.tsx 中的 "/home/:tabID?/:workspaceID?" 来按名字更新变量
-interface URLParams {
-  tabID: TabIDsEnum;
-  workspaceID: WorkspaceIDs;
-}
-
-interface FilePreviewInfo {
-  fileExt: ValidFileTypeEnum,
-  fileCount: number,
-  initialX: number,
-  initialY: number,
-};
+import { Tab, Workspace, URLParams, WorkspaceIDs, createHomePageStore, FileCardPropsWithUUID } from "@/viewmodels/home";
+import { v4 as uuidv4 } from 'uuid';
 
 const Home = () => {
   const tabs: Tab[] = [
@@ -97,15 +66,13 @@ const Home = () => {
     workspaceID: currentWorkspace = "workspace",
   } = useParams() as any as URLParams;
 
+  const state = createHomePageStore();
+
+  const nextUuid = useRef<string>(uuidv4());
+
   const [query] = useSearchParams();
-  const [dialog, setDialog] = useState<DialogIDs>(null);
   const [navCollapsed, setNavCollapsedValue] = useQueryItem("navCollapsed");
   const [historyFileOpen, setHistoryFileOpen] = useQueryItem("historyFileOpen");
-  const tabFiles = {
-    [TabIDsEnum.ReportsReview]: useState<FileCardProps[]>([]),
-    [TabIDsEnum.StudyAbroadPlanning]: useState<FileCardProps[]>([]),
-  };
-  const [profileId, setProfileId] = useState<string>("media");
 
   // file drag handler part
   // see https://stackoverflow.com/questions/7110353/html5-dragleave-fired-when-hovering-a-child-element
@@ -118,18 +85,9 @@ const Home = () => {
 
   const fileDragPreviewCardPositionX = useSmoothTransform(fileDragPreviewCardPositionXRaw, { bounce: 0 }, v => v);
   const fileDragPreviewCardPositionY = useSmoothTransform(fileDragPreviewCardPositionYRaw, { bounce: 0 }, v => v);
+  const vx = useVelocity(fileDragPreviewCardPositionXRaw)
 
-  const fileDragPreviewCardVelocity  = useTransform(() => {
-    // .getVelocity() will not trigger re-calculation of this value
-    // on framer update, use get() - getPrevious() instead
-    const vx = fileDragPreviewCardPositionX.get() - fileDragPreviewCardPositionX.getPrevious()
-    const vy = fileDragPreviewCardPositionY.get() - fileDragPreviewCardPositionY.getPrevious()
-    const sign = vx < 0 ? -1 : 1;
-    return norm([vx, vy], 2) * sign;
-  });
-  const fileDragPreviewCardRotate = useSmoothTransform(fileDragPreviewCardVelocity, { bounce: 0 }, v => v / 175 * 360);
-
-  const [filePreviewInfo, setFilePreviewInfo] = useState<FilePreviewInfo | null>(null);
+  const fileDragPreviewCardRotate = useSmoothTransform(vx, { bounce: 0 }, a => a / 50000 * 360);
 
   const addFileDropDataState = () => {
     fileDragDropDataElement.current!.setAttribute("data-filedrop", "true");
@@ -144,16 +102,19 @@ const Home = () => {
       const items = e.dataTransfer.items;
       const files: DataTransferItem[] = [];
       for(let i = 0; i < items.length; i++)
-      if(items[i].kind === 'file')
-      files.push(items[i])
+        if(items[i].kind === 'file')
+          files.push(items[i])
 
       if(files.length === 0) return;
-      setFilePreviewInfo({
+      state.setFilePreviewInfo({
         fileExt: FileTypeExtMapping[files[0].type],
         fileCount: files.length,
         initialX: e.pageX,
         initialY: e.pageY,
       });
+
+      fileDragPreviewCardPositionXRaw.jump(e.pageX);
+      fileDragPreviewCardPositionYRaw.jump(e.pageY);
 
       addFileDropDataState();
     }
@@ -161,7 +122,7 @@ const Home = () => {
   const handleDragLeave = () => {
     fileEnterCount.current -= 1;
     if (fileEnterCount.current === 0) {
-      setFilePreviewInfo(null);
+      state.setFilePreviewInfo(null);
       removeFileDropDataState();
     }
   };
@@ -175,7 +136,7 @@ const Home = () => {
 
   const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
     removeFileDropDataState();
-    setFilePreviewInfo(null);
+    state.setFilePreviewInfo(null);
     fileEnterCount.current = 0;
 
     event.preventDefault();
@@ -203,7 +164,7 @@ const Home = () => {
     const ext = path.extname(file.name);
     if (!(ext.slice(1).toUpperCase() in ValidFileTypeEnum)) return;
 
-    let fileProps: FileCardProps = {
+    let fileProps: FileCardPropsWithUUID = {
       tab: currentTab,
       filetype: ext as ValidFileTypeEnum,
       filename: file.name,
@@ -212,31 +173,21 @@ const Home = () => {
       done: false,
       mentioned: [],
       mentionables: [],
+      uuid: nextUuid.current,
     };
+    nextUuid.current = uuidv4();
 
-    let idx = 0;
     // 更新界面显示文件
-    tabFiles[currentTab][1]((fs) => {
-      idx = fs.length;
-      return [...fs, fileProps];
-    });
+    state.insertFile(currentTab, fileProps);
 
     const updateProgress = (p: AxiosProgressEvent) => {
       fileProps.uploadProgress = p.progress || 0;
-      updateProps(fileProps);
-    };
-
-    const updateProps = (fileProps: FileCardProps) => {
-      tabFiles[currentTab][1]((fs) => [
-        ...fs.slice(0, idx),
-        fileProps,
-        ...fs.slice(idx + 1, -1),
-      ]);
+      state.updateFile(currentTab, fileProps);
     };
 
     const payload = new FormData();
     payload.append("file", file);
-    payload.append("profile_id", profileId);
+    payload.append("profile_id", state.profileId);
     /*
       {
         lastModified: 1697471307573;
@@ -255,7 +206,7 @@ const Home = () => {
         GetFileReview(payload, updateProgress)
           .then((response) => {
             const matchResult = response.data.match(/(\d+?)\/100/);
-            updateProps({
+            state.updateFile(currentTab, {
               ...fileProps,
               uploadProgress: 1,
               done: true,
@@ -272,7 +223,7 @@ const Home = () => {
       case TabIDsEnum.StudyAbroadPlanning:
         GetStudyAboardPlanning(payload)
           .then((response) => {
-            updateProps({
+            state.updateFile(currentTab, {
               ...fileProps,
               uploadProgress: 1,
               done: true,
@@ -425,7 +376,7 @@ const Home = () => {
               <Separator margin={0} />
               <li>
                 <motion.button
-                  onClick={() => setDialog("notifications")}
+                  onClick={() => state.setDialogTab("notifications")}
                   variants={navListItemVariants}
                 >
                   <span className={s("icon")}>
@@ -442,14 +393,14 @@ const Home = () => {
 
               <li>
                 <motion.button
-                  onClick={() => setDialog("help")}
+                  onClick={() => state.setDialogTab("help")}
                   variants={navListItemVariants}
                 >
                   <span className={s("icon")}>
                     <outline.Cog8ToothIcon />
                   </span>
                   <motion.span
-                    onClick={() => setDialog("help")}
+                    onClick={() => state.setDialogTab("help")}
                     className={s("title")}
                     variants={navListTitleVariants}
                   >
@@ -460,14 +411,14 @@ const Home = () => {
 
               <li>
                 <motion.button
-                  onClick={() => setDialog("settings")}
+                  onClick={() => state.setDialogTab("settings")}
                   variants={navListItemVariants}
                 >
                   <span className={s("icon")}>
                     <outline.Cog8ToothIcon />
                   </span>
                   <motion.span
-                    onClick={() => setDialog("settings")}
+                    onClick={() => state.setDialogTab("settings")}
                     className={s("title")}
                     variants={navListTitleVariants}
                   >
@@ -511,30 +462,30 @@ const Home = () => {
               onDragLeave={handleDragLeave}
               onDragOver={handleDragOver}
               onDrop={handleFileDrop}
-              data-show-filedrop-hint={tabFiles[currentTab][0].length === 0}
+              data-show-filedrop-hint={state[currentTab].length === 0}
             >
               { /* file drag preview card */ }
               <AnimatePresence>
-                { filePreviewInfo &&
+                { state.filePreviewInfo &&
                   <motion.div
-                    className="absolute z-50"
-                    layoutId={"file-drop-card-" + tabFiles[TabIDsEnum.ReportsReview][0].length}
+                    className="fixed z-50"
+                    layoutId={"file-drop-card-" + nextUuid.current}
                     style={{
                       left: fileDragPreviewCardPositionX,
                       top: fileDragPreviewCardPositionY,
                       rotate: fileDragPreviewCardRotate,
                       translateY: '20px',
                     }}
-                    initial={{ left: filePreviewInfo.initialX, top: filePreviewInfo.initialY, filter: 'blur(2px)', opacity: 0 }}
+                    initial={{ left: state.filePreviewInfo.initialX, top: state.filePreviewInfo.initialY, filter: 'blur(2px)', opacity: 0 }}
                     animate={{ filter: 'blur(0px)', opacity: 1 }}
                     exit={{ filter: 'blur(2px)', opacity: 0 }}
                     transition={{ duration: 0.2 }}
                   >
                     <div aria-hidden className="p-1 rounded-2xl shadow bg-indigo-100 dark:bg-indigo-900">
                       <div className="rounded-xl p-4 bg-white dark:bg-neutral-800 dark:text-white flex flex-row items-center space-x-4">
-                        <DocumentIcon type={filePreviewInfo.fileExt} classNames="w-10 h-10"/>
+                        <DocumentIcon type={ state.filePreviewInfo.fileExt } classNames="w-10 h-10"/>
                         <div className="flex flex-col items-start justify-between">
-                          <span className=""> 共 <span>{filePreviewInfo.fileCount}</span> 个文件 </span>
+                          <span className=""> 共 <span>{ state.filePreviewInfo.fileCount }</span> 个文件 </span>
                           <span className="text-sm text-neutral-200 dark:text-neutral-600"> 松开鼠标以发送 </span>
                         </div>
                       </div>
@@ -553,8 +504,8 @@ const Home = () => {
                           <h2> 文件审核 </h2>
                           <Select.Root
                             defaultValue="media"
-                            value={profileId}
-                            onValueChange={setProfileId}
+                            value={state.profileId}
+                            onValueChange={state.setProfileId}
                           >
                             <Select.Trigger className={s("select-trigger")}>
                               <Select.Value
@@ -606,10 +557,10 @@ const Home = () => {
                           <outline.ArrowUpTrayIcon />
                         </label>
                         <ScrollArea.Viewport className="h-full px-[5%] lg:px-[15%] 2xl:px-[25%]">
-                          {tabFiles[TabIDsEnum.ReportsReview][0].map((f, i) => (
+                          {state[TabIDsEnum.ReportsReview].map(f => (
                             <MotionFileCard
-                              layoutId={"file-drop-card-" + i}
-                              key={i}
+                              layoutId={"file-drop-card-" + f.uuid}
+                              key={f.uuid}
                               className={s("filecard")}
                               {...f}
                             />
@@ -685,13 +636,12 @@ const Home = () => {
                           <outline.ArrowUpTrayIcon />
                         </label>
                         <ScrollArea.Viewport className="h-full px-[5%] lg:px-[15%] 2xl:px-[25%]">
-                          {tabFiles[TabIDsEnum.StudyAbroadPlanning][0].map(
-                            (props, i) => (
+                          {state[TabIDsEnum.StudyAbroadPlanning].map(f => (
                               <MotionFileCard
-                                layoutId={"file-drop-card-" + i}
-                                key={i}
+                                layoutId={"file-drop-card-" + f.uuid}
+                                key={f.uuid}
                                 className={s("filecard")}
-                                {...props}
+                                {...f}
                               />
                             )
                           )}
@@ -738,12 +688,12 @@ const Home = () => {
 
         {/* dialogs */}
         {/* settings dialog */}
-        <Dialog.Root open={dialog === "settings"}>
+        <Dialog.Root open={state.dialogTab === "settings"}>
           <Dialog.Portal>
             <Dialog.Overlay id={s("dialog-overlay")} />
             <Dialog.Content
               className={s("dialog-content settings-dialog")}
-              onEscapeKeyDown={() => setDialog(null)}
+              onEscapeKeyDown={() => state.setDialogTab(null)}
             >
               <Tabs.Root orientation="vertical" className="h-full w-full flex">
                 <Tabs.List className={s("settings-dialog-nav")}>
@@ -775,7 +725,7 @@ const Home = () => {
                     <h2> 我的账号 </h2>
                     <button
                       className="rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 p-1 -m-1"
-                      onClick={() => setDialog(null)}
+                      onClick={() => state.setDialogTab(null)}
                     >
                       <outline.XMarkIcon className="h-5 w-5" />
                     </button>
